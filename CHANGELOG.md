@@ -36,7 +36,10 @@ in `audit_notes.json` as CORRECTION entries.
 - Audit: 17 rows re-scored; 16 verdicts unchanged. `grounding-coordinate` (ours) moves from
   BORDERLINE PASS (adj p 0.057) to BORDERLINE DISQUALIFIED (0.037), same cell, same A* 0.855.
   TruthfulQA's worst cell is now words/Law A* 0.857 (63 of 222 cells separate; tie-break by effect).
-  `truth-is-universal/facts` now BORDERLINE. 12 of 17 fail, 5 of the 12 ours; two rows at A* 1.000, both ours.
+  `truth-is-universal/facts` now BORDERLINE. 12 of 17 fail, 5 of the 12 ours; two rows at A* 1.000, both ours; 15 of 20 after the three rows below.
+- Audit widened to 20 rows: HaluEval summarization (A* 0.923) and HaluEval general (A* 0.690,
+  the same-process human-annotated set; annotations track the task type) and RAGTruth
+  (A* 0.742, length and task vocabulary). `AUDIT_DOSSIER.md`: every row's full report and feature tables, generated.
 - 51 unit tests.
 
 **Not done**

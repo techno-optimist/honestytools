@@ -271,6 +271,46 @@
    ],
    "label_kind": "real_vs_fabricated_entity",
    "note": "ours, and the worst artifact we have produced. It was absent from this table while the page promised 'every one of our own' — the single most load-bearing omission on it, since this is the battery we asked other labs to calibrate against."
+  },
+  {
+   "name": "halueval/summarization",
+   "paper": "HaluEval: A Large-Scale Hallucination Evaluation Benchmark for LLMs (arXiv:2305.11747, EMNLP 2023)",
+   "url": "https://raw.githubusercontent.com/RUCAIBox/HaluEval/main/data/summarization_data.json",
+   "cache_as": "halueval_summarization.jsonl",
+   "format": "jsonl",
+   "explode": {
+    "right_summary": 0,
+    "hallucinated_summary": 1
+   },
+   "label_kind": "right_vs_wrong_answer",
+   "note": "10,000 CNN/DailyMail documents, each with the reference summary and one ChatGPT-generated hallucinated summary; both summaries become items, labelled by field. No category field is shipped. The document is not scored."
+  },
+  {
+   "name": "halueval/general",
+   "paper": "HaluEval: A Large-Scale Hallucination Evaluation Benchmark for LLMs (arXiv:2305.11747, EMNLP 2023)",
+   "url": "https://raw.githubusercontent.com/RUCAIBox/HaluEval/main/data/general_data.json",
+   "cache_as": "halueval_general.jsonl",
+   "format": "jsonl",
+   "text_field": "chatgpt_response",
+   "label_field": "hallucination",
+   "label_positive": [
+    "yes"
+   ],
+   "label_kind": "hallucinated_vs_faithful_response",
+   "note": "4,507 ChatGPT responses to Alpaca user queries, human-annotated for hallucination (815 yes / 3,692 no). Unlike the other HaluEval sets the two classes were produced by the SAME process and annotated afterwards, which is the construction this test should pass unless the annotators' judgement tracks a surface feature. The user query is not scored."
+  },
+  {
+   "name": "ragtruth/responses",
+   "paper": "RAGTruth: A Hallucination Corpus for Developing Trustworthy Retrieval-Augmented Language Models (arXiv:2401.00396, ACL 2024)",
+   "url": "https://raw.githubusercontent.com/ParticleMedia/RAGTruth/main/dataset/response.jsonl",
+   "cache_as": "ragtruth_response.jsonl",
+   "format": "jsonl",
+   "text_field": "response",
+   "label_field": "labels",
+   "label_nonempty": true,
+   "label_kind": "hallucinated_vs_faithful_response",
+   "note": "17,790 responses from six models over 2,965 retrieval prompts (summarisation, QA, data-to-text), span-annotated by humans; a response with any annotated span is label-1 (7,664 of 17,790). A seeded subsample of 8,000 responses is scored (the full set at this text length takes hours), as one cell per probe: the task type lives in a second file this harness does not join, and the six models are mixed. The source passage and prompt are not scored.",
+   "max_items": 8000
   }
  ]
 }

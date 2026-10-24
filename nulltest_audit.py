@@ -157,12 +157,18 @@ def normalise(items, spec):
     tk, lk = spec["text_field"], spec["label_field"]
     pos = set(str(v).lower() for v in spec.get("label_positive", [1, "1", True, "true"]))
     invert = bool(spec.get("invert_label"))
+    nonempty = bool(spec.get("label_nonempty"))      # label-1 when the field holds anything at all
     out = []
     for it in items:
         if tk not in it or lk not in it:
             continue
-        v = str(it[lk]).lower()
-        y = 1 if v in pos else 0
+        if nonempty:
+            # span-annotated corpora (RAGTruth) mark a hallucinated response by a non-empty list
+            # of spans; a clean response carries an empty list
+            y = 1 if it[lk] else 0
+        else:
+            v = str(it[lk]).lower()
+            y = 1 if v in pos else 0
         if invert:
             y = 1 - y
         row = {"entity": str(it[tk]), "label": y}

@@ -701,6 +701,129 @@
     "alpha_last"
    ],
    "strength": "severe"
+  },
+  {
+   "name": "halueval/summarization",
+   "paper": "HaluEval: A Large-Scale Hallucination Evaluation Benchmark for LLMs (arXiv:2305.11747, EMNLP 2023)",
+   "label_kind": "right_vs_wrong_answer",
+   "url": "https://raw.githubusercontent.com/RUCAIBox/HaluEval/main/data/summarization_data.json",
+   "status": "scored",
+   "sha256": "86d2561eeb4271eb50b6bd90c9fd38636d30eaf4e98b648045f221adb1c2c758",
+   "bytes": 46992527,
+   "n": 20000,
+   "n_fake": 10000,
+   "n_real": 10000,
+   "items_total": 20000,
+   "explode": {
+    "right_summary": 0,
+    "hallucinated_summary": 1
+   },
+   "split": null,
+   "cells": 6,
+   "verdict": "DISQUALIFIED",
+   "worst_cell": {
+    "astar": 0.923,
+    "adj_p": 0.0033,
+    "raw_p": 0.0017,
+    "null": "words",
+    "stratum": "_all",
+    "n": 20000,
+    "threshold": 0.51,
+    "underpowered": false
+   },
+   "headline": "worst cell A* = 0.923 in words/_all (n=20000), family-adjusted p = 0.0033 over 6 cells",
+   "separating_cells": 5,
+   "astar": 0.923,
+   "borderline": false,
+   "probes": [
+    "lexicality",
+    "words",
+    "length",
+    "shape",
+    "alpha_first",
+    "alpha_last"
+   ],
+   "strength": "severe"
+  },
+  {
+   "name": "halueval/general",
+   "paper": "HaluEval: A Large-Scale Hallucination Evaluation Benchmark for LLMs (arXiv:2305.11747, EMNLP 2023)",
+   "label_kind": "hallucinated_vs_faithful_response",
+   "url": "https://raw.githubusercontent.com/RUCAIBox/HaluEval/main/data/general_data.json",
+   "status": "scored",
+   "sha256": "73302cd97666b808fb94b5d8a4a2c924049c9484e609017a2f808c4a6d539219",
+   "bytes": 3307122,
+   "n": 4507,
+   "n_fake": 815,
+   "n_real": 3692,
+   "items_total": 4507,
+   "explode": null,
+   "split": null,
+   "cells": 6,
+   "verdict": "DISQUALIFIED",
+   "worst_cell": {
+    "astar": 0.69,
+    "adj_p": 0.005,
+    "raw_p": 0.0017,
+    "null": "words",
+    "stratum": "_all",
+    "n": 4507,
+    "threshold": 0.529,
+    "underpowered": false
+   },
+   "headline": "worst cell A* = 0.69 in words/_all (n=4507), family-adjusted p = 0.005 over 6 cells",
+   "separating_cells": 5,
+   "astar": 0.69,
+   "borderline": false,
+   "probes": [
+    "lexicality",
+    "words",
+    "length",
+    "shape",
+    "alpha_first",
+    "alpha_last"
+   ],
+   "strength": "moderate"
+  },
+  {
+   "name": "ragtruth/responses",
+   "paper": "RAGTruth: A Hallucination Corpus for Developing Trustworthy Retrieval-Augmented Language Models (arXiv:2401.00396, ACL 2024)",
+   "label_kind": "hallucinated_vs_faithful_response",
+   "url": "https://raw.githubusercontent.com/ParticleMedia/RAGTruth/main/dataset/response.jsonl",
+   "status": "scored",
+   "sha256": "e4c2e4ac24fff676d8984cc61c35d791612fadc58015335d97dd632375e18073",
+   "bytes": 21458735,
+   "n": 8000,
+   "n_fake": 3428,
+   "n_real": 4572,
+   "items_total": 17790,
+   "explode": null,
+   "split": null,
+   "cells": 6,
+   "verdict": "DISQUALIFIED",
+   "worst_cell": {
+    "astar": 0.742,
+    "adj_p": 0.0017,
+    "raw_p": 0.0017,
+    "null": "lexicality",
+    "stratum": "_all",
+    "n": 8000,
+    "threshold": 0.518,
+    "underpowered": false
+   },
+   "headline": "worst cell A* = 0.742 in lexicality/_all (n=8000), family-adjusted p = 0.0017 over 6 cells",
+   "separating_cells": 6,
+   "astar": 0.742,
+   "borderline": false,
+   "probes": [
+    "lexicality",
+    "words",
+    "length",
+    "shape",
+    "alpha_first",
+    "alpha_last"
+   ],
+   "strength": "moderate"
   }
  ]
 }

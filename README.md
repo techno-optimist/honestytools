@@ -19,7 +19,7 @@ python3 nulltest.py your_benchmark.json --json              # machine-readable
 python3 nulltest.py your_benchmark.json --jobs 8            # permutations in parallel
 python3 nulltest.py your_benchmark.json --explain           # which strings carry the label
 python3 nulltest.py qa_data.json --explode right_answer=0,hallucinated_answer=1   # QA rows
-python3 -m unittest discover -s tests                        # 42 tests, a few seconds
+python3 -m unittest discover -s tests                        # 51 tests, a few seconds
 ```
 
 (`pip install honesttools` is the plan, and `pyproject.toml` is ready for it, but the package is
@@ -34,7 +34,8 @@ python3 -m unittest discover -s tests                        # 42 tests, a few s
 | test it in your own CI, every commit | the [GitHub Action](#run-it-in-your-own-ci) below, five lines of YAML |
 | test it in a browser, nothing uploaded | [honesty.tools/evidence](https://www.honesty.tools/evidence) runs the same engine, proven bit-identical |
 | publish a verdict someone else can check | `--json` writes a receipt with the file's sha256 and the tool's; `--check RECEIPT` replays it |
-| see how published benchmarks fare | the [audit table](https://www.honesty.tools/audit), 17 rows, every one with a URL and a sha256 |
+| see how published benchmarks fare | the [audit table](https://www.honesty.tools/audit), 20 rows, every one with a URL and a sha256 |
+| know what carries the label in each of them | [AUDIT_DOSSIER.md](AUDIT_DOSSIER.md): every row's full report and `--explain` feature tables, generated, never typed |
 | put your benchmark in that table | one manifest entry; see [CONTRIBUTING](CONTRIBUTING.md) or open an [issue](https://github.com/techno-optimist/honestytools/issues/new/choose) |
 | know what the tool cannot see | the measured [false-positive](#what-the-tool-says-about-itself) and power tables, and the [limits](#known-limits--read-these-before-quoting-a-verdict) |
 | one entry point for the toolbox | `honest null FILE`, `honest check RECEIPT FILE`, `honest audit`, `honest fpr null` |
@@ -312,6 +313,8 @@ still be contaminated, circular or mislabelled.
 | `nulltest_audit.py` | scores a manifest of published benchmarks and writes the table behind [honesty.tools/audit](https://www.honesty.tools/audit) |
 | `nulltest_audit_manifest.json` | the targets: URL, exact field mapping, label polarity, and what kind of label each is |
 | `nulltest_audit_results.json` | the table. Every row carries the sha256 of the bytes scored |
+| `AUDIT_DOSSIER.md` | one section per row: what the corpus is, the full verdict, and the `--explain` feature tables that say what carries the label; rendered from the reports, never edited by hand |
+| `nulltest_dossier.py` | renders it: scores every manifest target with `--explain` (cached per row) and writes `AUDIT_DOSSIER.md` |
 | `nulltest_grid.json` | the false-positive certificate, sha256-stamped to the tool that produced it |
 | `batteries/` | our own nine batteries, all of them in the table |
 | `honest.py`, `contract.py` | the toolbox entry point (`honest null`, `honest check`, `honest audit`, `honest fpr`) and the four-method tool contract; see `CHARTER.md` |
@@ -351,29 +354,40 @@ without changing verdict: TruthfulQA's worst cell is now `words`/Law at A* 0.857
 of 222 cells separate, was 77) because ties at the permutation floor are now broken by effect
 size rather than by order of discovery, so a large cell wins over a small cell at A* 1.000; and
 `truth-is-universal/facts` is now marked BORDERLINE (adjusted p 0.038). The table therefore reads
-12 of 17 DISQUALIFIED, 5 of the 12 ours; two rows sit at A* 1.000 and both are ours.
+12 of 17 DISQUALIFIED, 5 of the 12 ours; two rows sit at A* 1.000 and both are ours. Three rows added later the same evening (HaluEval summarization, HaluEval general, RAGTruth) make it 15 of 20.
 
 ## Run it against us, and against the benchmarks the field uses
 
-The audit table at [honesty.tools/audit](https://www.honesty.tools/audit) has 17 rows: our own nine
-batteries, five third-party honesty corpora, and three rows from two widely used
-hallucination benchmarks, scored by answer alone with `--explode`:
+The audit table at [honesty.tools/audit](https://www.honesty.tools/audit) has 20 rows: our own nine
+batteries, five third-party honesty corpora, and six rows from three widely used hallucination
+benchmarks (TruthfulQA, HaluEval, RAGTruth), scored by answer or response alone:
 
 | benchmark | items | worst cell | A* | verdict |
 |---|---|---|---|---|
 | TruthfulQA, reference answers (`Correct Answers` vs `Incorrect Answers`, per category) | 6028 | 63 of 222 cells separate | 0.857 | DISQUALIFIED |
 | HaluEval QA (`right_answer` vs `hallucinated_answer`) | 20000 | 5 of 6 cells separate | 0.979 | DISQUALIFIED |
 | HaluEval dialogue (`right_response` vs `hallucinated_response`) | 20000 | 6 of 6 cells separate | 0.849 | DISQUALIFIED |
+| HaluEval summarization (`right_summary` vs `hallucinated_summary`) | 20000 | 5 of 6 cells separate | 0.923 | DISQUALIFIED |
+| HaluEval general (ChatGPT responses, human-annotated `hallucination` yes/no) | 4507 | 5 of 6 cells separate | 0.690 | DISQUALIFIED |
+| RAGTruth responses (span-annotated; any span = hallucinated; seeded 8,000 of 17,790) | 8000 | 6 of 6 cells separate | 0.742 | DISQUALIFIED |
 
 `--explain` says why. In TruthfulQA the correct column carries hedges the incorrect column almost
 never does: "I have no comment" appears in 86 correct answers and 0 incorrect, "do not" in 83
 against 4; in the largest separating cell the incorrect column leans on "that the", "about" and
 "believe that". A model that learned to hedge scores without knowing anything. In HaluEval the hallucinated answers were
 written by ChatGPT and the right answers are HotpotQA's short reference strings: median 58
-characters against 12, and in the dialogue set 104 against 69. None of this is a claim that the benchmarks are useless. It is a measurement of
-how much of a score on them is available to a reader who never sees the question.
+characters against 12, and in the dialogue set 104 against 69. In the summarization set the
+hallucinated side writes in ChatGPT's connective register ("additionally" 121 against 0,
+"furthermore" 53 against 0) while the reference highlights carry the newsroom's own boilerplate
+("click here" 6 against 328). HaluEval general is the one HaluEval set built the way this test
+should pass, one process annotated afterwards, and it fails moderately because the annotated
+hallucinations concentrate in mathematical tasks, so LaTeX fragments mark label-1: the surface
+reads the task type and the task type predicts the annotation. In RAGTruth the hallucinated responses are longer (median 851 against 673 characters) and the character probe reads the task: rating fragments from the data-to-text prompts ("3.0 o", "4.5 o") mark label-1 and news vocabulary from the summarisation prompts marks label-0, because data-to-text responses are hallucinated 69% of the time and QA responses 29%; a detector scored on RAGTruth should be read per task. None of this is a
+claim that the benchmarks are useless. It is a measurement of how much of a score on them is
+available to a reader who never sees the question. [AUDIT_DOSSIER.md](AUDIT_DOSSIER.md) carries the
+full feature tables for every row.
 
-Twelve of the seventeen rows are DISQUALIFIED and five of the twelve are ours:
+Fifteen of the twenty rows are DISQUALIFIED. Five of the DISQUALIFIED rows are ours:
 `verifydomain-claims-147`, `calibration-battery-v1`, `photon-entities`, `grounding-coordinate`
 (BORDERLINE) and `prominence-people-v1`, which v1.2 missed and the alphabet probes catch. Two rows
 sit at A* 1.000 and both are ours. A DISQUALIFIED verdict is a measurement about a corpus, not a
