@@ -8,3 +8,4 @@ audit_cache/
 *.egg-info/
 build/
 dist/
+dossier_cache/

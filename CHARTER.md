@@ -62,8 +62,8 @@ and no eulogies for tools that have a documented way back.
 - **`null`** — model-free surface floor. Measures whether a benchmark measures honesty or string
   shape before any score on it is trusted. Apache-2.0, 8-job CI, calibrated 4.0% pooled
   false-positive rate (v1.4: 10 constructions × 500 seeds, stratified null, worst row 4.8%).
-  12 of 17 audited benchmarks fail it; 5 of them are ours; two rows sit at A* 1.000 and both are
-  ours. *(figures updated in place 2026-10-24, twice; the rest of this section is as written.)*
+  15 of 20 audited benchmarks fail it; 5 of them are ours; two rows sit at A* 1.000 and both are
+  ours. *(figures updated in place 2026-10-24, three times; the rest of this section is as written.)*
 - **`gate`** — binds every published numeral to a registry id and fails closed. 0 unannotated
   numerals across 9 live pages.
 - **`verify`** — re-derives a signed verdict from one stdlib+crypto file with no call back to us.
@@ -263,6 +263,6 @@ null shuffled labels across strata, so a benchmark whose categories had differen
 false-fired 44% of the time on noise; that its seventh probe could never score; and that the
 family-wise correction was biased at the permutation floor. v1.4 fixes all three: the null is
 stratified, there are six probes, and the permutation count is raised to match the family. The
-grid now carries the constructions v1.3 was never tested on. Re-scored, 16 of 17 audit verdicts stand; our own `grounding-coordinate` goes from borderline PASS to borderline DISQUALIFIED, so the table reads 12 of 17, 5 of them ours. The figures in *The toolbox today* were updated in place a second time; the certificate is
+grid now carries the constructions v1.3 was never tested on. Re-scored, 16 of 17 audit verdicts stand; our own `grounding-coordinate` goes from borderline PASS to borderline DISQUALIFIED, so the table read 12 of 17, 5 of them ours; with HaluEval summarization, HaluEval general and RAGTruth added the same evening it reads 15 of 20, and `AUDIT_DOSSIER.md` now says what carries the label in every row. The figures in *The toolbox today* were updated in place a second time; the certificate is
 `nulltest_grid.json`. This paragraph exists because the charter says claims match evidence, and
 for part of one day they did not.
