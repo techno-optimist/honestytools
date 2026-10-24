@@ -19,7 +19,7 @@ python3 nulltest.py your_benchmark.json --json              # machine-readable
 python3 nulltest.py your_benchmark.json --jobs 8            # permutations in parallel
 python3 nulltest.py your_benchmark.json --explain           # which strings carry the label
 python3 nulltest.py qa_data.json --explode right_answer=0,hallucinated_answer=1   # QA rows
-python3 -m unittest discover -s tests                        # 51 tests, a few seconds
+python3 -m unittest discover -s tests                        # 53 tests, a few seconds
 ```
 
 (`pip install honesttools` is the plan, and `pyproject.toml` is ready for it, but the package is
@@ -307,7 +307,7 @@ still be contaminated, circular or mislabelled.
 |---|---|
 | `nulltest.py` | the instrument. `--selftest`, `--calibrate`, `--measure-power`, `--emit-grid` |
 | `nulltest.js` | the same instrument for a browser; `bash nulltest_parity.sh` (needs node) checks the two agree cell by cell. The browser engine scores flat two-class files and shows the WHY tables; `--explode` is command-line only |
-| `tests/` | 51 unit tests: every probe catches the artifact it was written for, the stratified null holds on unequal label rates, the loader refuses to guess and says what it dropped, parallel equals serial, receipts replay |
+| `tests/` | 53 unit tests: every probe catches the artifact it was written for, the stratified null holds on unequal label rates, the loader refuses to guess and says what it dropped, parallel equals serial, receipts replay |
 | `action.yml`, `nulltest_action.sh` | the GitHub Action; the script runs without GitHub too |
 | `CONTRIBUTING.md`, `CHANGELOG.md` | how to add a benchmark to the table, how to change the tool, what shipped and what did not |
 | `nulltest_audit.py` | scores a manifest of published benchmarks and writes the table behind [honesty.tools/audit](https://www.honesty.tools/audit) |
@@ -315,6 +315,7 @@ still be contaminated, circular or mislabelled.
 | `nulltest_audit_results.json` | the table. Every row carries the sha256 of the bytes scored |
 | `AUDIT_DOSSIER.md` | one section per row: what the corpus is, the full verdict, and the `--explain` feature tables that say what carries the label; rendered from the reports, never edited by hand |
 | `nulltest_dossier.py` | renders it: scores every manifest target with `--explain` (cached per row) and writes `AUDIT_DOSSIER.md` |
+| `nulltest_dossier_summary.json` | the dossier's per-row summary (probes, the worst explain cell's reading, dossier anchor, corpus sha256); `render_audit.py` reads it for the table's "what carries it" column and refuses to show a summary rendered from different corpus bytes than the row |
 | `nulltest_grid.json` | the false-positive certificate, sha256-stamped to the tool that produced it |
 | `batteries/` | our own nine batteries, all of them in the table |
 | `honest.py`, `contract.py` | the toolbox entry point (`honest null`, `honest check`, `honest audit`, `honest fpr`) and the four-method tool contract; see `CHARTER.md` |
@@ -369,7 +370,7 @@ benchmarks (TruthfulQA, HaluEval, RAGTruth), scored by answer or response alone:
 | HaluEval dialogue (`right_response` vs `hallucinated_response`) | 20000 | 6 of 6 cells separate | 0.849 | DISQUALIFIED |
 | HaluEval summarization (`right_summary` vs `hallucinated_summary`) | 20000 | 5 of 6 cells separate | 0.923 | DISQUALIFIED |
 | HaluEval general (ChatGPT responses, human-annotated `hallucination` yes/no) | 4507 | 5 of 6 cells separate | 0.690 | DISQUALIFIED |
-| RAGTruth responses (span-annotated; any span = hallucinated; seeded 8,000 of 17,790) | 8000 | 6 of 6 cells separate | 0.742 | DISQUALIFIED |
+| RAGTruth responses (span-annotated; any span = hallucinated; seeded 8,000 of 17,790; stratified by task type, joined from `source_info.jsonl`) | 8000 | 9 of 18 cells separate | 0.788 | DISQUALIFIED |
 
 `--explain` says why. In TruthfulQA the correct column carries hedges the incorrect column almost
 never does: "I have no comment" appears in 86 correct answers and 0 incorrect, "do not" in 83
@@ -382,7 +383,7 @@ hallucinated side writes in ChatGPT's connective register ("additionally" 121 ag
 ("click here" 6 against 328). HaluEval general is the one HaluEval set built the way this test
 should pass, one process annotated afterwards, and it fails moderately because the annotated
 hallucinations concentrate in mathematical tasks, so LaTeX fragments mark label-1: the surface
-reads the task type and the task type predicts the annotation. In RAGTruth the hallucinated responses are longer (median 851 against 673 characters) and the character probe reads the task: rating fragments from the data-to-text prompts ("3.0 o", "4.5 o") mark label-1 and news vocabulary from the summarisation prompts marks label-0, because data-to-text responses are hallucinated 69% of the time and QA responses 29%; a detector scored on RAGTruth should be read per task. None of this is a
+reads the task type and the task type predicts the annotation. In RAGTruth the task type is a second file, joined on `source_id` and used as the stratum, so the null shuffles labels within task and the 68% hallucination rate of data-to-text against 29% for QA and summarisation is conditioned on rather than scored. The verdict stands inside each task: within data-to-text, hallucinated overviews cite "Google" or "on Google" (67 and 61 responses against 0 faithful ones), a provenance the structured input never contains; within QA, hallucinated answers are longer (median 850 against 583 characters). An earlier scoring of this row the same evening, without the join, read A* 0.742 on one cell per probe; the joined row is recorded as a change in `audit_notes.json`, not overwritten. None of this is a
 claim that the benchmarks are useless. It is a measurement of how much of a score on them is
 available to a reader who never sees the question. [AUDIT_DOSSIER.md](AUDIT_DOSSIER.md) carries the
 full feature tables for every row.
@@ -392,10 +393,11 @@ Fifteen of the twenty rows are DISQUALIFIED. Five of the DISQUALIFIED rows are o
 (BORDERLINE) and `prominence-people-v1`, which v1.2 missed and the alphabet probes catch. Two rows
 sit at A* 1.000 and both are ours. A DISQUALIFIED verdict is a measurement about a corpus, not a
 finding of error or misconduct by its authors. Re-score the whole table with
-`python3 nulltest_audit.py --jobs 4` (about 29 minutes on our 4-core machine: 14 of them
-TruthfulQA at the 8,900 permutations its 222 cells need, most of the rest the two 20000-item
-HaluEval rows; the corpora are fetched from their own repositories and recorded as a URL and a
-sha256).
+`python3 nulltest_audit.py --jobs 4` (about an hour and a half on our 4-core machine with the
+dossier's `--explain`: 39 minutes of it HaluEval summarization, 30 RAGTruth at the 800 permutations
+its 18 cells need, 14 TruthfulQA at 8,900 permutations for 222 cells; the corpora are fetched from
+their own repositories and recorded as a URL and a sha256, and a companion file a row joins is
+recorded the same way).
 
 ## Licence
 

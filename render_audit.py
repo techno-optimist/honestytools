@@ -38,6 +38,10 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 RESULTS = os.path.join(HERE, "nulltest_audit_results.json")
 NOTES = os.path.join(HERE, "audit_notes.json")
+SUMMARY = os.path.join(HERE, "nulltest_dossier_summary.json")   # written by nulltest_dossier.py
+DOSSIER_URL = "https://github.com/techno-optimist/honestytools/blob/main/AUDIT_DOSSIER.md"
+THEAD = ("<thead><tr><th>benchmark</th><th>n</th><th>worst A*</th><th>adjusted p</th><th>verdict</th>"
+         "<th>what carries it</th><th>what the verdict can and cannot support</th></tr></thead>")
 PAGE = os.path.abspath(os.path.join(HERE, "..", "audit.html"))
 ALPHA = 0.05
 MARGIN_FACTOR = 3.0
@@ -65,8 +69,30 @@ def order_key(row):
     return (0 if ours else 1, 0 if dq else 1, w.get("adj_p") if w.get("adj_p") is not None else 9)
 
 
-def render_rows(rows, notes):
+def carries(r, summary):
+    """The 'what carries it' cell: the worst explain cell's reading, copied from the dossier's
+    summary file and linked to the row's dossier section. Shown only when the summary was rendered
+    from the same corpus bytes as this row (sha256 match), so a re-scored row cannot keep a stale
+    explanation; otherwise the cell says the dossier is behind."""
+    e = summary.get(r["name"])
+    verdict = r.get("verdict")
+    if r.get("status") != "scored":
+        return "—"
+    if not e or e.get("sha256") != r.get("sha256"):
+        return '<span class="nf-marg">dossier not yet rendered for this corpus version</span>' if e or summary else "—"
+    link = '<a href="%s#%s">dossier</a>' % (DOSSIER_URL, e["anchor"])
+    if verdict != "DISQUALIFIED":
+        return "no cell separates (%s)" % link
+    probes = ", ".join("<code>%s</code>" % html.escape(p) for p in e.get("probes", []))
+    phrase = html.escape(e.get("phrase", ""))
+    if len(phrase) > 170:
+        phrase = phrase[:167].rstrip() + "…"
+    return "%s<br>%s (%s)" % (probes, phrase, link)
+
+
+def render_rows(rows, notes, summary=None):
     out = []
+    summary = summary or {}
     for r in sorted(rows, key=order_key):
         name = r["name"]
         w = r.get("worst_cell") or {}
@@ -92,14 +118,15 @@ def render_rows(rows, notes):
 
         out.append(
             '<tr class="%s"><td><b>%s</b>%s</td><td class="num">%s</td><td class="num">%s</td>'
-            '<td class="num">%s%s</td><td class="%s">%s</td><td class="nf-note">%s</td></tr>'
+            '<td class="num">%s%s</td><td class="%s">%s</td><td class="nf-carry">%s</td>'
+            '<td class="nf-note">%s</td></tr>'
             % ("nf-ours" if ours else "",
                html.escape(name),
                ' <span class="nf-tag">ours</span>' if ours else "",
                r.get("n", "—"),
                w.get("astar", "—"),
                ("%.4g" % adj) if adj is not None else "—", (" " + sat) if sat else "",
-               vcls, html.escape(verdict), note))
+               vcls, html.escape(verdict), carries(r, summary), note))
     return out
 
 
@@ -117,9 +144,13 @@ def main(argv):
     names = {r["name"] for r in rows}
     orphan = [k for k in notes if not k.startswith("_") and k not in names]
 
-    body = "<tbody>" + "\n      ".join(render_rows(rows, notes)) + "</tbody>"
+    summary = {}
+    if os.path.exists(SUMMARY):
+        summary = {e["name"]: e for e in json.load(open(SUMMARY))["rows"]}
+    body = "<tbody>" + "\n      ".join(render_rows(rows, notes, summary)) + "</tbody>"
     page = open(PAGE, encoding="utf-8").read()
-    new = re.sub(r"<tbody>.*?</tbody>", lambda _: body, page, count=1, flags=re.S)
+    new = re.sub(r"<thead>.*?</thead>", lambda _: THEAD, page, count=1, flags=re.S)
+    new = re.sub(r"<tbody>.*?</tbody>", lambda _: body, new, count=1, flags=re.S)
     # The eyebrow must name the run it actually came from. Match the WHOLE eyebrow up to the
     # closing tag, not a literal "regenerated from" — the first render rewrote that phrase to
     # "generated from", after which the old anchored regex silently stopped matching and the row
@@ -158,6 +189,10 @@ def main(argv):
           % (PAGE, len(rows),
              sum(1 for r in rows if r["name"].startswith("aperture/")),
              sum(1 for r in rows if not r["name"].startswith("aperture/"))))
+    behind = [r["name"] for r in rows if r.get("status") == "scored" and summary
+              and (r["name"] not in summary or summary[r["name"]].get("sha256") != r.get("sha256"))]
+    if behind:
+        print("  DOSSIER BEHIND THE TABLE (re-run nulltest_dossier.py): %s" % ", ".join(behind))
     flagged = [r["name"] for r in rows
                if marginal(r.get("verdict"), (r.get("worst_cell") or {}).get("adj_p"))]
     if flagged:

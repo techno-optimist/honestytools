@@ -309,8 +309,18 @@
    "label_field": "labels",
    "label_nonempty": true,
    "label_kind": "hallucinated_vs_faithful_response",
-   "note": "17,790 responses from six models over 2,965 retrieval prompts (summarisation, QA, data-to-text), span-annotated by humans; a response with any annotated span is label-1 (7,664 of 17,790). A seeded subsample of 8,000 responses is scored (the full set at this text length takes hours), as one cell per probe: the task type lives in a second file this harness does not join, and the six models are mixed. The source passage and prompt are not scored.",
-   "max_items": 8000
+   "note": "17,790 responses from six models over 2,965 retrieval prompts (summarisation, QA, data-to-text), span-annotated by humans; a response with any annotated span is label-1 (7,664 of 17,790). A seeded subsample of 8,000 responses is scored (the full set at this text length takes hours). The task type lives in a second file, source_info.jsonl, joined on source_id and used as the stratum, so the null shuffles labels within task. The six models are mixed within each task. The source passage and prompt are not scored. Until 2026-10-24 (evening) this row was scored without the join, as one cell per probe; see audit_notes.json.",
+   "max_items": 8000,
+   "join": {
+    "url": "https://raw.githubusercontent.com/ParticleMedia/RAGTruth/main/dataset/source_info.jsonl",
+    "cache_as": "ragtruth_source_info.jsonl",
+    "format": "jsonl",
+    "key": "source_id",
+    "fields": [
+     "task_type"
+    ]
+   },
+   "stratum_field": "task_type"
   }
  ]
 }

@@ -178,6 +178,56 @@ def normalise(items, spec):
     return out
 
 
+def join_items(items, spec, cache_dir=None):
+    """Attach fields from a second file to each item, before `normalise`.
+
+    Some corpora keep the field you would stratify on in a companion file (RAGTruth keeps the
+    task type in source_info.jsonl, keyed by source_id, while the responses live in
+    response.jsonl). A manifest entry may carry
+        "join": {"url": ..., "cache_as": ..., "format": "jsonl", "key": "source_id",
+                 "fields": ["task_type"]}
+    and this copies the named fields from the companion row with the same key onto each item.
+    Items whose key has no companion row are left untouched, and the count of such items is
+    returned so the row can say so. Explicit, like the rest of the mapping: the table never
+    stratifies on a field a reader cannot see where it came from."""
+    j = spec.get("join")
+    if not j:
+        return items, 0
+    dest = os.path.join(cache_dir or CACHE, j.get("cache_as", "join_" + spec["name"].replace("/", "_")))
+    raw, _sha = fetch(j["url"], dest)
+    rows = parse_items(raw, {"format": j.get("format") or spec.get("format") or "json", "root": j.get("root")})
+    key = j["key"]
+    index = {}
+    for r in rows:
+        if isinstance(r, dict) and key in r:
+            index[str(r[key])] = r
+    fields = list(j["fields"])
+    unmatched = 0
+    for it in items:
+        src = index.get(str(it.get(key)))
+        if src is None:
+            unmatched += 1
+            continue
+        for f in fields:
+            if f in src:
+                it[f] = src[f]
+    return items, unmatched
+
+
+def load_items(spec, cache_dir=None):
+    """fetch -> parse -> join -> normalise -> subsample: the one pipeline every scorer uses, so the
+    audit table, the dossier and the command line cannot score different items."""
+    cache_dir = cache_dir or CACHE
+    dest = os.path.join(cache_dir, spec.get("cache_as", spec["name"].replace("/", "_")))
+    raw, sha = fetch(spec["url"], dest)
+    items = parse_items(raw, spec)
+    items, unmatched = join_items(items, spec, cache_dir)
+    items = normalise(items, spec)
+    n_total = len(items)
+    items = _subsample(items, spec)
+    return items, {"sha256": sha, "bytes": len(raw), "items_total": n_total, "join_unmatched": unmatched}
+
+
 def _subsample(items, spec):
     """Seeded, so two runs of the audit score the same items; recorded in the row."""
     m = spec.get("max_items")
@@ -213,6 +263,9 @@ def run_one(spec, n_perm=600, verbose=True, jobs=1):
     dest = os.path.join(CACHE, spec.get("cache_as", name.replace("/", "_")))
     try:
         raw, sha = fetch(spec["url"], dest)
+        if spec.get("join"):
+            j = spec["join"]
+            fetch(j["url"], os.path.join(CACHE, j.get("cache_as", "join_" + name.replace("/", "_"))))
     except Exception as e:
         row["status"] = "unretrievable"
         row["note"] = "fetch failed on this date: %s" % str(e)[:110]
@@ -220,14 +273,16 @@ def run_one(spec, n_perm=600, verbose=True, jobs=1):
     row["sha256"] = sha
     row["bytes"] = len(raw)
     try:
-        items = normalise(parse_items(raw, spec), spec)
+        items, info = load_items(spec)
     except Exception as e:
         row["status"] = "unparseable"
         row["note"] = str(e)[:140]
         return row
 
-    n_total = len(items)
-    items = _subsample(items, spec)
+    n_total = info["items_total"]
+    if spec.get("join"):
+        row["join"] = {"url": spec["join"]["url"], "key": spec["join"]["key"],
+                       "fields": spec["join"]["fields"], "unmatched": info["join_unmatched"]}
     ys = set(i["label"] for i in items)
     if len(items) < 30 or len(ys) < 2:
         row["status"] = "unscorable"

@@ -482,3 +482,54 @@ class V14(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class AuditJoin(unittest.TestCase):
+    """nulltest_audit.load_items: fetch -> parse -> join -> normalise -> subsample. The join copies
+    named fields from a companion file keyed on a shared id, so a corpus whose stratum lives in a
+    second file (RAGTruth's task type) can be stratified without hand-editing the corpus."""
+
+    def _harness(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("nulltest_audit", os.path.join(HERE, "..", "nulltest_audit.py"))
+        m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        return m
+
+    def _files(self, d):
+        resp = [{"id": i, "source_id": str(i % 3), "response": "text %d" % i, "labels": [1] if i % 2 else []}
+                for i in range(12)]
+        resp.append({"id": 99, "source_id": "orphan", "response": "no companion", "labels": []})
+        src = [{"source_id": str(k), "task_type": ["QA", "Summary", "Data2txt"][k], "source_info": "..."} for k in range(3)]
+        with open(os.path.join(d, "resp.jsonl"), "w") as f:
+            f.write("\n".join(json.dumps(r) for r in resp))
+        with open(os.path.join(d, "src.jsonl"), "w") as f:
+            f.write("\n".join(json.dumps(r) for r in src))
+        return {"name": "t/join", "url": "https://example.invalid/never-fetched", "cache_as": "resp.jsonl",
+                "format": "jsonl", "text_field": "response", "label_field": "labels", "label_nonempty": True,
+                "stratum_field": "task_type",
+                "join": {"url": "https://example.invalid/never-fetched-either", "cache_as": "src.jsonl",
+                         "format": "jsonl", "key": "source_id", "fields": ["task_type"]}}
+
+    def test_join_attaches_stratum_and_counts_unmatched(self):
+        A = self._harness()
+        with tempfile.TemporaryDirectory() as d:
+            spec = self._files(d)
+            items, info = A.load_items(spec, cache_dir=d)
+        self.assertEqual(info["items_total"], 13)
+        self.assertEqual(info["join_unmatched"], 1)
+        cats = sorted({i.get("category") for i in items if "category" in i})
+        self.assertEqual(cats, ["Data2txt", "QA", "Summary"])
+        orphan = [i for i in items if i["entity"] == "no companion"]
+        self.assertEqual(len(orphan), 1)
+        self.assertNotIn("category", orphan[0])      # unmatched rows are kept, unstratified, and counted
+        self.assertEqual(sum(i["label"] for i in items), 6)   # label_nonempty: a non-empty span list is label-1
+
+    def test_without_join_nothing_changes(self):
+        A = self._harness()
+        with tempfile.TemporaryDirectory() as d:
+            spec = self._files(d)
+            del spec["join"]
+            items, info = A.load_items(spec, cache_dir=d)
+        self.assertEqual(info["join_unmatched"], 0)
+        self.assertFalse(any("category" in i for i in items))   # task_type is not on the rows without the join
