@@ -4,6 +4,34 @@ Numbers quoted here come from the committed certificates (`nulltest_grid.json`,
 `nulltest_parity.json`, `nulltest_audit_results.json`), which carry the sha256 of the tool that
 produced them. What is listed under *not done* is as much a part of the record as what shipped.
 
+## 0.3.1 — 2026-10-24 — audit harness: joins, and "what carries it" on the table
+
+The instrument (`nulltest.py` 1.4) is unchanged; every certificate's tool sha256 still matches.
+
+**Audit harness**
+- `nulltest_audit.py` manifest entries may carry a `join`: a companion file, a key and the fields
+  to copy onto each item before the mapping, so a corpus whose stratum lives in a second file can
+  be stratified without editing the corpus. The row records the join URL, key, fields and how many
+  items had no companion row. `load_items(spec)` is now the one pipeline (fetch, parse, join,
+  normalise, subsample) that the table, the dossier and the tests all call.
+- `nulltest_dossier.py` also writes `nulltest_dossier_summary.json`: per row, the probes that
+  separate, the worst explain cell's reading and the dossier anchor, stamped with the corpus
+  sha256. `render_audit.py` reads it for a "what carries it" column on the served table, linked
+  into `AUDIT_DOSSIER.md`, and will not show a summary rendered from different corpus bytes than
+  the row it sits beside.
+
+**Evidence**
+- `ragtruth/responses` re-scored stratified by task type (joined from `source_info.jsonl`, 0 of
+  17,790 unmatched): DISQUALIFIED stands, worst cell words/Data2txt A* 0.788, adjusted p 0.0112
+  over 18 cells at 800 permutations, 9 of 18 cells separate. The earlier same-day scoring without
+  the join (lexicality/_all A* 0.742 over 6 cells) is kept in `audit_notes.json` as the record of
+  the change. The table still reads 15 of 20 DISQUALIFIED, 5 of them ours.
+- 53 tests (two new, for the join).
+
+**Not done**
+- Still no PyPI release, no outside user, and no GitHub Actions run has ever started on this
+  repository.
+
 ## 0.3.0 — 2026-10-24 — nulltest 1.4 (correction)
 
 A statistics review of 1.3 on the day it shipped found that the permutation null was not

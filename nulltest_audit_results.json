@@ -799,21 +799,21 @@
    "items_total": 17790,
    "explode": null,
    "split": null,
-   "cells": 6,
+   "cells": 18,
    "verdict": "DISQUALIFIED",
    "worst_cell": {
-    "astar": 0.742,
-    "adj_p": 0.0017,
-    "raw_p": 0.0017,
-    "null": "lexicality",
-    "stratum": "_all",
-    "n": 8000,
-    "threshold": 0.518,
+    "astar": 0.788,
+    "adj_p": 0.0112,
+    "raw_p": 0.0012,
+    "null": "words",
+    "stratum": "Data2txt",
+    "n": 2818,
+    "threshold": 0.524,
     "underpowered": false
    },
-   "headline": "worst cell A* = 0.742 in lexicality/_all (n=8000), family-adjusted p = 0.0017 over 6 cells",
-   "separating_cells": 6,
-   "astar": 0.742,
+   "headline": "worst cell A* = 0.788 in words/Data2txt (n=2818), family-adjusted p = 0.0112 over 18 cells",
+   "separating_cells": 9,
+   "astar": 0.788,
    "borderline": false,
    "probes": [
     "lexicality",
@@ -823,7 +823,30 @@
     "alpha_first",
     "alpha_last"
    ],
-   "strength": "moderate"
+   "strength": "substantial",
+   "join": {
+    "url": "https://raw.githubusercontent.com/ParticleMedia/RAGTruth/main/dataset/source_info.jsonl",
+    "key": "source_id",
+    "fields": [
+     "task_type"
+    ],
+    "unmatched": 0
+   },
+   "stratum_field": "task_type",
+   "label_rate_by_stratum": {
+    "Data2txt": {
+     "n": 2818,
+     "label1_rate": 0.683
+    },
+    "QA": {
+     "n": 2644,
+     "label1_rate": 0.289
+    },
+    "Summary": {
+     "n": 2538,
+     "label1_rate": 0.291
+    }
+   }
   }
  ]
 }

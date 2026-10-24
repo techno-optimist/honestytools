@@ -1,0 +1,363 @@
+{
+ "generated": "2026-10-24",
+ "version": "1.4",
+ "source": "nulltest_dossier.py",
+ "dossier": "AUDIT_DOSSIER.md",
+ "rows": [
+  {
+   "name": "aperture/verifydomain-claims-147",
+   "sha256": "ed742e764a2f2e14f71ae6f4da5e7a88b2870529e75a6646ed804b709aa54d14",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "apertureverifydomain-claims-147",
+   "probes": [
+    "alpha_first",
+    "lexicality",
+    "shape",
+    "words"
+   ],
+   "phrase": "claim: features over-represented in label-1: 'ment', 'men', 'ment␣', 'of␣t', 'f␣t'; in label-0: 's␣an', 'n␣ap', '␣an␣', '␣an␣a', 'an␣a'",
+   "worst_explain_cell": {
+    "probe": "lexicality",
+    "stratum": "claim",
+    "n": 147,
+    "astar": 0.967,
+    "adj_p": 0.0067
+   }
+  },
+  {
+   "name": "aperture/grounding-coordinate",
+   "sha256": "3e1dcce261a7f9dd7b4a09bcd0943f130b2a1ef7c3b71d7139e3f2f035dd9608",
+   "verdict": "DISQUALIFIED",
+   "borderline": true,
+   "anchor": "aperturegrounding-coordinate",
+   "probes": [
+    "length"
+   ],
+   "phrase": "eponymous_signs: label-1 items are longer: median 19 vs 15 characters",
+   "worst_explain_cell": {
+    "probe": "length",
+    "stratum": "eponymous_signs",
+    "n": 28,
+    "astar": 0.855,
+    "adj_p": 0.0366
+   }
+  },
+  {
+   "name": "aperture/photon-entities",
+   "sha256": "f97e87443535a036dcb2cd0240bbec6dec4025f8d618687d86f6cafc63a088cb",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "aperturephoton-entities",
+   "probes": [
+    "length",
+    "words"
+   ],
+   "phrase": "genes: features over-represented in label-1: 'regulator', 'domain regulator', 'domain', 'factor', 'binding factor'; in label-0: 'protein', '1', 'binding protein', 'rna'",
+   "worst_explain_cell": {
+    "probe": "words",
+    "stratum": "genes",
+    "n": 19,
+    "astar": 1.0,
+    "adj_p": 0.0133
+   }
+  },
+  {
+   "name": "aperture/prominence-people-v2",
+   "sha256": "d93ad2b7975d10f005507ef9c33dbc7afc1b0ce240a5d956bbad7d025b01bd91",
+   "verdict": "PASS",
+   "borderline": false,
+   "anchor": "apertureprominence-people-v2",
+   "probes": [],
+   "phrase": ""
+  },
+  {
+   "name": "aperture/prominence-people-v1",
+   "sha256": "fd881034ccd02904dfae2296435ebc651ccce63b8d408333f018550ceb154322",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "apertureprominence-people-v1",
+   "probes": [
+    "alpha_last"
+   ],
+   "phrase": "person: last-word initials: label-1 median 'g' vs label-0 median 'l' (alphabet position 7.0 vs 12.0)",
+   "worst_explain_cell": {
+    "probe": "alpha_last",
+    "stratum": "person",
+    "n": 168,
+    "astar": 0.661,
+    "adj_p": 0.01
+   }
+  },
+  {
+   "name": "aperture/postcutoff-trials-v1",
+   "sha256": "54a6dbd8569af454a81521f5916886e0abfb3c14e4f05bef9cb6ec2f9db236a3",
+   "verdict": "PASS",
+   "borderline": false,
+   "anchor": "aperturepostcutoff-trials-v1",
+   "probes": [],
+   "phrase": ""
+  },
+  {
+   "name": "bielik-entity-familiarity-v2",
+   "sha256": "02546469b730cb173e16dabba926e08e6c5094a734cdb7efb383d2c1322d8573",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "bielik-entity-familiarity-v2",
+   "probes": [
+    "lexicality",
+    "shape",
+    "words"
+   ],
+   "phrase": "cities: features over-represented in label-1: 'wilg', 'wil', 'ilg', '␣wy', '␣wilg'; in label-0: 'ski', 'e)␣', '␣(w', 'ie)', 'ie)␣'",
+   "worst_explain_cell": {
+    "probe": "lexicality",
+    "stratum": "cities",
+    "n": 360,
+    "astar": 0.953,
+    "adj_p": 0.016
+   }
+  },
+  {
+   "name": "hallucinated-references/gpt-4",
+   "sha256": "3fd32d5e9dc1657a381b94f88817b64b4a0e7bb007107f4db18b3206cdc7a22f",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "hallucinated-referencesgpt-4",
+   "probes": [
+    "length",
+    "lexicality",
+    "shape",
+    "words"
+   ],
+   "phrase": "features over-represented in label-1: 'rativ', 'orat', 'orati', 'ompar', 'ollab'; in label-0: '␣min', ':␣w', 'ensic', 'foren', 'nsic'",
+   "worst_explain_cell": {
+    "probe": "lexicality",
+    "stratum": "_all",
+    "n": 1000,
+    "astar": 0.836,
+    "adj_p": 0.005
+   }
+  },
+  {
+   "name": "geometry-of-truth/cities",
+   "sha256": "f2560a0c1758c69935b50125111b574b71896bb75930dd87b1d8c973c1fa086e",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "geometry-of-truthcities",
+   "probes": [
+    "lexicality",
+    "words"
+   ],
+   "phrase": "features over-represented in label-1: 'zania', 'zani', 'tanza', 'tanz', 'nzani'; in label-0: '␣jor', '␣jord', '␣kaz', '␣kaza', 'akhs'",
+   "worst_explain_cell": {
+    "probe": "lexicality",
+    "stratum": "_all",
+    "n": 1496,
+    "astar": 0.765,
+    "adj_p": 0.0083
+   }
+  },
+  {
+   "name": "geometry-of-truth/sp_en_trans",
+   "sha256": "9afa97c1b8af539a05f47655a80a5c7832c6fdb914885fd24cb4bcccbe2795b5",
+   "verdict": "PASS",
+   "borderline": false,
+   "anchor": "geometry-of-truthsp_en_trans",
+   "probes": [],
+   "phrase": ""
+  },
+  {
+   "name": "truth-is-universal/facts",
+   "sha256": "303ec926c2710a13a6166e204a24ea013bb2991b8761e2899739fddcb923aee1",
+   "verdict": "DISQUALIFIED",
+   "borderline": true,
+   "anchor": "truth-is-universalfacts",
+   "probes": [
+    "length"
+   ],
+   "phrase": "label-1 items are shorter: median 49 vs 54 characters",
+   "worst_explain_cell": {
+    "probe": "length",
+    "stratum": "_all",
+    "n": 561,
+    "astar": 0.565,
+    "adj_p": 0.0383
+   }
+  },
+  {
+   "name": "truthfulqa/answers",
+   "sha256": "b8d8ef1e12f98b4f2a9f47abc9765da0640b182b6c5d9b92f0c1a1f2f1e02e5c",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "truthfulqaanswers",
+   "probes": [
+    "alpha_first",
+    "alpha_last",
+    "length",
+    "lexicality",
+    "shape",
+    "words"
+   ],
+   "phrase": "Misconceptions: Topical: first-word initials: label-1 median 'y' vs label-0 median 'n' (alphabet position 25.0 vs 14.0)",
+   "worst_explain_cell": {
+    "probe": "alpha_first",
+    "stratum": "Misconceptions: Topical",
+    "n": 21,
+    "astar": 1.0,
+    "adj_p": 0.0171
+   }
+  },
+  {
+   "name": "halueval/qa",
+   "sha256": "89ed139ec5e3a3169a0b30e45569ac1283846f76f27f7bb5e908ee6deed57e88",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "haluevalqa",
+   "probes": [
+    "alpha_first",
+    "length",
+    "lexicality",
+    "shape",
+    "words"
+   ],
+   "phrase": "features over-represented in label-1: 'both␣', 's␣not', '␣is␣n', 'red␣i', 'e␣bot'; in label-0: '␣yes␣', '1967␣', '967␣', 'yes␣', '1940␣'",
+   "worst_explain_cell": {
+    "probe": "lexicality",
+    "stratum": "_all",
+    "n": 20000,
+    "astar": 0.979,
+    "adj_p": 0.0033
+   }
+  },
+  {
+   "name": "halueval/dialogue",
+   "sha256": "9c461df2691e4362837f66fceaaff3bc260453350c3a1cae76a5a52e5e338bfd",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "haluevaldialogue",
+   "probes": [
+    "alpha_first",
+    "alpha_last",
+    "length",
+    "lexicality",
+    "shape",
+    "words"
+   ],
+   "phrase": "features over-represented in label-1: 'a cookbook', 'emma watson', 'thrilling', 'recipes', 't star'; in label-0: 'very welcome', 're very', 'problem enjoy', 'thats', 'stared'",
+   "worst_explain_cell": {
+    "probe": "words",
+    "stratum": "_all",
+    "n": 20000,
+    "astar": 0.849,
+    "adj_p": 0.0033
+   }
+  },
+  {
+   "name": "aperture/knowledge-prominence-v1",
+   "sha256": "955778ddef49b4c6fd3e330e0704add067413475772b082c55816048f5e6aeea",
+   "verdict": "PASS",
+   "borderline": false,
+   "anchor": "apertureknowledge-prominence-v1",
+   "probes": [],
+   "phrase": ""
+  },
+  {
+   "name": "aperture/knowledge-prominence-v2",
+   "sha256": "be110cd56e479a469706f46f8dcd5fee4e8814d841c3e686cf30819796c5d49f",
+   "verdict": "PASS",
+   "borderline": false,
+   "anchor": "apertureknowledge-prominence-v2",
+   "probes": [],
+   "phrase": ""
+  },
+  {
+   "name": "aperture/calibration-battery-v1",
+   "sha256": "a31e55da3dc94f317f8e1886fcec47c6c60de4f9492e95c11aab1ed7297069d0",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "aperturecalibration-battery-v1",
+   "probes": [
+    "length",
+    "lexicality",
+    "shape",
+    "words"
+   ],
+   "phrase": "book: features over-represented in label-1: 'ss␣', 'ing', 'est', 'ass␣', 'ass'; in label-0: '␣an', '␣and', '␣and␣', 'and␣', 'and␣p'",
+   "worst_explain_cell": {
+    "probe": "lexicality",
+    "stratum": "book",
+    "n": 28,
+    "astar": 1.0,
+    "adj_p": 0.0107
+   }
+  },
+  {
+   "name": "halueval/summarization",
+   "sha256": "86d2561eeb4271eb50b6bd90c9fd38636d30eaf4e98b648045f221adb1c2c758",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "haluevalsummarization",
+   "probes": [
+    "alpha_first",
+    "length",
+    "lexicality",
+    "shape",
+    "words"
+   ],
+   "phrase": "features over-represented in label-1: 'additionally', 'stating that', 'resulting in', 'his impressive', 'furthermore'; in label-0: 'warning graphic', 'here for', 'latest manchester', 'latest liverpool', 'liverpool news'",
+   "worst_explain_cell": {
+    "probe": "words",
+    "stratum": "_all",
+    "n": 20000,
+    "astar": 0.923,
+    "adj_p": 0.0033
+   }
+  },
+  {
+   "name": "halueval/general",
+   "sha256": "73302cd97666b808fb94b5d8a4a2c924049c9484e609017a2f808c4a6d539219",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "haluevalgeneral",
+   "probes": [
+    "alpha_first",
+    "length",
+    "lexicality",
+    "shape",
+    "words"
+   ],
+   "phrase": "features over-represented in label-1: 'details or', 'frac', 'in generating', 'frac 1', 'assist users'; in label-0: 'comfort', 'the light', 'to navigate', 'tomatoes', 'monitor'",
+   "worst_explain_cell": {
+    "probe": "words",
+    "stratum": "_all",
+    "n": 4507,
+    "astar": 0.69,
+    "adj_p": 0.005
+   }
+  },
+  {
+   "name": "ragtruth/responses",
+   "sha256": "e4c2e4ac24fff676d8984cc61c35d791612fadc58015335d97dd632375e18073",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "ragtruthresponses",
+   "probes": [
+    "alpha_first",
+    "alpha_last",
+    "length",
+    "lexicality",
+    "shape",
+    "words"
+   ],
+   "phrase": "Data2txt: features over-represented in label-1: 'google', 'on google', 'atmosphere while', 'fi takeout', 'on 3'; in label-0: 'they expressed', '119', 'reasonable pricing', 'customer experiences', 'outs'",
+   "worst_explain_cell": {
+    "probe": "words",
+    "stratum": "Data2txt",
+    "n": 2818,
+    "astar": 0.788,
+    "adj_p": 0.0112
+   }
+  }
+ ]
+}

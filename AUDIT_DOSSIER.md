@@ -1,6 +1,6 @@
 # Audit dossier: what carries the label in each benchmark
 
-Generated 2026-10-24 from `nulltest_audit_manifest.json` and a full `nulltest` report with `--explain` for every row, by `render_dossier.py`; every number below is copied from those reports. The verdicts match `nulltest_audit_results.json`. A DISQUALIFIED verdict is a measurement about a corpus, not a finding of error or misconduct by its authors; the feature tables are in-sample descriptions for finding the artifact, and the verdict is held-out and permutation-calibrated. Read each row under its own n: A* is not comparable across rows of different size.
+Generated 2026-10-24 from `nulltest_audit_manifest.json` and a full `nulltest` report with `--explain` for every row, by `nulltest_dossier.py`; every number below is copied from those reports. The verdicts match `nulltest_audit_results.json`. A DISQUALIFIED verdict is a measurement about a corpus, not a finding of error or misconduct by its authors; the feature tables are in-sample descriptions for finding the artifact, and the verdict is held-out and permutation-calibrated. Read each row under its own n: A* is not comparable across rows of different size.
 
 Reproduce any row with `python3 nulltest_audit.py --only NAME`, or run the one-line command under it.
 
@@ -25,7 +25,7 @@ Reproduce any row with `python3 nulltest_audit.py --only NAME`, or run the one-l
 | aperture/calibration-battery-v1 | 168 | 34 | DISQUALIFIED | lexicality/book | 1.000 | 0.0107 | length, lexicality, shape, words |
 | halueval/summarization | 20000 | 6 | DISQUALIFIED | words/_all | 0.923 | 0.0033 | alpha_first, length, lexicality, shape, words |
 | halueval/general | 4507 | 6 | DISQUALIFIED | words/_all | 0.690 | 0.0050 | alpha_first, length, lexicality, shape, words |
-| ragtruth/responses | 8000 | 6 | DISQUALIFIED | lexicality/_all | 0.742 | 0.0017 | alpha_first, alpha_last, length, lexicality, shape, words |
+| ragtruth/responses | 8000 | 18 | DISQUALIFIED | words/Data2txt | 0.788 | 0.0112 | alpha_first, alpha_last, length, lexicality, shape, words |
 
 20 rows scored with nulltest 1.4; 15 DISQUALIFIED, 5 of them ours (of 9 of ours in the table).
 
@@ -474,31 +474,26 @@ Reproduce: `python3 nulltest_audit.py --only halueval/general`
 
 ## ragtruth/responses
 
-**What it is.** RAGTruth: A Hallucination Corpus for Developing Trustworthy Retrieval-Augmented Language Models (arXiv:2401.00396, ACL 2024) 17,790 responses from six models over 2,965 retrieval prompts (summarisation, QA, data-to-text), span-annotated by humans; a response with any annotated span is label-1 (7,664 of 17,790). A seeded subsample of 8,000 responses is scored (the full set at this text length takes hours), as one cell per probe: the task type lives in a second file this harness does not join, and the six models are mixed. The source passage and prompt are not scored.
+**What it is.** RAGTruth: A Hallucination Corpus for Developing Trustworthy Retrieval-Augmented Language Models (arXiv:2401.00396, ACL 2024) 17,790 responses from six models over 2,965 retrieval prompts (summarisation, QA, data-to-text), span-annotated by humans; a response with any annotated span is label-1 (7,664 of 17,790). A seeded subsample of 8,000 responses is scored (the full set at this text length takes hours). The task type lives in a second file, source_info.jsonl, joined on source_id and used as the stratum, so the null shuffles labels within task. The six models are mixed within each task. The source passage and prompt are not scored. Until 2026-10-24 (evening) this row was scored without the join, as one cell per probe; see audit_notes.json.
 
-**Scored.** 8000 items (4572 label-0, 3428 label-1; label-1 = hallucinated), 6 cells over 6 probes, 600 permutations. Source `https://raw.githubusercontent.com/ParticleMedia/RAGTruth/main/dataset/response.jsonl`, sha256 `e4c2e4ac24fff676d8984cc61c35d791612fadc58015335d97dd632375e18073`.
+**Scored.** 8000 items (4572 label-0, 3428 label-1; label-1 = hallucinated), 18 cells over 6 probes and 3 strata, 800 permutations (raised from 600 for the family size). Source `https://raw.githubusercontent.com/ParticleMedia/RAGTruth/main/dataset/response.jsonl`, sha256 `e4c2e4ac24fff676d8984cc61c35d791612fadc58015335d97dd632375e18073`.
 
-**Verdict: DISQUALIFIED.** worst cell A* = 0.742 in lexicality/_all (n=8000), family-adjusted p = 0.0017 over 6 cells 6 of 6 cells separate after correction. DISQUALIFIED at n=8000, which is above the measured detection threshold (~15% coverage) — the artifact is large enough to see at this size.
+**Label rate by stratum** ranges from 28.9% to 68.3%; the stratified null conditions on this, so it is described, not tested. A model can exploit it even though this test does not flag it.
+
+**Verdict: DISQUALIFIED.** worst cell A* = 0.788 in words/Data2txt (n=2818), family-adjusted p = 0.0112 over 18 cells 9 of 18 cells separate after correction. DISQUALIFIED at n=8000, which is above the measured detection threshold (~15% coverage) — the artifact is large enough to see at this size.
 
 **What carries the label.**
 
-- `lexicality`/_all (n=8000, A* 0.742, adj p 0.0017): features over-represented in label-1: '0␣rev', '3.0␣o', '4.5␣o', 'n␣3␣r', 'a:
-
-p'; in label-0: '␣dron', 'ctor'', 'drone', 'ayal', 'bbon␣'
-  - marks label-1: `0 rev` (33 vs 0), `3.0 o` (29 vs 0), `4.5 o` (21 vs 0), `n 3 r` (61 vs 1), `a:
-
-p` (20 vs 0)
-  - marks label-0: ` dron` (0 vs 20), `ctor'` (0 vs 20), `drone` (0 vs 20), `ayal` (0 vs 18), `bbon ` (0 vs 18)
-  - e.g. label-1 “Based on the provided structured data, here is an objective overview of Country ” / “Sure! Here's an objective overview of Romanti-Ezer based on the provided structu”; label-0 “Richard Dysart, a veteran actor known for his role as Leland McKenzie in the pop” / “James Best, the actor known for his role as Sheriff Rosco P. Coltrane on the hit”
-- `words`/_all (n=8000, A* 0.735, adj p 0.0017): features over-represented in label-1: 'atmosphere while', 'fi takeout', 'a validated', 'this cozy', 'staff one'; in label-0: 'one end', 'drone', 'this incident', 'urged to', 'option is'
-  - marks label-1: `atmosphere while` (41 vs 0), `fi takeout` (32 vs 0), `a validated` (24 vs 0), `this cozy` (23 vs 0), `staff one` (22 vs 0)
-  - marks label-0: `one end` (0 vs 22), `drone` (0 vs 20), `this incident` (0 vs 20), `urged to` (0 vs 17), `option is` (0 vs 16)
-  - e.g. label-1 “Here is an objective overview of the local business "El Torito" based on the pro” / “Based on the provided structured data, here is an objective overview of The Pres”; label-0 “To prepare a blood slide, first sterilize a needle with a flame. Place a clean g” / “To prepare a blood slide, you will need a clean glass slide and a drop of blood.”
-- `length`/_all (n=8000, A* 0.663, adj p 0.0017): label-1 items are longer: median 851 vs 673 characters
-- `shape`/_all (n=8000, A* 0.625, adj p 0.0017): features over-represented in label-1: 'S:U4', 'S:D1', 'S:U2', 'len12', 'S:P1'; in label-0: 'len10', 'S:U3', 'S:D3', 'S:D4', 'S:D2'
-  - marks label-1: `S:U4` (362 vs 311), `S:D1` (2279 vs 2192), `S:U2` (1168 vs 1273), `len12` (3428 vs 4469), `S:P1` (3428 vs 4571)
-  - marks label-0: `len10` (0 vs 102), `S:U3` (335 vs 626), `S:D3` (661 vs 1133), `S:D4` (566 vs 875), `S:D2` (1448 vs 1975)
-  - e.g. label-1 “The US military is working with Iraqi soldiers to fight against ISIS. Many forei” / “Sure! Here's an objective overview of Java Jones based on the provided structure”; label-0 “Tracking Flu in the USA: A Look at Texas” / “Unable to answer based on given passages.”
+- `words`/Data2txt (n=2818, A* 0.788, adj p 0.0112): features over-represented in label-1: 'google', 'on google', 'atmosphere while', 'fi takeout', 'on 3'; in label-0: 'they expressed', '119', 'reasonable pricing', 'customer experiences', 'outs'
+  - marks label-1: `google` (67 vs 0), `on google` (61 vs 0), `atmosphere while` (41 vs 0), `fi takeout` (32 vs 0), `on 3` (73 vs 1)
+  - marks label-0: `they expressed` (0 vs 10), `119` (0 vs 9), `reasonable pricing` (0 vs 9), `customer experiences` (0 vs 8), `outs` (0 vs 8)
+  - e.g. label-1 “Sure! Here's an objective overview of The Black Sheep based on the provided stru” / “Sure! Here's an objective overview of The Monarch based on the provided structur”; label-0 “Siam Elephant, a highly-rated Thai restaurant located at 509 Linden Ave, Carpint” / “Live Oak Cafe, located at 2220 Bath St, Santa Barbara, CA, is a versatile establ”
+- `lexicality`/Data2txt (n=2818, A* 0.730, adj p 0.0112): features over-represented in label-1: 'oogle', 'oogl', 'ogle', 'ogl', 'googl'; in label-0: '␣laud', 'laud', '␣119', '119', '␣119␣'
+  - marks label-1: `oogle` (67 vs 0), `oogl` (67 vs 0), `ogle` (67 vs 0), `ogl` (67 vs 0), `googl` (67 vs 0)
+  - marks label-0: ` laud` (0 vs 12), `laud` (0 vs 12), ` 119` (0 vs 10), `119` (0 vs 10), ` 119 ` (0 vs 9)
+  - e.g. label-1 “South Coast Deli-Carrillo is a deli located in Santa Barbara, California. The bu” / “Sure! Here's an objective overview of SB Sunshine Cafe based on the provided str”; label-0 “"Oliver's" is a well-regarded restaurant located at 1198 Coast Village Rd, Santa” / “I'a Fish Market and Cafe is a local business located at 38 W Victoria St, Ste 11”
+- `length`/QA (n=2644, A* 0.725, adj p 0.0112): label-1 items are longer: median 850 vs 583 characters
+- `alpha_first`/QA (n=2644, A* 0.618, adj p 0.0112): first-word initials: label-1 median 'b' vs label-0 median 'h' (alphabet position 2.0 vs 8.0)
 
 **What it means for a score on this benchmark.** alpha_first: the alphabet position of the first initial separates the classes; for entity lists this means one class was sampled from the top of a sorted list, for sentences it means the classes tend to open with different words (a template). alpha_last: the alphabet position of the last initial separates the classes; for entity lists one class was sampled from a list sorted by surname, for sentences the classes tend to end with different words. length: one class is systematically longer; a scorer that rewards or penalises length earns part of its score without reading. lexicality: the two classes are spelled or formatted differently at the character level (register, diacritics, punctuation, name shape). shape: digits, capitals or punctuation mark one class; usually an ID-shaped class against a word-shaped one. words: particular words or phrases mark one class; the two classes were written by different processes or from different templates. A model-based score on this corpus needs a surface control before the number is read as hallucination detection.
 

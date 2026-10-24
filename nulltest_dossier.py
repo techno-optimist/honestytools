@@ -31,10 +31,9 @@ for spec in man["targets"]:
     if name in cache or not spec.get("url"):
         continue
     t0 = time.time()
-    dest = os.path.join(A.CACHE, spec.get("cache_as", name.replace("/", "_")))
     try:
-        raw, sha = A.fetch(spec["url"], dest)
-        items = A._subsample(A.normalise(A.parse_items(raw, spec), spec), spec)
+        items, info = A.load_items(spec)
+        sha = info["sha256"]
     except Exception as e:
         cache[name] = {"error": str(e)[:200]}; json.dump(cache, open(cache_path, "w"), indent=1); log("%s: %s" % (name, e)); continue
     has_stratum = any("category" in i for i in items)
@@ -66,7 +65,7 @@ def pct(x): return "%.1f%%" % (100 * x)
 out = []
 out.append("# Audit dossier: what carries the label in each benchmark\n")
 out.append("Generated %s from `nulltest_audit_manifest.json` and a full `nulltest` report with `--explain` for every "
-           "row, by `render_dossier.py`; every number below is copied from those reports. The verdicts match "
+           "row, by `nulltest_dossier.py`; every number below is copied from those reports. The verdicts match "
            "`nulltest_audit_results.json`. A DISQUALIFIED verdict is a measurement about a corpus, not a finding of error "
            "or misconduct by its authors; the feature tables are in-sample descriptions for finding the artifact, and the "
            "verdict is held-out and permutation-calibrated. Read each row under its own n: A* is not comparable across "
@@ -143,3 +142,29 @@ for t, r in rows:
     out.append("Reproduce: `%s`\n" % cmd)
 open(os.path.join(HERE, "AUDIT_DOSSIER.md"), "w").write("\n".join(out))
 print("wrote AUDIT_DOSSIER.md: %d rows" % len(rows))
+
+
+# ---- machine-readable summary, so the audit table can carry a "what carries it" column that is
+# copied from the same reports as the dossier, with a link into the matching dossier section.
+def anchor(name):
+    """GitHub's heading slug: lower-case, punctuation other than hyphens dropped, spaces to hyphens."""
+    import re
+    return re.sub(r"[^a-z0-9 _-]", "", name.lower()).replace(" ", "-")
+
+summary = {"generated": datetime.date.today().isoformat(), "version": version, "source": "nulltest_dossier.py",
+           "dossier": "AUDIT_DOSSIER.md", "rows": []}
+for t, r in rows:
+    cells = r["explain"]["cells"]
+    c = cells[0] if cells else None
+    entry = {"name": t["name"], "sha256": r["sha256"], "verdict": r["verdict"], "borderline": bool(r.get("borderline")),
+             "anchor": anchor(t["name"]), "probes": [], "phrase": ""}
+    if r["verdict"] == "DISQUALIFIED" and c:
+        entry["probes"] = sorted({x["probe"] for x in cells})
+        entry["worst_explain_cell"] = {k: c[k] for k in ("probe", "stratum", "n", "astar", "adj_p")}
+        phrase = c.get("reading", "")
+        if c["stratum"] != "_all":
+            phrase = "%s: %s" % (c["stratum"], phrase)
+        entry["phrase"] = phrase
+    summary["rows"].append(entry)
+json.dump(summary, open(os.path.join(HERE, "nulltest_dossier_summary.json"), "w"), indent=1, ensure_ascii=False)
+print("wrote nulltest_dossier_summary.json: %d rows" % len(summary["rows"]))
