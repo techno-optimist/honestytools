@@ -40,6 +40,10 @@ RESULTS = os.path.join(HERE, "nulltest_audit_results.json")
 NOTES = os.path.join(HERE, "audit_notes.json")
 SUMMARY = os.path.join(HERE, "nulltest_dossier_summary.json")   # written by nulltest_dossier.py
 BASELINE = os.path.join(HERE, "surface_baseline_results.json")   # written by surface_baseline.py --audit
+MATCHED = [os.path.join(HERE, "matched", "surface_match_results.json"),   # written by surface_match.py --audit
+           os.path.join(HERE, "surface_match_results.json")]
+MATCH_LABEL = {"repaired": "REPAIRED by matching", "not_repaired": "not repairable by matching",
+               "too_small": "too small to verify after matching", "not_needed": "nothing to repair"}
 DOSSIER_URL = "https://github.com/techno-optimist/honestytools/blob/main/AUDIT_DOSSIER.md"
 THEAD = ("<thead><tr><th>benchmark</th><th>n</th><th>worst A*</th><th>adjusted p</th><th>verdict</th>"
          "<th>what carries it</th><th>surface baseline</th><th>what the verdict can and cannot support</th></tr></thead>")
@@ -113,10 +117,23 @@ def baseline_cell(r, base):
     return line
 
 
-def render_rows(rows, notes, summary=None, base=None):
+def match_line(r, matched):
+    """One line from the repair certificate: whether a surface-matched subset survives held-out
+    verification, and how much of the set it keeps. Sha-matched to the row like the other cells."""
+    m = matched.get(r["name"])
+    if not m or m.get("sha256") != r.get("sha256"):
+        return ""
+    txt = "%s: %d of %d kept" % (MATCH_LABEL.get(m["status"], m["status"]), m["n_kept"], m["n_before"])
+    if m["status"] == "not_repaired" and m.get("after_in_sample") == "PASS":
+        txt += ", passes in-sample but fails held-out"
+    return "<br><span class=\"nf-match\">%s</span>" % html.escape(txt)
+
+
+def render_rows(rows, notes, summary=None, base=None, matched=None):
     out = []
     summary = summary or {}
     base = base or {}
+    matched = matched or {}
     for r in sorted(rows, key=order_key):
         name = r["name"]
         w = r.get("worst_cell") or {}
@@ -150,7 +167,7 @@ def render_rows(rows, notes, summary=None, base=None):
                r.get("n", "—"),
                w.get("astar", "—"),
                ("%.4g" % adj) if adj is not None else "—", (" " + sat) if sat else "",
-               vcls, html.escape(verdict), carries(r, summary), baseline_cell(r, base), note))
+               vcls, html.escape(verdict), carries(r, summary), baseline_cell(r, base) + match_line(r, matched), note))
     return out
 
 
@@ -174,7 +191,12 @@ def main(argv):
     base = {}
     if os.path.exists(BASELINE):
         base = {e["name"]: e for e in json.load(open(BASELINE))["rows"]}
-    body = "<tbody>" + "\n      ".join(render_rows(rows, notes, summary, base)) + "</tbody>"
+    matched = {}
+    for mp in MATCHED:
+        if os.path.exists(mp):
+            matched = {e["name"]: e for e in json.load(open(mp))["rows"]}
+            break
+    body = "<tbody>" + "\n      ".join(render_rows(rows, notes, summary, base, matched)) + "</tbody>"
     page = open(PAGE, encoding="utf-8").read()
     new = re.sub(r"<thead>.*?</thead>", lambda _: THEAD, page, count=1, flags=re.S)
     new = re.sub(r"<tbody>.*?</tbody>", lambda _: body, new, count=1, flags=re.S)

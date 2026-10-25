@@ -1,0 +1,151 @@
+{
+ "items": [
+  {
+   "entity": "The Odyssey",
+   "label": 0,
+   "category": "book"
+  },
+  {
+   "entity": "The Almandine Gate",
+   "label": 1,
+   "category": "book"
+  },
+  {
+   "entity": "The Scream",
+   "label": 0,
+   "category": "painting"
+  },
+  {
+   "entity": "The Starry Night",
+   "label": 0,
+   "category": "painting"
+  },
+  {
+   "entity": "The Threnody Bridge",
+   "label": 1,
+   "category": "painting"
+  },
+  {
+   "entity": "The Threnody Bridge",
+   "label": 1,
+   "category": "painting"
+  }
+ ],
+ "surface_match": {
+  "tool": "surface_match",
+  "version": "0.1",
+  "nulltest_version": "1.4",
+  "tool_sha256": "80b87c8d5cb6172b5c1241161f115b9a2268ae0c1e8f9c03e04b27be051c4676",
+  "nulltest_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+  "surface_baseline_sha256": "8b27ce5a760612348ba29a47ff4a7fe3ca0efa31f21122ba0f772dbfc2802e2d",
+  "generated": "2026-10-25",
+  "seed": 20260724,
+  "n_perm_requested": 600,
+  "text_key": "entity",
+  "label_key": "label",
+  "stratum_key": "category",
+  "n_before": 168,
+  "n_kept": 6,
+  "kept_fraction": 0.036,
+  "kept_by_stratum": {
+   "book": {
+    "n": 2,
+    "label1": 1
+   },
+   "painting": {
+    "n": 4,
+    "label1": 2
+   }
+  },
+  "rounds": 1,
+  "trace": [
+   {
+    "round": 1,
+    "n": 168,
+    "surface_auroc_oof": 0.986
+   }
+  ],
+  "before": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "n": 168,
+   "cells": 34,
+   "worst_cell": {
+    "astar": 1.0,
+    "adj_p": 0.0107,
+    "raw_p": 0.0007,
+    "null": "lexicality",
+    "stratum": "book",
+    "n": 28,
+    "threshold": 0.776,
+    "underpowered": false
+   },
+   "n_perm": 1400,
+   "separating_cells": 15,
+   "baseline": {
+    "accuracy": 0.9226,
+    "accuracy_ci95": [
+     0.8713,
+     0.9582
+    ],
+    "majority_accuracy": 0.5,
+    "balanced_accuracy": 0.9226,
+    "auroc": 0.9803
+   }
+  },
+  "held_out": [
+   {
+    "learned_on_half": 1,
+    "applied_to_half": 2,
+    "rounds": 1,
+    "trace": [
+     {
+      "round": 1,
+      "n": 84,
+      "surface_auroc_oof": 0.931
+     }
+    ],
+    "n_half": 84,
+    "n_kept": 4,
+    "after": {
+     "verdict": "NOT_SCORABLE",
+     "n": 4,
+     "note": "fewer than 30 items or one class"
+    }
+   },
+   {
+    "learned_on_half": 2,
+    "applied_to_half": 1,
+    "rounds": 1,
+    "trace": [
+     {
+      "round": 1,
+      "n": 84,
+      "surface_auroc_oof": 0.961
+     }
+    ],
+    "n_half": 84,
+    "n_kept": 2,
+    "after": {
+     "verdict": "NOT_SCORABLE",
+     "n": 2,
+     "note": "fewer than 30 items or one class"
+    }
+   }
+  ],
+  "after_in_sample": {
+   "verdict": "NOT_SCORABLE",
+   "n": 6,
+   "note": "fewer than 30 items or one class"
+  },
+  "repaired": false,
+  "status": "too_small",
+  "reading": "TOO SMALL TO VERIFY: matching left fewer than 30 items (or one class) in a held-out half, so nothing can be said about the matched set. Most of this set IS its surface; it needs new items, not a subset.",
+  "input": {
+   "name": "aperture/calibration-battery-v1",
+   "url": "https://www.honesty.tools/verifier/batteries/calibration-battery-v1.json",
+   "sha256": "a31e55da3dc94f317f8e1886fcec47c6c60de4f9492e95c11aab1ed7297069d0",
+   "items_total": 168
+  }
+ }
+}

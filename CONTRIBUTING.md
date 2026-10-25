@@ -50,7 +50,7 @@ also worth a conversation.
 ## 3. Change the tool
 
 ```bash
-python3 -m unittest discover -s tests -v          # 58 stdlib tests, a few seconds
+python3 -m unittest discover -s tests -v          # 63 stdlib tests, a few seconds
 bash nulltest_parity.sh                           # browser engine == CLI, cell by cell
 python3 nulltest.py --selftest --seeds 25 --n-perm 200
 ```

@@ -19,7 +19,7 @@ python3 nulltest.py your_benchmark.json --json              # machine-readable
 python3 nulltest.py your_benchmark.json --jobs 8            # permutations in parallel
 python3 nulltest.py your_benchmark.json --explain           # which strings carry the label
 python3 nulltest.py qa_data.json --explode right_answer=0,hallucinated_answer=1   # QA rows
-python3 -m unittest discover -s tests                        # 60 tests, a few seconds
+python3 -m unittest discover -s tests                        # 63 tests, a few seconds
 ```
 
 (`pip install honesttools` is the plan, and `pyproject.toml` is ready for it, but the package is
@@ -36,10 +36,11 @@ python3 -m unittest discover -s tests                        # 60 tests, a few s
 | publish a verdict someone else can check | `--json` writes a receipt with the file's sha256 and the tool's; `--check RECEIPT` replays it |
 | see how published benchmarks fare | the [audit table](https://www.honesty.tools/audit), 24 rows, every one with a URL and a sha256 |
 | know what carries the label in each of them | [AUDIT_DOSSIER.md](AUDIT_DOSSIER.md): every row's full report and `--explain` feature tables, generated, never typed |
+| repair a benchmark the surface can score | `python3 surface_match.py FILE --out matched.json`: keeps a surface-matched subset, verified on held-out halves; see [repair](#repair-keep-the-items-the-surface-cannot-tell-apart) |
 | know the number a detector has to beat | `python3 surface_baseline.py FILE`: held-out accuracy of the six probes together, against the majority rate; see [the number to beat](#the-number-to-beat) |
 | put your benchmark in that table | one manifest entry; see [CONTRIBUTING](CONTRIBUTING.md) or open an [issue](https://github.com/techno-optimist/honestytools/issues/new/choose) |
 | know what the tool cannot see | the measured [false-positive](#what-the-tool-says-about-itself) and power tables, and the [limits](#known-limits--read-these-before-quoting-a-verdict) |
-| one entry point for the toolbox | `honest null FILE`, `honest baseline FILE`, `honest check RECEIPT FILE`, `honest audit`, `honest fpr null` |
+| one entry point for the toolbox | `honest null FILE`, `honest baseline FILE`, `honest match FILE --out F`, `honest check RECEIPT FILE`, `honest audit`, `honest fpr null` |
 
 ## Who this is for
 
@@ -270,8 +271,9 @@ every score on it is that. What to do, by what the WHY section names:
 - **The label rate differs by category** (the `label-1 rate by stratum` lines): the test conditions
   on this and does not flag it, but a model can exploit it. Rebalance labels within each category.
 
-Then re-run and read the POWER line: a PASS at n=156 says only that no artifact covering 60% of a
-class survived. Fixing the surface does not fix provenance; a benchmark can pass this test and
+Or let `surface_match.py` do the matching for you and verify it held-out; see
+[repair](#repair-keep-the-items-the-surface-cannot-tell-apart). Then re-run and read the POWER line: a
+PASS at n=156 says only that no artifact covering 60% of a class survived. Fixing the surface does not fix provenance; a benchmark can pass this test and
 still be contaminated, circular or mislabelled.
 
 ## Known limits — read these before quoting a verdict
@@ -308,7 +310,7 @@ still be contaminated, circular or mislabelled.
 |---|---|
 | `nulltest.py` | the instrument. `--selftest`, `--calibrate`, `--measure-power`, `--emit-grid` |
 | `nulltest.js` | the same instrument for a browser; `bash nulltest_parity.sh` (needs node) checks the two agree cell by cell. The browser engine scores flat two-class files and shows the WHY tables; `--explode` is command-line only |
-| `tests/` | 58 unit tests: every probe catches the artifact it was written for, the stratified null holds on unequal label rates, the loader refuses to guess and says what it dropped, parallel equals serial, receipts replay |
+| `tests/` | 63 unit tests: every probe catches the artifact it was written for, the stratified null holds on unequal label rates, the loader refuses to guess and says what it dropped, parallel equals serial, receipts replay |
 | `action.yml`, `nulltest_action.sh` | the GitHub Action; the script runs without GitHub too |
 | `CONTRIBUTING.md`, `CHANGELOG.md` | how to add a benchmark to the table, how to change the tool, what shipped and what did not |
 | `nulltest_audit.py` | scores a manifest of published benchmarks and writes the table behind [honesty.tools/audit](https://www.honesty.tools/audit) |
@@ -317,6 +319,8 @@ still be contaminated, circular or mislabelled.
 | `AUDIT_DOSSIER.md` | one section per row: what the corpus is, the full verdict, and the `--explain` feature tables that say what carries the label; rendered from the reports, never edited by hand |
 | `nulltest_dossier.py` | renders it: scores every manifest target with `--explain` (cached per row) and writes `AUDIT_DOSSIER.md` |
 | `surface_baseline.py` | the number to beat: nested five-fold held-out accuracy of the six probes combined by a ridge logistic regression, with a Clopper–Pearson interval, against the majority rate; `--audit` scores every manifest target, `--selftest` reports what it says on noise |
+| `surface_match.py` | repair: one-to-one caliper matching on the surface logit inside each stratum, rule learned on one half and applied to the other both ways, `nulltest` and the baseline re-run on the held-out halves; writes the kept items plus a receipt; `--audit` repairs every DISQUALIFIED manifest row |
+| `matched/surface_match_results.json` | the repair certificate for the audit table: per DISQUALIFIED row, how many items survive matching and whether the held-out halves pass; `matched/aperture_*.json` are the matched subsets of our own batteries (third-party subsets are not redistributed) |
 | `surface_baseline_results.json` | that number for every audited benchmark, stamped with the corpus sha256 and the shas of `surface_baseline.py` and `nulltest.py`; `render_audit.py` shows it on the table only when the shas match the row |
 | `surface_baseline_null.json` | the baseline's own null: its gain over the majority rate on no-signal batteries at four sizes (slightly below zero at small n, the protocol's pessimism); gated in CI against the tool's sha |
 | `nulltest_dossier_summary.json` | the dossier's per-row summary (probes, the worst explain cell's reading, dossier anchor, corpus sha256); `render_audit.py` reads it for the table's "what carries it" column and refuses to show a summary rendered from different corpus bytes than the row |
@@ -360,6 +364,73 @@ of 222 cells separate, was 77) because ties at the permutation floor are now bro
 size rather than by order of discovery, so a large cell wins over a small cell at A* 1.000; and
 `truth-is-universal/facts` is now marked BORDERLINE (adjusted p 0.038). The table therefore reads
 12 of 17 DISQUALIFIED, 5 of the 12 ours; two rows sit at A* 1.000 and both are ours. Three rows added later the same evening (HaluEval summarization, HaluEval general, RAGTruth) make it 15 of 20. Four rows from Apollo Research's deception-probe datasets, added 2026-10-25, make it 19 of 24; one of them, sandbagging, also sits at A* 1.000, so three rows do and two are ours.
+
+## Repair: keep the items the surface cannot tell apart
+
+A DISQUALIFIED verdict tells an author their set is scorable by a regular expression. `surface_match.py`
+gives them a set that is not, when one exists inside the original:
+
+```
+python3 surface_match.py FILE --out matched.json [--text-key K --label-key K --stratum-key K]   # or: honest match
+python3 surface_match.py --audit --out-dir matched/            # every DISQUALIFIED row of the audit table
+```
+
+It fits the surface classifier (the baseline's combiner) out-of-fold, then pairs every item of the
+smaller class with its nearest unmatched item of the other class on the surface logit, inside its
+stratum and within a caliper of a fifth of a standard deviation, and drops whatever finds no twin.
+It repeats until the combiner can no longer separate the kept items, and writes them out unchanged,
+with a receipt.
+
+**The receipt has two numbers because one would lie.** A subset tested on the same items it was
+selected with is flattered: you removed the items that made the probes fire. So the matching *rule*
+(the fitted models and calipers, not the item choices) is learned on one half of the data and
+applied to the other, both ways, and `nulltest` and the baseline are re-run on those held-out
+halves. That is what the procedure achieves on items it never selected on. The full-data subset is
+what you ship; its own in-sample verdict is printed beside the held-out ones and labelled
+optimistic. The set counts as REPAIRED only when both held-out halves and the full matched set pass.
+
+Every DISQUALIFIED row of the audit table, from `matched/surface_match_results.json`:
+
+| benchmark | items | kept | held-out half 1 → 2 | held-out half 2 → 1 | full matched set (in-sample) | result |
+|---|---|---|---|---|---|---|
+| aperture/verifydomain-claims-147 | 147 | 26 (18%) | NOT_SCORABLE | NOT_SCORABLE | NOT_SCORABLE | **too small to verify** |
+| aperture/grounding-coordinate | 162 | 162 (100%) | DISQUALIFIED | PASS | DISQUALIFIED | **not repaired** |
+| aperture/photon-entities | 103 | 30 (29%) | NOT_SCORABLE | NOT_SCORABLE | DISQUALIFIED | **not repaired** |
+| aperture/prominence-people-v1 | 168 | 76 (45%) | PASS | PASS | PASS | **REPAIRED** |
+| bielik-entity-familiarity-v2 | 1440 | 172 (12%) | DISQUALIFIED | PASS | PASS | **not repaired** |
+| hallucinated-references/gpt-4 | 1000 | 452 (45%) | PASS | DISQUALIFIED | PASS | **not repaired** |
+| geometry-of-truth/cities | 1496 | 512 (34%) | PASS | PASS | PASS | **REPAIRED** |
+| truth-is-universal/facts | 561 | 442 (79%) | PASS | PASS | PASS | **REPAIRED** |
+| truthfulqa/answers | 6028 | 2446 (41%) | DISQUALIFIED | DISQUALIFIED | DISQUALIFIED | **not repaired** |
+| halueval/qa | 20000 | 1346 (7%) | PASS | DISQUALIFIED | PASS | **not repaired** |
+| halueval/dialogue | 20000 | 8378 (42%) | DISQUALIFIED | DISQUALIFIED | PASS | **not repaired** |
+| aperture/calibration-battery-v1 | 168 | 6 (4%) | NOT_SCORABLE | NOT_SCORABLE | NOT_SCORABLE | **too small to verify** |
+| halueval/summarization | 20000 | 2732 (14%) | DISQUALIFIED | DISQUALIFIED | PASS | **not repaired** |
+| halueval/general | 4507 | 1462 (32%) | DISQUALIFIED | PASS | PASS | **not repaired** |
+| ragtruth/responses | 8000 | 3108 (39%) | PASS | DISQUALIFIED | PASS | **not repaired** |
+| apollo/roleplaying | 287 | 142 (50%) | PASS | PASS | PASS | **REPAIRED** |
+| apollo/insider-trading-report | 1005 | 8 (1%) | NOT_SCORABLE | NOT_SCORABLE | NOT_SCORABLE | **too small to verify** |
+| apollo/insider-trading-doubledown | 655 | 26 (4%) | NOT_SCORABLE | NOT_SCORABLE | NOT_SCORABLE | **too small to verify** |
+| apollo/sandbagging | 932 | 10 (1%) | NOT_SCORABLE | NOT_SCORABLE | NOT_SCORABLE | **too small to verify** |
+
+Four sets are repairable: `prominence-people-v1` keeps 76 of 168 items and the alphabet artifact
+goes with the rest; `geometry-of-truth/cities` keeps 512 of 1,496; `truth-is-universal/facts` keeps
+442 of 561; Apollo's `roleplaying` keeps 142 of 287. Seven rows show the trap this receipt exists for: HaluEval QA, dialogue and
+summarization, HaluEval general, RAGTruth, Bielik and the hallucinated-references set each produce a
+full matched set that **passes in-sample and fails held-out**. Had the tool reported only the first
+number, all seven would have been called fixed. Two of ours (`verifydomain-claims-147`,
+`calibration-battery-v1`) are almost entirely surface: matching leaves 26 and 6 items. They need new
+items, not a subset. `grounding-coordinate` keeps everything and stays DISQUALIFIED: its artifact
+is one cell in a 28-item stratum, which the pooled surface classifier does not see, so matching on
+it removes nothing. TruthfulQA's 2,446 matched reference answers still fail both halves. Of Apollo's four deception-probe sets, added to the table the same day: `roleplaying` repaired (142 of 287 kept); `insider-trading-report` too small to verify (8 of 1005 kept); `insider-trading-doubledown` too small to verify (26 of 655 kept); `sandbagging` too small to verify (10 of 932 kept).
+
+What this cannot do: add items; see an artifact the six probes do not; or leave what the set
+measures unchanged. A matched set keeps the surface-ambiguous items and measures something narrower
+than the original, and must be cited as surface-matched. A clean held-out half also fails one time
+in twenty by chance, because `nulltest` is a 5% test, so a borderline held-out DISQUALIFIED should
+be read with its adjusted p. The matched subsets of our own batteries are committed under
+`matched/`; third-party subsets are not redistributed, and the one-line command above regenerates
+them from the public corpora.
 
 ## The number to beat
 

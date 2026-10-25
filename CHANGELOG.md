@@ -4,6 +4,38 @@ Numbers quoted here come from the committed certificates (`nulltest_grid.json`,
 `nulltest_parity.json`, `nulltest_audit_results.json`), which carry the sha256 of the tool that
 produced them. What is listed under *not done* is as much a part of the record as what shipped.
 
+## 0.5.0 — 2026-10-25 — surface_match: repair, verified held-out
+
+`nulltest.py` 1.4 and `surface_baseline.py` are unchanged; their certificates still match.
+
+**Instrument**
+- `surface_match.py` (also `honest match FILE --out F`): keeps a surface-matched subset of a
+  DISQUALIFIED set by one-to-one caliper matching on the surface logit inside each stratum,
+  repeated until the surface classifier cannot separate the kept items. The matching rule is learned
+  on one half and applied to the other, both ways; `nulltest` and the baseline are re-run on the
+  held-out halves, and the set counts as REPAIRED only when both halves and the full matched set
+  pass. Four statuses: repaired, not repaired, too small to verify, nothing to repair.
+- Stop rule uses the SIGNED out-of-fold AUROC of the combiner, because a combiner fitted to noise
+  generalises below one half and a rectified AUROC would read that as signal and keep matching.
+- A first version balanced classes inside quantile bins by random thinning, then by nearest
+  probability; both left residual separation or introduced it. Caliper matching replaced them.
+
+**Evidence** (`matched/surface_match_results.json`, 19 rows)
+- Repaired: prominence-people-v1 (76 of 168), geometry-of-truth/cities (512 of 1,496),
+  truth-is-universal/facts (442 of 561), apollo/roleplaying (142 of 287).
+- Seven rows pass in-sample and fail held-out (all four HaluEval sets, RAGTruth, Bielik,
+  hallucinated-references): the double-dipping the two-number receipt exists to expose.
+- verifydomain-claims-147 and calibration-battery-v1 are almost entirely surface (26 and 6 items
+  survive); grounding-coordinate keeps all 162 and stays DISQUALIFIED because its artifact is one
+  cell in a 28-item stratum the pooled classifier does not see; TruthfulQA fails both halves.
+  Apollo's insider-trading-report, insider-trading-doubledown and sandbagging are almost entirely
+  surface: 8, 26 and 10 items survive matching.
+- Matched subsets of our own batteries committed under `matched/`; third-party subsets not
+  redistributed. 63 tests after the merge with 0.4.1.
+
+**Not done**
+- No browser port of the baseline or the repair. Still no PyPI release, no outside user, no
+  Actions run.
 ## 0.4.1 — 2026-10-25 — deception-probe datasets in the audit
 
 `nulltest.py` 1.4 and `surface_baseline.py` are unchanged; their certificates still match.

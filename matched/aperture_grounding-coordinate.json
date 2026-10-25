@@ -1,0 +1,1016 @@
+{
+ "items": [
+  {
+   "entity": "Tversky & Kahneman (1974), \"Judgment under Uncertainty: Heuristics and Biases\"",
+   "label": 0,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Verhoeven & Castellanos (1981), \"Hierarchical Saliency in Perceptual Grouping\"",
+   "label": 1,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Hardy & Ramanujan (1918), \"Asymptotic Formulae in Combinatory Analysis\"",
+   "label": 0,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Margolis & Trenholme (1995), \"A Variational Principle for Adaptive Inference\"",
+   "label": 1,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Cox & Snell (1968), \"A General Definition of Residuals\"",
+   "label": 0,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Okonkwo & Reinholt (2007), \"Sparse Coding under Bounded Curvature\"",
+   "label": 1,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Black & Scholes (1973), \"The Pricing of Options and Corporate Liabilities\"",
+   "label": 0,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Halloran & Pietrzak (1969), \"On the Stability of Coupled Relaxation Oscillators\"",
+   "label": 1,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Hodgkin & Huxley (1952), \"A Quantitative Description of Membrane Current\"",
+   "label": 0,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Sundqvist & Mehrabian (2002), \"Latent Drift in Stochastic Reward Fields\"",
+   "label": 1,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Watson & Crick (1953), \"Molecular Structure of Nucleic Acids\"",
+   "label": 0,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Brennecke & Olarte (1988), \"The Topology of Constrained Belief Revision\"",
+   "label": 1,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Cohen & Levesque (1990), \"Intention Is Choice with Commitment\"",
+   "label": 0,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Lindqvist & Ashworth (1976), \"Asymptotic Bounds for Recursive Partition Schemes\"",
+   "label": 1,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Aharonov & Bohm (1959), \"Significance of Electromagnetic Potentials in the Quantum Theory\"",
+   "label": 0,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Cattaneo & Whitlock (1993), \"Phase Coherence in Dissipative Lattice Models\"",
+   "label": 1,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Diffie & Hellman (1976), \"New Directions in Cryptography\"",
+   "label": 0,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Rasmussen & Foglesong (1984), \"A Calculus of Indexed Intentional States\"",
+   "label": 1,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Lakoff & Johnson (1980), \"Metaphors We Live By\"",
+   "label": 0,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Bjørnstad & Karpinski (1999), \"Entropy Gradients in Nonstationary Channels\"",
+   "label": 1,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Maturana & Varela (1980), \"Autopoiesis and Cognition\"",
+   "label": 0,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Devereaux & Saltzman (1972), \"Spectral Decomposition of Cognitive Load\"",
+   "label": 1,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Newman & Girvan (2004), \"Finding and Evaluating Community Structure in Networks\"",
+   "label": 0,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Nakashima & Wexler (2006), \"Manifold Alignment under Weak Supervision\"",
+   "label": 1,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Bennett & Brassard (1984), \"Quantum Cryptography: Public Key Distribution and Coin Tossing\"",
+   "label": 0,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Petrosyan & Holdsworth (1990), \"The Geometry of Boundary-Constrained Diffusion\"",
+   "label": 1,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Granovetter (1973), \"The Strength of Weak Ties\"",
+   "label": 0,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Engelhardt & Marchetti (1985), \"Self-Organizing Criticality in Symbolic Systems\"",
+   "label": 1,
+   "category": "two_author_papers"
+  },
+  {
+   "entity": "Trousseau's sign",
+   "label": 0,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Verhagen's sign",
+   "label": 1,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Chvostek's sign",
+   "label": 0,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Kessler-Brandt sign",
+   "label": 1,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Murphy's sign",
+   "label": 0,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Mulready's point",
+   "label": 1,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "McBurney's point",
+   "label": 0,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Talverton's reflex",
+   "label": 1,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Tinel's sign",
+   "label": 0,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Sorensen-Pike maneuver",
+   "label": 1,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Froment's sign",
+   "label": 0,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Bickerstaff's groove sign",
+   "label": 1,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Leser-Trelat sign",
+   "label": 0,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Wendholt's test",
+   "label": 1,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Hoover's sign",
+   "label": 0,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Drummel's sign",
+   "label": 1,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Cullen's sign",
+   "label": 0,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Castaledo's reflex",
+   "label": 1,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Grey Turner's sign",
+   "label": 0,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Penhallow-Reuss sign",
+   "label": 1,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Lhermitte's sign",
+   "label": 0,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Maitland's heel sign",
+   "label": 1,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Dalrymple's sign",
+   "label": 0,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Garrucci's maneuver",
+   "label": 1,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Westermark sign",
+   "label": 0,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Lindqvist-Soto test",
+   "label": 1,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Romana's sign",
+   "label": 0,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Renquist's notch sign",
+   "label": 1,
+   "category": "eponymous_signs"
+  },
+  {
+   "entity": "Marcinkiewicz interpolation theorem",
+   "label": 0,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Vranesević interpolation theorem",
+   "label": 1,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Erdős–Ko–Rado theorem",
+   "label": 0,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Halász–Kemény–Bordó theorem",
+   "label": 1,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Hajnal–Szemerédi theorem",
+   "label": 0,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Steindl–Marczewicz theorem",
+   "label": 1,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Routh–Hurwitz criterion",
+   "label": 0,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Forsberg–Quillet criterion",
+   "label": 1,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Wagner–Whitin algorithm",
+   "label": 0,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Drechsler–Vanko algorithm",
+   "label": 1,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Chvátal–Sankoff constant",
+   "label": 0,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Tarnowski–Eckmann constant",
+   "label": 1,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Sazonov's theorem",
+   "label": 0,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Brenner's theorem",
+   "label": 1,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Krein–Milman theorem",
+   "label": 0,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Liskov–Tannehill theorem",
+   "label": 1,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Lyapunov–Schmidt reduction",
+   "label": 0,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Maddalena–Reuther reduction",
+   "label": 1,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Helly's theorem",
+   "label": 0,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Vossen's theorem",
+   "label": 1,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Bramble–Hilbert lemma",
+   "label": 0,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Carlsmith–Roeg lemma",
+   "label": 1,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Cheeger inequality",
+   "label": 0,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Trefilov inequality",
+   "label": 1,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Sylvester–Gallai theorem",
+   "label": 0,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Habermann–Krause theorem",
+   "label": 1,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Pólya–Szegő inequality",
+   "label": 0,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Bohren–Saalfeld inequality",
+   "label": 1,
+   "category": "eponymous_theorems"
+  },
+  {
+   "entity": "Hennig Brand",
+   "label": 0,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Wendel Strauch",
+   "label": 1,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Maria Sibylla Merian",
+   "label": 0,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Anna Theresia Vögeli",
+   "label": 1,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Praxagoras of Cos",
+   "label": 0,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Pherecydes of Thanos",
+   "label": 1,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Caterina Sforza",
+   "label": 0,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Ginevra Malatesti",
+   "label": 1,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Olaus Rudbeck",
+   "label": 0,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Lars Hjorthberg",
+   "label": 1,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Ahmad ibn Fadlan",
+   "label": 0,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Yusuf ibn Qarawi",
+   "label": 1,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Mary Anning",
+   "label": 0,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Edith Carrowmore",
+   "label": 1,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Hipparchia of Maroneia",
+   "label": 0,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Aristokleia of Pergaea",
+   "label": 1,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Jan Swammerdam",
+   "label": 0,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Pieter Vandeghein",
+   "label": 1,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Tycho Brahe",
+   "label": 0,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Brage Stjernholm",
+   "label": 1,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Émilie du Châtelet",
+   "label": 0,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Hélène de Vaucresson",
+   "label": 1,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Nilakantha Somayaji",
+   "label": 0,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Madhusudana Bhatatiri",
+   "label": 1,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Hanaoka Seishu",
+   "label": 0,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Tachibana Genshu",
+   "label": 1,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "William Smellie",
+   "label": 0,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Andrew Carwardine",
+   "label": 1,
+   "category": "obscure_people"
+  },
+  {
+   "entity": "Dwyer & Michaels",
+   "label": 0,
+   "category": "firms"
+  },
+  {
+   "entity": "Halverson & Crewe",
+   "label": 1,
+   "category": "firms"
+  },
+  {
+   "entity": "Burns & McDonnell",
+   "label": 0,
+   "category": "firms"
+  },
+  {
+   "entity": "Maycott & Tring Engineers",
+   "label": 1,
+   "category": "firms"
+  },
+  {
+   "entity": "Haskell & White",
+   "label": 0,
+   "category": "firms"
+  },
+  {
+   "entity": "Brandt & McAllister",
+   "label": 1,
+   "category": "firms"
+  },
+  {
+   "entity": "Pillsbury Winthrop",
+   "label": 0,
+   "category": "firms"
+  },
+  {
+   "entity": "Pennick & Whorl",
+   "label": 1,
+   "category": "firms"
+  },
+  {
+   "entity": "Gurney's Seed & Nursery",
+   "label": 0,
+   "category": "firms"
+  },
+  {
+   "entity": "Tilbury Carrowgate",
+   "label": 1,
+   "category": "firms"
+  },
+  {
+   "entity": "Ghirardelli Chocolate",
+   "label": 0,
+   "category": "firms"
+  },
+  {
+   "entity": "Esterbrook & Sons",
+   "label": 1,
+   "category": "firms"
+  },
+  {
+   "entity": "Crane & Co.",
+   "label": 0,
+   "category": "firms"
+  },
+  {
+   "entity": "Marlow's Seed & Provender",
+   "label": 1,
+   "category": "firms"
+  },
+  {
+   "entity": "Vollrath Company",
+   "label": 0,
+   "category": "firms"
+  },
+  {
+   "entity": "Calderini Confections",
+   "label": 1,
+   "category": "firms"
+  },
+  {
+   "entity": "Dunn-Edwards Paints",
+   "label": 0,
+   "category": "firms"
+  },
+  {
+   "entity": "Threnody Works",
+   "label": 1,
+   "category": "firms"
+  },
+  {
+   "entity": "Pendleton Woolen Mills",
+   "label": 0,
+   "category": "firms"
+  },
+  {
+   "entity": "Carrick-Bowen Paints",
+   "label": 1,
+   "category": "firms"
+  },
+  {
+   "entity": "Filson",
+   "label": 0,
+   "category": "firms"
+  },
+  {
+   "entity": "Wessitt Woolen Mills",
+   "label": 1,
+   "category": "firms"
+  },
+  {
+   "entity": "zanubrutinib",
+   "label": 0,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "zelistramab",
+   "label": 1,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "oteseconazole",
+   "label": 0,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "calpitorvir",
+   "label": 1,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "fosmanogepix",
+   "label": 0,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "nefulibatinib",
+   "label": 1,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "danicopan",
+   "label": 0,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "doravexenib",
+   "label": 1,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "vorasidenib",
+   "label": 0,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "trabociclib",
+   "label": 1,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "futibatinib",
+   "label": 0,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "veltisoconazole",
+   "label": 1,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "pacritinib",
+   "label": 0,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "ostimanopix",
+   "label": 1,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "brincidofovir",
+   "label": 0,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "rilucopan",
+   "label": 1,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "olodaterol",
+   "label": 0,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "samivasidenib",
+   "label": 1,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "navitoclax",
+   "label": 0,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "endaviroxil",
+   "label": 1,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "tucatinib",
+   "label": 0,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "palmoraterol",
+   "label": 1,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "remdesivir",
+   "label": 0,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "cazritoclax",
+   "label": 1,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "lonafarnib",
+   "label": 0,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "lufetinib",
+   "label": 1,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "elacestrant",
+   "label": 0,
+   "category": "drugs_compounds"
+  },
+  {
+   "entity": "brextacestrant",
+   "label": 1,
+   "category": "drugs_compounds"
+  }
+ ],
+ "surface_match": {
+  "tool": "surface_match",
+  "version": "0.1",
+  "nulltest_version": "1.4",
+  "tool_sha256": "80b87c8d5cb6172b5c1241161f115b9a2268ae0c1e8f9c03e04b27be051c4676",
+  "nulltest_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+  "surface_baseline_sha256": "8b27ce5a760612348ba29a47ff4a7fe3ca0efa31f21122ba0f772dbfc2802e2d",
+  "generated": "2026-10-25",
+  "seed": 20260724,
+  "n_perm_requested": 600,
+  "text_key": "entity",
+  "label_key": "label",
+  "stratum_key": "category",
+  "n_before": 162,
+  "n_kept": 162,
+  "kept_fraction": 1.0,
+  "kept_by_stratum": {
+   "two_author_papers": {
+    "n": 28,
+    "label1": 14
+   },
+   "eponymous_signs": {
+    "n": 28,
+    "label1": 14
+   },
+   "eponymous_theorems": {
+    "n": 28,
+    "label1": 14
+   },
+   "obscure_people": {
+    "n": 28,
+    "label1": 14
+   },
+   "firms": {
+    "n": 22,
+    "label1": 11
+   },
+   "drugs_compounds": {
+    "n": 28,
+    "label1": 14
+   }
+  },
+  "rounds": 0,
+  "trace": [
+   {
+    "round": 1,
+    "n": 162,
+    "surface_auroc_oof": 0.568
+   }
+  ],
+  "before": {
+   "verdict": "DISQUALIFIED",
+   "borderline": true,
+   "n": 162,
+   "cells": 35,
+   "worst_cell": {
+    "astar": 0.855,
+    "adj_p": 0.0366,
+    "raw_p": 0.0013,
+    "null": "length",
+    "stratum": "eponymous_signs",
+    "n": 28,
+    "threshold": 0.719,
+    "underpowered": false
+   },
+   "n_perm": 1500,
+   "separating_cells": 1,
+   "baseline": {
+    "accuracy": 0.4074,
+    "accuracy_ci95": [
+     0.331,
+     0.4873
+    ],
+    "majority_accuracy": 0.5,
+    "balanced_accuracy": 0.4074,
+    "auroc": 0.3728
+   }
+  },
+  "held_out": [
+   {
+    "learned_on_half": 1,
+    "applied_to_half": 2,
+    "rounds": 0,
+    "trace": [
+     {
+      "round": 1,
+      "n": 82,
+      "surface_auroc_oof": 0.615
+     }
+    ],
+    "n_half": 80,
+    "n_kept": 80,
+    "after": {
+     "verdict": "DISQUALIFIED",
+     "borderline": true,
+     "n": 80,
+     "cells": 35,
+     "worst_cell": {
+      "astar": 0.939,
+      "adj_p": 0.0333,
+      "raw_p": 0.002,
+      "null": "length",
+      "stratum": "eponymous_signs",
+      "n": 14,
+      "threshold": 0.796,
+      "underpowered": false
+     },
+     "n_perm": 1500,
+     "separating_cells": 1,
+     "baseline": {
+      "accuracy": 0.5,
+      "accuracy_ci95": [
+       0.386,
+       0.614
+      ],
+      "majority_accuracy": 0.5,
+      "balanced_accuracy": 0.5,
+      "auroc": 0.4456
+     }
+    }
+   },
+   {
+    "learned_on_half": 2,
+    "applied_to_half": 1,
+    "rounds": 0,
+    "trace": [
+     {
+      "round": 1,
+      "n": 80,
+      "surface_auroc_oof": 0.611
+     }
+    ],
+    "n_half": 82,
+    "n_kept": 82,
+    "after": {
+     "verdict": "PASS",
+     "borderline": false,
+     "n": 82,
+     "cells": 34,
+     "worst_cell": {
+      "astar": 0.837,
+      "adj_p": 0.6824,
+      "raw_p": 0.0443,
+      "null": "length",
+      "stratum": "eponymous_theorems",
+      "n": 14,
+      "threshold": 0.816,
+      "underpowered": false
+     },
+     "n_perm": 1400,
+     "separating_cells": 0,
+     "baseline": {
+      "accuracy": 0.3659,
+      "accuracy_ci95": [
+       0.2622,
+       0.4795
+      ],
+      "majority_accuracy": 0.5,
+      "balanced_accuracy": 0.3659,
+      "auroc": 0.3551
+     }
+    }
+   }
+  ],
+  "after_in_sample": {
+   "verdict": "DISQUALIFIED",
+   "borderline": true,
+   "n": 162,
+   "cells": 35,
+   "worst_cell": {
+    "astar": 0.855,
+    "adj_p": 0.0366,
+    "raw_p": 0.0013,
+    "null": "length",
+    "stratum": "eponymous_signs",
+    "n": 28,
+    "threshold": 0.719,
+    "underpowered": false
+   },
+   "n_perm": 1500,
+   "separating_cells": 1,
+   "baseline": {
+    "accuracy": 0.4074,
+    "accuracy_ci95": [
+     0.331,
+     0.4873
+    ],
+    "majority_accuracy": 0.5,
+    "balanced_accuracy": 0.4074,
+    "auroc": 0.3728
+   }
+  },
+  "repaired": false,
+  "status": "not_repaired",
+  "reading": "NOT REPAIRED: a held-out half (or the full matched set) still DISQUALIFIES. The surface in this set is not removable by matching on six probes at this size; the kept subset is smaller but not clean.",
+  "input": {
+   "name": "aperture/grounding-coordinate",
+   "url": "https://www.honesty.tools/verifier/batteries/grounding-coordinate.json",
+   "sha256": "3e1dcce261a7f9dd7b4a09bcd0943f130b2a1ef7c3b71d7139e3f2f035dd9608",
+   "items_total": 162
+  }
+ }
+}

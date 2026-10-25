@@ -9,3 +9,8 @@ audit_cache/
 build/
 dist/
 dossier_cache/
+# matched subsets of third-party corpora are redistributions and stay out of the repository;
+# the certificate and the subsets of our own batteries are committed
+matched/*.json
+!matched/surface_match_results.json
+!matched/aperture_*.json
