@@ -97,7 +97,8 @@ for t, r in rows:
                "Source `%s`, sha256 `%s`.\n" % (
         r["n"], r["n_real"], r["n_fake"], {"real_vs_fabricated_entity": "fabricated", "true_vs_false_statement": "false",
                                            "right_vs_wrong_answer": "the wrong/hallucinated answer",
-                                           "hallucinated_vs_faithful_response": "hallucinated"}.get(t.get("label_kind"), "positive class"),
+                                           "hallucinated_vs_faithful_response": "hallucinated",
+                                           "honest_vs_deceptive_response": "deceptive"}.get(t.get("label_kind"), "positive class"),
         r["family_size"], len(r["probes"]), (" and %d strata" % len(r["strata"])) if len(r["strata"]) > 1 else "",
         r["n_perm"], (" (raised from %d for the family size)" % r["n_perm_requested"]) if r["n_perm"] != r["n_perm_requested"] else "",
         t["url"], r["sha256"]))
@@ -127,7 +128,8 @@ for t, r in rows:
         out.append("\n**What it means for a score on this benchmark.** " + " ".join("%s: %s." % (p, MEAN.get(p, "")) for p in probes) +
                    " A model-based score on this corpus needs a surface control before the number is read as %s.\n" %
                    {"right_vs_wrong_answer": "knowledge of the answer", "hallucinated_vs_faithful_response": "hallucination detection",
-                    "true_vs_false_statement": "truth discrimination"}.get(t.get("label_kind"), "entity familiarity"))
+                    "true_vs_false_statement": "truth discrimination",
+                    "honest_vs_deceptive_response": "deception detection"}.get(t.get("label_kind"), "entity familiarity"))
     else:
         c = (r["explain"]["cells"] or [None])[0]
         if c:

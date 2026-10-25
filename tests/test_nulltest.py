@@ -536,6 +536,53 @@ class AuditJoin(unittest.TestCase):
         self.assertFalse(any("category" in i for i in items))   # task_type is not on the rows without the join
 
 
+class AuditZipAndLabelMap(unittest.TestCase):
+    """Deception corpora (Apollo's rollouts) keep several sampled responses and their grader
+    verdicts as parallel lists, nest fields under `metadata`, and grade on scales whose middle is
+    dropped. `zip`, dotted fields and `label_map` read them as published, with no hand-made copy."""
+
+    def _harness(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("nulltest_audit", os.path.join(HERE, "..", "nulltest_audit.py"))
+        m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        return m
+
+    def test_zip_and_label_map_drop_the_middle(self):
+        A = self._harness()
+        rows = {"rollouts": [
+            {"output_strs": ["a1", "a2", "a3"], "graded_deception": [1, 7, 4], "pool": "x"},
+            {"output_strs": ["b1", "b2"], "graded_deception": ["2", "6"], "pool": "y"},
+            {"output_strs": ["c1", "c2"], "graded_deception": [7], "pool": "y"},     # malformed: skipped
+        ]}
+        with tempfile.TemporaryDirectory() as d:
+            with open(os.path.join(d, "r.json"), "w") as f:
+                json.dump(rows, f)
+            spec = {"name": "t/zip", "url": "https://example.invalid/x", "cache_as": "r.json", "format": "json",
+                    "root": "rollouts", "zip": ["output_strs", "graded_deception"], "text_field": "output_strs",
+                    "label_field": "graded_deception", "label_map": {"1": 0, "2": 0, "6": 1, "7": 1},
+                    "stratum_field": "pool"}
+            items, info = A.load_items(spec, cache_dir=d)
+        self.assertEqual([(i["entity"], i["label"], i["category"]) for i in items],
+                         [("a1", 0, "x"), ("a2", 1, "x"), ("b1", 0, "y"), ("b2", 1, "y")])
+        self.assertEqual(info["dropped"], 1)          # grade 4 is ambiguous; the malformed row never became items
+
+    def test_dotted_fields(self):
+        A = self._harness()
+        rows = [{"metadata": {"report_message": "m%d" % i, "report_label": lab}}
+                for i, lab in enumerate(["explicit", "concealed", "implied", "invalid", "concealed"])]
+        rows.append({"metadata": {"trade_message": "no report"}})
+        with tempfile.TemporaryDirectory() as d:
+            with open(os.path.join(d, "g.json"), "w") as f:
+                json.dump(rows, f)
+            spec = {"name": "t/dot", "url": "https://example.invalid/x", "cache_as": "g.json", "format": "json",
+                    "text_field": "metadata.report_message", "label_field": "metadata.report_label",
+                    "label_map": {"explicit": 0, "concealed": 1}}
+            items, info = A.load_items(spec, cache_dir=d)
+        self.assertEqual([(i["entity"], i["label"]) for i in items], [("m0", 0), ("m1", 1), ("m4", 1)])
+        self.assertEqual(info["dropped"], 3)
+
+
 class SurfaceBaseline(unittest.TestCase):
     """surface_baseline.py: how much held-out accuracy the six probes earn together. It must sit at
     the class prior on noise, beat it on a battery with a surface artifact, and never let an item's

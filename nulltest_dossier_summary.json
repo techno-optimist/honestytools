@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-24",
+ "generated": "2026-10-25",
  "version": "1.4",
  "source": "nulltest_dossier.py",
  "dossier": "AUDIT_DOSSIER.md",
@@ -357,6 +357,87 @@
     "n": 2818,
     "astar": 0.788,
     "adj_p": 0.0112
+   }
+  },
+  {
+   "name": "apollo/roleplaying",
+   "sha256": "b80332e391a00cfa8eba758723b63535351d0b71f803e2012426c4d97ef30390",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "apolloroleplaying",
+   "probes": [
+    "lexicality",
+    "words"
+   ],
+   "phrase": "features over-represented in label-1: 'everything', 'had to', 'when i', 'out of', 'using'; in label-0: 'past', 'the past', 'honestly i', 'including', 'months'",
+   "worst_explain_cell": {
+    "probe": "words",
+    "stratum": "_all",
+    "n": 287,
+    "astar": 0.746,
+    "adj_p": 0.0083
+   }
+  },
+  {
+   "name": "apollo/insider-trading-report",
+   "sha256": "73bfa9f8da734d7c435a0641f4e5f464a5c4401b4d102b1f8c152174f90ffd44",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "apolloinsider-trading-report",
+   "probes": [
+    "alpha_last",
+    "length",
+    "lexicality",
+    "words"
+   ],
+   "phrase": "features over-represented in label-1: 'd␣tre', 'ds\n\"\"', 'ds\n\"', 'ds\n', 'nds\n\"'; in label-0: ':␣ins', 'ally,', 'lly,', 'lly,␣', 'ly,'",
+   "worst_explain_cell": {
+    "probe": "lexicality",
+    "stratum": "_all",
+    "n": 1005,
+    "astar": 0.999,
+    "adj_p": 0.0033
+   }
+  },
+  {
+   "name": "apollo/insider-trading-doubledown",
+   "sha256": "73bfa9f8da734d7c435a0641f4e5f464a5c4401b4d102b1f8c152174f90ffd44",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "apolloinsider-trading-doubledown",
+   "probes": [
+    "alpha_last",
+    "length",
+    "lexicality",
+    "words"
+   ],
+   "phrase": "features over-represented in label-1: 'on␣ma', 'n␣ma', 'n␣mar', 'd␣tre', 'nit'; in label-0: 'dge␣t', 'ge␣t', 'ge␣th', 'cute␣', 'm␣an␣'",
+   "worst_explain_cell": {
+    "probe": "lexicality",
+    "stratum": "_all",
+    "n": 655,
+    "astar": 0.982,
+    "adj_p": 0.005
+   }
+  },
+  {
+   "name": "apollo/sandbagging",
+   "sha256": "2f57cd2abe2aeb3f47392e6212c982472840591c510118e8149383ec1dcb069c",
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "anchor": "apollosandbagging",
+   "probes": [
+    "length",
+    "lexicality",
+    "words"
+   ],
+   "phrase": "honest: features over-represented in label-1: 'ts>sa', 'ts>s', 'tep3>', 'tep3', 'tep2>'; in label-0: '>no', '>nor', '>norm', 'al<', 'al</'",
+   "worst_explain_cell": {
+    "probe": "lexicality",
+    "stratum": "honest",
+    "n": 494,
+    "astar": 1.0,
+    "adj_p": 0.0083
    }
   }
  ]
