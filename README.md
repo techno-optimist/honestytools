@@ -408,17 +408,21 @@ Every DISQUALIFIED row of the audit table, from `matched/surface_match_results.j
 | halueval/summarization | 20000 | 2732 (14%) | DISQUALIFIED | DISQUALIFIED | PASS | **not repaired** |
 | halueval/general | 4507 | 1462 (32%) | DISQUALIFIED | PASS | PASS | **not repaired** |
 | ragtruth/responses | 8000 | 3108 (39%) | PASS | DISQUALIFIED | PASS | **not repaired** |
+| apollo/roleplaying | 287 | 142 (50%) | PASS | PASS | PASS | **REPAIRED** |
+| apollo/insider-trading-report | 1005 | 8 (1%) | NOT_SCORABLE | NOT_SCORABLE | NOT_SCORABLE | **too small to verify** |
+| apollo/insider-trading-doubledown | 655 | 26 (4%) | NOT_SCORABLE | NOT_SCORABLE | NOT_SCORABLE | **too small to verify** |
+| apollo/sandbagging | 932 | 10 (1%) | NOT_SCORABLE | NOT_SCORABLE | NOT_SCORABLE | **too small to verify** |
 
-Three sets are repairable: `prominence-people-v1` keeps 76 of 168 items and the alphabet artifact
+Four sets are repairable: `prominence-people-v1` keeps 76 of 168 items and the alphabet artifact
 goes with the rest; `geometry-of-truth/cities` keeps 512 of 1,496; `truth-is-universal/facts` keeps
-442 of 561. Seven rows show the trap this receipt exists for: HaluEval QA, dialogue and
+442 of 561; Apollo's `roleplaying` keeps 142 of 287. Seven rows show the trap this receipt exists for: HaluEval QA, dialogue and
 summarization, HaluEval general, RAGTruth, Bielik and the hallucinated-references set each produce a
 full matched set that **passes in-sample and fails held-out**. Had the tool reported only the first
 number, all seven would have been called fixed. Two of ours (`verifydomain-claims-147`,
 `calibration-battery-v1`) are almost entirely surface: matching leaves 26 and 6 items. They need new
 items, not a subset. `grounding-coordinate` keeps everything and stays DISQUALIFIED: its artifact
 is one cell in a 28-item stratum, which the pooled surface classifier does not see, so matching on
-it removes nothing. TruthfulQA's 2,446 matched reference answers still fail both halves.
+it removes nothing. TruthfulQA's 2,446 matched reference answers still fail both halves. Of Apollo's four deception-probe sets, added to the table the same day: `roleplaying` repaired (142 of 287 kept); `insider-trading-report` too small to verify (8 of 1005 kept); `insider-trading-doubledown` too small to verify (26 of 655 kept); `sandbagging` too small to verify (10 of 932 kept).
 
 What this cannot do: add items; see an artifact the six probes do not; or leave what the set
 measures unchanged. A matched set keeps the surface-ambiguous items and measures something narrower

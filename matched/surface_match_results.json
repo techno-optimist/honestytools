@@ -365,6 +365,102 @@
    ],
    "after_in_sample": "PASS",
    "file": "ragtruth_responses.json"
+  },
+  {
+   "name": "apollo/roleplaying",
+   "sha256": "b80332e391a00cfa8eba758723b63535351d0b71f803e2012426c4d97ef30390",
+   "n_before": 287,
+   "n_kept": 142,
+   "kept_fraction": 0.495,
+   "repaired": true,
+   "status": "repaired",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "PASS",
+    "PASS"
+   ],
+   "held_out_baseline": [
+    0.7063,
+    0.4474
+   ],
+   "held_out_majority": [
+    0.7063,
+    0.5
+   ],
+   "after_in_sample": "PASS",
+   "file": "apollo_roleplaying.json"
+  },
+  {
+   "name": "apollo/insider-trading-report",
+   "sha256": "73bfa9f8da734d7c435a0641f4e5f464a5c4401b4d102b1f8c152174f90ffd44",
+   "n_before": 1005,
+   "n_kept": 8,
+   "kept_fraction": 0.008,
+   "repaired": false,
+   "status": "too_small",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "NOT_SCORABLE",
+    "NOT_SCORABLE"
+   ],
+   "held_out_baseline": [
+    null,
+    null
+   ],
+   "held_out_majority": [
+    null,
+    null
+   ],
+   "after_in_sample": "NOT_SCORABLE",
+   "file": "apollo_insider-trading-report.json"
+  },
+  {
+   "name": "apollo/insider-trading-doubledown",
+   "sha256": "73bfa9f8da734d7c435a0641f4e5f464a5c4401b4d102b1f8c152174f90ffd44",
+   "n_before": 655,
+   "n_kept": 26,
+   "kept_fraction": 0.04,
+   "repaired": false,
+   "status": "too_small",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "NOT_SCORABLE",
+    "NOT_SCORABLE"
+   ],
+   "held_out_baseline": [
+    null,
+    null
+   ],
+   "held_out_majority": [
+    null,
+    null
+   ],
+   "after_in_sample": "NOT_SCORABLE",
+   "file": "apollo_insider-trading-doubledown.json"
+  },
+  {
+   "name": "apollo/sandbagging",
+   "sha256": "2f57cd2abe2aeb3f47392e6212c982472840591c510118e8149383ec1dcb069c",
+   "n_before": 932,
+   "n_kept": 10,
+   "kept_fraction": 0.011,
+   "repaired": false,
+   "status": "too_small",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "NOT_SCORABLE",
+    "NOT_SCORABLE"
+   ],
+   "held_out_baseline": [
+    null,
+    null
+   ],
+   "held_out_majority": [
+    null,
+    null
+   ],
+   "after_in_sample": "NOT_SCORABLE",
+   "file": "apollo_sandbagging.json"
   }
  ]
 }
