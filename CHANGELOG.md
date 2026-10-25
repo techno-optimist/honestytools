@@ -29,11 +29,35 @@ produced them. What is listed under *not done* is as much a part of the record a
   survive); grounding-coordinate keeps all 162 and stays DISQUALIFIED because its artifact is one
   cell in a 28-item stratum the pooled classifier does not see; TruthfulQA fails both halves.
 - Matched subsets of our own batteries committed under `matched/`; third-party subsets not
-  redistributed. 61 tests.
+  redistributed. 63 tests after the merge with 0.4.1.
 
 **Not done**
 - No browser port of the baseline or the repair. Still no PyPI release, no outside user, no
   Actions run.
+## 0.4.1 — 2026-10-25 — deception-probe datasets in the audit
+
+`nulltest.py` 1.4 and `surface_baseline.py` are unchanged; their certificates still match.
+
+**Harness** (`nulltest_audit.py`)
+- `zip`: rows holding parallel lists (sampled responses and their grader verdicts) become one item
+  per entry. Rows whose lists differ in length are skipped, not truncated.
+- Dotted field paths (`metadata.report_label`) for corpora that nest their fields.
+- `label_map`: label value to 0/1; any other value drops the item (a grader's `ambiguous`, a middle
+  grade), and the row records `dropped`.
+- Two tests (60 in all).
+
+**Evidence** (`nulltest_audit_results.json`, `surface_baseline_results.json`, 24 rows)
+- Four evaluation sets from Goldowsky-Dill et al., *Detecting Strategic Deception Using Linear
+  Probes* (Apollo Research), read from the authors' repository with their own label rules. All four
+  DISQUALIFIED. Surface AUROC against the paper's probe AUROC: insider-trading report 0.999 vs
+  0.999; sandbagging 1.000 vs 0.983 (407 of 420 deceptive responses carry the model's own
+  `<step1-results>sandbag` tag); doubling down 0.980 vs 0.974; roleplaying 0.713 vs 0.964.
+- The table reads 19 of 24 DISQUALIFIED, 5 of them ours; three rows sit at A* 1.000, two of them ours.
+
+**Not done**
+- AI Liar, the paper's fifth set, is not in the table: several sampled responses per prompt would be
+  treated as independent items by the folds and the null. Grouped folds first.
+- The eval-awareness sets (EvalDetectBench) are on Hugging Face, which this build machine cannot reach.
 
 ## 0.4.0 — 2026-10-25 — surface_baseline: the number to beat
 

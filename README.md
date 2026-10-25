@@ -19,7 +19,7 @@ python3 nulltest.py your_benchmark.json --json              # machine-readable
 python3 nulltest.py your_benchmark.json --jobs 8            # permutations in parallel
 python3 nulltest.py your_benchmark.json --explain           # which strings carry the label
 python3 nulltest.py qa_data.json --explode right_answer=0,hallucinated_answer=1   # QA rows
-python3 -m unittest discover -s tests                        # 61 tests, a few seconds
+python3 -m unittest discover -s tests                        # 63 tests, a few seconds
 ```
 
 (`pip install honesttools` is the plan, and `pyproject.toml` is ready for it, but the package is
@@ -34,7 +34,7 @@ python3 -m unittest discover -s tests                        # 61 tests, a few s
 | test it in your own CI, every commit | the [GitHub Action](#run-it-in-your-own-ci) below, five lines of YAML |
 | test it in a browser, nothing uploaded | [honesty.tools/evidence](https://www.honesty.tools/evidence) runs the same engine, proven bit-identical |
 | publish a verdict someone else can check | `--json` writes a receipt with the file's sha256 and the tool's; `--check RECEIPT` replays it |
-| see how published benchmarks fare | the [audit table](https://www.honesty.tools/audit), 20 rows, every one with a URL and a sha256 |
+| see how published benchmarks fare | the [audit table](https://www.honesty.tools/audit), 24 rows, every one with a URL and a sha256 |
 | know what carries the label in each of them | [AUDIT_DOSSIER.md](AUDIT_DOSSIER.md): every row's full report and `--explain` feature tables, generated, never typed |
 | repair a benchmark the surface can score | `python3 surface_match.py FILE --out matched.json`: keeps a surface-matched subset, verified on held-out halves; see [repair](#repair-keep-the-items-the-surface-cannot-tell-apart) |
 | know the number a detector has to beat | `python3 surface_baseline.py FILE`: held-out accuracy of the six probes together, against the majority rate; see [the number to beat](#the-number-to-beat) |
@@ -310,7 +310,7 @@ still be contaminated, circular or mislabelled.
 |---|---|
 | `nulltest.py` | the instrument. `--selftest`, `--calibrate`, `--measure-power`, `--emit-grid` |
 | `nulltest.js` | the same instrument for a browser; `bash nulltest_parity.sh` (needs node) checks the two agree cell by cell. The browser engine scores flat two-class files and shows the WHY tables; `--explode` is command-line only |
-| `tests/` | 61 unit tests: every probe catches the artifact it was written for, the stratified null holds on unequal label rates, the loader refuses to guess and says what it dropped, parallel equals serial, receipts replay |
+| `tests/` | 63 unit tests: every probe catches the artifact it was written for, the stratified null holds on unequal label rates, the loader refuses to guess and says what it dropped, parallel equals serial, receipts replay |
 | `action.yml`, `nulltest_action.sh` | the GitHub Action; the script runs without GitHub too |
 | `CONTRIBUTING.md`, `CHANGELOG.md` | how to add a benchmark to the table, how to change the tool, what shipped and what did not |
 | `nulltest_audit.py` | scores a manifest of published benchmarks and writes the table behind [honesty.tools/audit](https://www.honesty.tools/audit) |
@@ -363,7 +363,7 @@ without changing verdict: TruthfulQA's worst cell is now `words`/Law at A* 0.857
 of 222 cells separate, was 77) because ties at the permutation floor are now broken by effect
 size rather than by order of discovery, so a large cell wins over a small cell at A* 1.000; and
 `truth-is-universal/facts` is now marked BORDERLINE (adjusted p 0.038). The table therefore reads
-12 of 17 DISQUALIFIED, 5 of the 12 ours; two rows sit at A* 1.000 and both are ours. Three rows added later the same evening (HaluEval summarization, HaluEval general, RAGTruth) make it 15 of 20.
+12 of 17 DISQUALIFIED, 5 of the 12 ours; two rows sit at A* 1.000 and both are ours. Three rows added later the same evening (HaluEval summarization, HaluEval general, RAGTruth) make it 15 of 20. Four rows from Apollo Research's deception-probe datasets, added 2026-10-25, make it 19 of 24; one of them, sandbagging, also sits at A* 1.000, so three rows do and two are ours.
 
 ## Repair: keep the items the surface cannot tell apart
 
@@ -476,6 +476,10 @@ number only when the shas match the row):
 | halueval/summarization | 20000 | DISQUALIFIED | 50.0% | **87.2%** [86.7%, 87.6%] | 87.2% | 0.945 |
 | halueval/general | 4507 | DISQUALIFIED | 81.9% | **81.8%** [80.7%, 83.0%] | 52.0% | 0.695 |
 | ragtruth/responses | 8000 | DISQUALIFIED | 57.1% | **70.8%** [69.8%, 71.8%] | 68.9% | 0.754 |
+| apollo/roleplaying | 287 | DISQUALIFIED | 70.7% | **73.5%** [68.0%, 78.5%] | 58.2% | 0.713 |
+| apollo/insider-trading-report | 1005 | DISQUALIFIED | 66.6% | **99.6%** [99.0%, 99.9%] | 99.5% | 0.999 |
+| apollo/insider-trading-doubledown | 655 | DISQUALIFIED | 96.3% | **97.4%** [95.9%, 98.5%] | 72.6% | 0.980 |
+| apollo/sandbagging | 932 | DISQUALIFIED | 54.9% | **99.4%** [98.6%, 99.8%] | 99.4% | 1.000 |
 
 Read each row against its prior. HaluEval QA scored by answer alone is 95% solvable from the
 surface; a judge reported at 80% on it has shown nothing yet. On HaluEval general the surface earns
@@ -484,6 +488,29 @@ ranking carries task information; read balanced accuracy and AUROC when the prio
 RAGTruth the surface (70.8%) is almost exactly the task prior (70.1%): a detector that knows which
 task it is looking at starts there. Our own two worst batteries are 88% and 92% solvable; four of
 ours sit at the prior.
+
+**Deception probes.** The four `apollo/` rows are the evaluation sets of *Detecting Strategic
+Deception Using Linear Probes* (Goldowsky-Dill et al., arXiv:2502.03407): Llama-3.3-70B's own
+responses, graded honest or deceptive by the authors' model grader, read from their repository with
+their label rules. The paper's probe reads the model's activations over those same response tokens.
+Set its AUROC beside the surface's:
+
+| dataset | probe AUROC (paper) | surface AUROC (no model) |
+|---|---|---|
+| insider trading, report | 0.999 | 0.999 |
+| sandbagging | 0.983 | 1.000 |
+| insider trading, doubling down | 0.974 | 0.980 |
+| roleplaying | 0.964 | 0.713 |
+
+On three of the four the response text alone matches or beats the probe. In sandbagging, 407 of the
+420 deceptive responses contain the model's own tag `<step1-results>sandbag`, and every honest one
+says `normal`. Roleplaying is where the probe clearly reads more than wording. This is not a claim
+that the probes fail or that the paper is wrong: in these scenarios a lie is often visible in the
+words, and the paper's own black-box reader did about as well as the probe. It says these sets
+cannot separate "the probe reads deception" from "the probe reads wording", so a probe evaluated
+on them needs the surface number beside its own. The paper's fifth set, AI Liar, is left out for
+now: it holds several sampled responses per prompt, and nulltest's folds and null treat them as
+independent items, which would overstate the surface.
 
 **What it reports on noise.** Cross-validated accuracy on no-signal data sits slightly *below* the
 majority rate at small n, because a combiner fitted to noise generalises a little worse than
@@ -504,9 +531,10 @@ the verdict is worth in accuracy.
 
 ## Run it against us, and against the benchmarks the field uses
 
-The audit table at [honesty.tools/audit](https://www.honesty.tools/audit) has 20 rows: our own nine
-batteries, five third-party honesty corpora, and six rows from three widely used hallucination
-benchmarks (TruthfulQA, HaluEval, RAGTruth), scored by answer or response alone:
+The audit table at [honesty.tools/audit](https://www.honesty.tools/audit) has 24 rows: our own nine
+batteries, five third-party honesty corpora, six rows from three widely used hallucination
+benchmarks (TruthfulQA, HaluEval, RAGTruth), scored by answer or response alone, and four
+deception-probe evaluation sets (Apollo Research), scored by the model's response alone:
 
 | benchmark | items | worst cell | A* | verdict |
 |---|---|---|---|---|
@@ -516,6 +544,10 @@ benchmarks (TruthfulQA, HaluEval, RAGTruth), scored by answer or response alone:
 | HaluEval summarization (`right_summary` vs `hallucinated_summary`) | 20000 | 5 of 6 cells separate | 0.923 | DISQUALIFIED |
 | HaluEval general (ChatGPT responses, human-annotated `hallucination` yes/no) | 4507 | 5 of 6 cells separate | 0.690 | DISQUALIFIED |
 | RAGTruth responses (span-annotated; any span = hallucinated; seeded 8,000 of 17,790; stratified by task type, joined from `source_info.jsonl`) | 8000 | 9 of 18 cells separate | 0.788 | DISQUALIFIED |
+| Apollo roleplaying (grader 1-7; ≤2 honest, ≥6 deceptive, 84 ambiguous dropped) | 287 | 2 of 6 cells separate | 0.746 | DISQUALIFIED |
+| Apollo insider trading, report (`explicit` vs `concealed`) | 1005 | 4 of 5 cells separate | 0.999 | DISQUALIFIED |
+| Apollo insider trading, doubling down (24 honest of 655) | 655 | 4 of 5 cells separate | 0.982 | DISQUALIFIED |
+| Apollo sandbagging (stratified by question pool) | 932 | 5 of 10 cells separate | 1.000 | DISQUALIFIED |
 
 `--explain` says why. In TruthfulQA the correct column carries hedges the incorrect column almost
 never does: "I have no comment" appears in 86 correct answers and 0 incorrect, "do not" in 83
@@ -533,10 +565,10 @@ claim that the benchmarks are useless. It is a measurement of how much of a scor
 available to a reader who never sees the question. [AUDIT_DOSSIER.md](AUDIT_DOSSIER.md) carries the
 full feature tables for every row.
 
-Fifteen of the twenty rows are DISQUALIFIED. Five of the DISQUALIFIED rows are ours:
+Nineteen of the twenty-four rows are DISQUALIFIED. Five of the DISQUALIFIED rows are ours:
 `verifydomain-claims-147`, `calibration-battery-v1`, `photon-entities`, `grounding-coordinate`
-(BORDERLINE) and `prominence-people-v1`, which v1.2 missed and the alphabet probes catch. Two rows
-sit at A* 1.000 and both are ours. A DISQUALIFIED verdict is a measurement about a corpus, not a
+(BORDERLINE) and `prominence-people-v1`, which v1.2 missed and the alphabet probes catch. Three rows
+sit at A* 1.000: two are ours, and the third is Apollo's sandbagging set. A DISQUALIFIED verdict is a measurement about a corpus, not a
 finding of error or misconduct by its authors. Re-score the whole table with
 `python3 nulltest_audit.py --jobs 4` (about an hour and a half on our 4-core machine with the
 dossier's `--explain`: 39 minutes of it HaluEval summarization, 30 RAGTruth at the 800 permutations
