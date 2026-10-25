@@ -1,0 +1,370 @@
+{
+ "tool": "surface_match",
+ "version": "0.1",
+ "tool_sha256": "80b87c8d5cb6172b5c1241161f115b9a2268ae0c1e8f9c03e04b27be051c4676",
+ "nulltest_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+ "surface_baseline_sha256": "8b27ce5a760612348ba29a47ff4a7fe3ca0efa31f21122ba0f772dbfc2802e2d",
+ "generated": "2026-10-25",
+ "rows": [
+  {
+   "name": "aperture/verifydomain-claims-147",
+   "sha256": "ed742e764a2f2e14f71ae6f4da5e7a88b2870529e75a6646ed804b709aa54d14",
+   "n_before": 147,
+   "n_kept": 26,
+   "kept_fraction": 0.177,
+   "repaired": false,
+   "status": "too_small",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "NOT_SCORABLE",
+    "NOT_SCORABLE"
+   ],
+   "held_out_baseline": [
+    null,
+    null
+   ],
+   "held_out_majority": [
+    null,
+    null
+   ],
+   "after_in_sample": "NOT_SCORABLE",
+   "file": "aperture_verifydomain-claims-147.json"
+  },
+  {
+   "name": "aperture/grounding-coordinate",
+   "sha256": "3e1dcce261a7f9dd7b4a09bcd0943f130b2a1ef7c3b71d7139e3f2f035dd9608",
+   "n_before": 162,
+   "n_kept": 162,
+   "kept_fraction": 1.0,
+   "repaired": false,
+   "status": "not_repaired",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "DISQUALIFIED",
+    "PASS"
+   ],
+   "held_out_baseline": [
+    0.5,
+    0.3659
+   ],
+   "held_out_majority": [
+    0.5,
+    0.5
+   ],
+   "after_in_sample": "DISQUALIFIED",
+   "file": "aperture_grounding-coordinate.json"
+  },
+  {
+   "name": "aperture/photon-entities",
+   "sha256": "f97e87443535a036dcb2cd0240bbec6dec4025f8d618687d86f6cafc63a088cb",
+   "n_before": 103,
+   "n_kept": 30,
+   "kept_fraction": 0.291,
+   "repaired": false,
+   "status": "not_repaired",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "NOT_SCORABLE",
+    "NOT_SCORABLE"
+   ],
+   "held_out_baseline": [
+    null,
+    null
+   ],
+   "held_out_majority": [
+    null,
+    null
+   ],
+   "after_in_sample": "DISQUALIFIED",
+   "file": "aperture_photon-entities.json"
+  },
+  {
+   "name": "aperture/prominence-people-v1",
+   "sha256": "fd881034ccd02904dfae2296435ebc651ccce63b8d408333f018550ceb154322",
+   "n_before": 168,
+   "n_kept": 76,
+   "kept_fraction": 0.452,
+   "repaired": true,
+   "status": "repaired",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "PASS",
+    "PASS"
+   ],
+   "held_out_baseline": [
+    0.371,
+    0.4833
+   ],
+   "held_out_majority": [
+    0.5,
+    0.5
+   ],
+   "after_in_sample": "PASS",
+   "file": "aperture_prominence-people-v1.json"
+  },
+  {
+   "name": "bielik-entity-familiarity-v2",
+   "sha256": "02546469b730cb173e16dabba926e08e6c5094a734cdb7efb383d2c1322d8573",
+   "n_before": 1440,
+   "n_kept": 172,
+   "kept_fraction": 0.119,
+   "repaired": false,
+   "status": "not_repaired",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "DISQUALIFIED",
+    "PASS"
+   ],
+   "held_out_baseline": [
+    0.641,
+    0.4457
+   ],
+   "held_out_majority": [
+    0.5,
+    0.5
+   ],
+   "after_in_sample": "PASS",
+   "file": "bielik-entity-familiarity-v2.json"
+  },
+  {
+   "name": "hallucinated-references/gpt-4",
+   "sha256": "3fd32d5e9dc1657a381b94f88817b64b4a0e7bb007107f4db18b3206cdc7a22f",
+   "n_before": 1000,
+   "n_kept": 452,
+   "kept_fraction": 0.452,
+   "repaired": false,
+   "status": "not_repaired",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "PASS",
+    "DISQUALIFIED"
+   ],
+   "held_out_baseline": [
+    0.4742,
+    0.5426
+   ],
+   "held_out_majority": [
+    0.5,
+    0.5
+   ],
+   "after_in_sample": "PASS",
+   "file": "hallucinated-references_gpt-4.json"
+  },
+  {
+   "name": "geometry-of-truth/cities",
+   "sha256": "f2560a0c1758c69935b50125111b574b71896bb75930dd87b1d8c973c1fa086e",
+   "n_before": 1496,
+   "n_kept": 512,
+   "kept_fraction": 0.342,
+   "repaired": true,
+   "status": "repaired",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "PASS",
+    "PASS"
+   ],
+   "held_out_baseline": [
+    0.6179,
+    0.6092
+   ],
+   "held_out_majority": [
+    0.5,
+    0.5
+   ],
+   "after_in_sample": "PASS",
+   "file": "geometry-of-truth_cities.json"
+  },
+  {
+   "name": "truth-is-universal/facts",
+   "sha256": "303ec926c2710a13a6166e204a24ea013bb2991b8761e2899739fddcb923aee1",
+   "n_before": 561,
+   "n_kept": 442,
+   "kept_fraction": 0.788,
+   "repaired": true,
+   "status": "repaired",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "PASS",
+    "PASS"
+   ],
+   "held_out_baseline": [
+    0.5205,
+    0.493
+   ],
+   "held_out_majority": [
+    0.5,
+    0.5
+   ],
+   "after_in_sample": "PASS",
+   "file": "truth-is-universal_facts.json"
+  },
+  {
+   "name": "truthfulqa/answers",
+   "sha256": "b8d8ef1e12f98b4f2a9f47abc9765da0640b182b6c5d9b92f0c1a1f2f1e02e5c",
+   "n_before": 6028,
+   "n_kept": 2446,
+   "kept_fraction": 0.406,
+   "repaired": false,
+   "status": "not_repaired",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "DISQUALIFIED",
+    "DISQUALIFIED"
+   ],
+   "held_out_baseline": [
+    0.5697,
+    0.6127
+   ],
+   "held_out_majority": [
+    0.5,
+    0.5
+   ],
+   "after_in_sample": "DISQUALIFIED",
+   "file": "truthfulqa_answers.json"
+  },
+  {
+   "name": "halueval/qa",
+   "sha256": "89ed139ec5e3a3169a0b30e45569ac1283846f76f27f7bb5e908ee6deed57e88",
+   "n_before": 20000,
+   "n_kept": 1346,
+   "kept_fraction": 0.067,
+   "repaired": false,
+   "status": "not_repaired",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "PASS",
+    "DISQUALIFIED"
+   ],
+   "held_out_baseline": [
+    0.5356,
+    0.5915
+   ],
+   "held_out_majority": [
+    0.5,
+    0.5
+   ],
+   "after_in_sample": "PASS",
+   "file": "halueval_qa.json"
+  },
+  {
+   "name": "halueval/dialogue",
+   "sha256": "9c461df2691e4362837f66fceaaff3bc260453350c3a1cae76a5a52e5e338bfd",
+   "n_before": 20000,
+   "n_kept": 8378,
+   "kept_fraction": 0.419,
+   "repaired": false,
+   "status": "not_repaired",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "DISQUALIFIED",
+    "DISQUALIFIED"
+   ],
+   "held_out_baseline": [
+    0.6074,
+    0.5822
+   ],
+   "held_out_majority": [
+    0.5,
+    0.5
+   ],
+   "after_in_sample": "PASS",
+   "file": "halueval_dialogue.json"
+  },
+  {
+   "name": "aperture/calibration-battery-v1",
+   "sha256": "a31e55da3dc94f317f8e1886fcec47c6c60de4f9492e95c11aab1ed7297069d0",
+   "n_before": 168,
+   "n_kept": 6,
+   "kept_fraction": 0.036,
+   "repaired": false,
+   "status": "too_small",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "NOT_SCORABLE",
+    "NOT_SCORABLE"
+   ],
+   "held_out_baseline": [
+    null,
+    null
+   ],
+   "held_out_majority": [
+    null,
+    null
+   ],
+   "after_in_sample": "NOT_SCORABLE",
+   "file": "aperture_calibration-battery-v1.json"
+  },
+  {
+   "name": "halueval/summarization",
+   "sha256": "86d2561eeb4271eb50b6bd90c9fd38636d30eaf4e98b648045f221adb1c2c758",
+   "n_before": 20000,
+   "n_kept": 2732,
+   "kept_fraction": 0.137,
+   "repaired": false,
+   "status": "not_repaired",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "DISQUALIFIED",
+    "DISQUALIFIED"
+   ],
+   "held_out_baseline": [
+    0.6417,
+    0.6221
+   ],
+   "held_out_majority": [
+    0.5,
+    0.5
+   ],
+   "after_in_sample": "PASS",
+   "file": "halueval_summarization.json"
+  },
+  {
+   "name": "halueval/general",
+   "sha256": "73302cd97666b808fb94b5d8a4a2c924049c9484e609017a2f808c4a6d539219",
+   "n_before": 4507,
+   "n_kept": 1462,
+   "kept_fraction": 0.324,
+   "repaired": false,
+   "status": "not_repaired",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "DISQUALIFIED",
+    "PASS"
+   ],
+   "held_out_baseline": [
+    0.5933,
+    0.485
+   ],
+   "held_out_majority": [
+    0.5,
+    0.5
+   ],
+   "after_in_sample": "PASS",
+   "file": "halueval_general.json"
+  },
+  {
+   "name": "ragtruth/responses",
+   "sha256": "e4c2e4ac24fff676d8984cc61c35d791612fadc58015335d97dd632375e18073",
+   "n_before": 8000,
+   "n_kept": 3108,
+   "kept_fraction": 0.389,
+   "repaired": false,
+   "status": "not_repaired",
+   "before": "DISQUALIFIED",
+   "held_out": [
+    "PASS",
+    "DISQUALIFIED"
+   ],
+   "held_out_baseline": [
+    0.5122,
+    0.5698
+   ],
+   "held_out_majority": [
+    0.5,
+    0.5
+   ],
+   "after_in_sample": "PASS",
+   "file": "ragtruth_responses.json"
+  }
+ ]
+}

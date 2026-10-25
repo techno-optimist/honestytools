@@ -9,6 +9,7 @@
                                      --positive-label --n-perm --jobs --explain)
     honest check <receipt> <file>   replay a published verdict against the bytes in front of you
     honest baseline <battery> [...] the number to beat: held-out accuracy of the six probes together
+    honest match <battery> --out F   repair: keep a surface-matched subset, verified on held-out halves
     honest audit [--only N] [...]   re-score the published audit table (repository checkout only)
     honest selftest [tool]          run a tool's break-test (all tools if omitted)
     honest fpr <tool>               print a tool's calibrated false-positive rate
@@ -226,6 +227,9 @@ def main(argv=None):
             print("usage: honest check <receipt.json> <battery>")
             return 2
         return _load("nulltest", "nulltest.py").check_receipt(argv[2], argv[3])
+    if cmd == "match":
+        # repair: keep a surface-matched subset, verified on held-out halves (surface_match.py)
+        return _load("surface_match", "surface_match.py").main(["surface_match"] + argv[2:]) or 0
     if cmd == "baseline":
         # the number to beat: held-out accuracy of the six probes together (surface_baseline.py)
         return _load("surface_baseline", "surface_baseline.py").main(["surface_baseline"] + argv[2:]) or 0

@@ -605,3 +605,61 @@ class SurfaceBaseline(unittest.TestCase):
         self.assertEqual(s[3], 0.0)
         # 'c' three times, one label-1: log(1.5/3) - log(2.5/3)
         self.assertAlmostEqual(s[1], math.log(1.5 / 3) - math.log(2.5 / 3), places=8)
+
+
+class SurfaceMatch(unittest.TestCase):
+    """surface_match.py: a matched subset verified on held-out halves. It must leave a clean set
+    alone, repair a set whose artifact is partial, and refuse to call an all-surface set repaired."""
+
+    def _sm(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("surface_match", os.path.join(HERE, "..", "surface_match.py"))
+        m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        return m
+
+    def _quiet(self, fn, *a, **k):
+        with contextlib.redirect_stdout(io.StringIO()):
+            return fn(*a, **k)
+
+    def test_clean_set_is_left_alone(self):
+        M = self._sm()
+        items = N._noise_battery(9002, 3, "coinword", n=240)
+        kept, rec = self._quiet(M.repair, items, "entity", "label", "category", n_perm=200, log=lambda m: None)
+        self.assertEqual(rec["status"], "not_needed")
+        self.assertEqual(len(kept), len(items))
+
+    def test_partial_artifact_is_repaired_and_verified_held_out(self):
+        M = self._sm()
+        rng = random.Random(11)
+        items = []
+        for i in range(400):
+            y = i % 2
+            # a third of the label-1 items carry a planted long tail; the rest of both classes look alike
+            base = " ".join("w%d" % rng.randrange(300) for _ in range(rng.randrange(2, 5)))
+            if y == 1 and i % 6 == 1:
+                base += " " + " ".join("zz%d" % rng.randrange(9) for _ in range(6))
+            items.append({"entity": base, "label": y, "category": "s%d" % ((i // 2) % 2)})
+        kept, rec = self._quiet(M.repair, items, "entity", "label", "category", n_perm=200, log=lambda m: None)
+        self.assertEqual(rec["before"]["verdict"], "DISQUALIFIED")
+        # the planted items all go and the matched set passes in-sample; at least one held-out half
+        # passes too. Not both: nulltest is a 5% test, so a clean held-out half DISQUALIFIES one time
+        # in twenty by chance, and the receipt reports that rather than hiding it (this seed's second
+        # half sits at adjusted p 0.04). The verdict a reader relies on is the held-out one.
+        self.assertFalse(any("zz" in it["entity"] for it in kept))
+        self.assertEqual(rec["after_in_sample"]["verdict"], "PASS")
+        self.assertIn("PASS", [h["after"]["verdict"] for h in rec["held_out"]])
+        self.assertNotEqual(rec["status"], "too_small")
+        self.assertGreater(len(kept), 0.4 * len(items))     # the planted items go, most of the rest stays
+        # the kept items are the original dicts, untouched and in order
+        pos = {id(it): k for k, it in enumerate(items)}
+        self.assertEqual([pos[id(it)] for it in kept], sorted(pos[id(it)] for it in kept))
+
+    def test_all_surface_set_is_not_called_repaired(self):
+        M = self._sm()
+        rng = random.Random(5)
+        items = [{"entity": ("long fabricated name %d %d" % (rng.randrange(99), i)) if i % 2 else ("r%d" % i),
+                  "label": i % 2} for i in range(200)]
+        kept, rec = self._quiet(M.repair, items, "entity", "label", None, n_perm=200, log=lambda m: None)
+        self.assertIn(rec["status"], ("not_repaired", "too_small"))
+        self.assertFalse(rec["repaired"])

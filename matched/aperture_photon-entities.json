@@ -1,0 +1,298 @@
+{
+ "items": [
+  {
+   "entity": "BYSI",
+   "label": 0,
+   "category": "companies"
+  },
+  {
+   "entity": "NGC 6169",
+   "label": 0,
+   "category": "astronomy"
+  },
+  {
+   "entity": "NGC 46083",
+   "label": 1,
+   "category": "astronomy"
+  },
+  {
+   "entity": "VND TX",
+   "label": 1,
+   "category": "companies"
+  },
+  {
+   "entity": "TYGO",
+   "label": 0,
+   "category": "companies"
+  },
+  {
+   "entity": "PARK",
+   "label": 0,
+   "category": "companies"
+  },
+  {
+   "entity": "HFBL",
+   "label": 0,
+   "category": "companies"
+  },
+  {
+   "entity": "NGC 4763",
+   "label": 0,
+   "category": "astronomy"
+  },
+  {
+   "entity": "PF-04691502",
+   "label": 0,
+   "category": "drugs"
+  },
+  {
+   "entity": "Maxortiglar",
+   "label": 1,
+   "category": "drugs"
+  },
+  {
+   "entity": "NGC 90383",
+   "label": 1,
+   "category": "astronomy"
+  },
+  {
+   "entity": "NGC 286",
+   "label": 0,
+   "category": "astronomy"
+  },
+  {
+   "entity": "NGC 83259",
+   "label": 1,
+   "category": "astronomy"
+  },
+  {
+   "entity": "NGC 3058",
+   "label": 0,
+   "category": "astronomy"
+  },
+  {
+   "entity": "NGC 914",
+   "label": 0,
+   "category": "astronomy"
+  },
+  {
+   "entity": "QVNT",
+   "label": 1,
+   "category": "companies"
+  },
+  {
+   "entity": "lonafarnib",
+   "label": 0,
+   "category": "drugs"
+  },
+  {
+   "entity": "NGC 50919",
+   "label": 1,
+   "category": "astronomy"
+  },
+  {
+   "entity": "NGC 2976",
+   "label": 0,
+   "category": "astronomy"
+  },
+  {
+   "entity": "BRMK",
+   "label": 1,
+   "category": "companies"
+  },
+  {
+   "entity": "Quinadmostat",
+   "label": 1,
+   "category": "drugs"
+  },
+  {
+   "entity": "risdiplam",
+   "label": 0,
+   "category": "drugs"
+  },
+  {
+   "entity": "NGC 71231",
+   "label": 1,
+   "category": "astronomy"
+  },
+  {
+   "entity": "Quinadtiglar",
+   "label": 1,
+   "category": "drugs"
+  },
+  {
+   "entity": "HLXR",
+   "label": 1,
+   "category": "companies"
+  },
+  {
+   "entity": "NGC 6315",
+   "label": 0,
+   "category": "astronomy"
+  },
+  {
+   "entity": "vamorolone",
+   "label": 0,
+   "category": "drugs"
+  },
+  {
+   "entity": "NGC 47913",
+   "label": 1,
+   "category": "astronomy"
+  },
+  {
+   "entity": "Maxorcitinib",
+   "label": 1,
+   "category": "drugs"
+  },
+  {
+   "entity": "NGC 73713",
+   "label": 1,
+   "category": "astronomy"
+  }
+ ],
+ "surface_match": {
+  "tool": "surface_match",
+  "version": "0.1",
+  "nulltest_version": "1.4",
+  "tool_sha256": "80b87c8d5cb6172b5c1241161f115b9a2268ae0c1e8f9c03e04b27be051c4676",
+  "nulltest_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+  "surface_baseline_sha256": "8b27ce5a760612348ba29a47ff4a7fe3ca0efa31f21122ba0f772dbfc2802e2d",
+  "generated": "2026-10-25",
+  "seed": 20260724,
+  "n_perm_requested": 600,
+  "text_key": "entity",
+  "label_key": "label",
+  "stratum_key": "category",
+  "n_before": 103,
+  "n_kept": 30,
+  "kept_fraction": 0.291,
+  "kept_by_stratum": {
+   "companies": {
+    "n": 8,
+    "label1": 4
+   },
+   "astronomy": {
+    "n": 14,
+    "label1": 7
+   },
+   "drugs": {
+    "n": 8,
+    "label1": 4
+   }
+  },
+  "rounds": 1,
+  "trace": [
+   {
+    "round": 1,
+    "n": 103,
+    "surface_auroc_oof": 0.869
+   }
+  ],
+  "before": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "n": 103,
+   "cells": 21,
+   "worst_cell": {
+    "astar": 1.0,
+    "adj_p": 0.0133,
+    "raw_p": 0.0011,
+    "null": "words",
+    "stratum": "genes",
+    "n": 19,
+    "threshold": 0.851,
+    "underpowered": false
+   },
+   "n_perm": 900,
+   "separating_cells": 2,
+   "baseline": {
+    "accuracy": 0.8252,
+    "accuracy_ci95": [
+     0.7379,
+     0.893
+    ],
+    "majority_accuracy": 0.7379,
+    "balanced_accuracy": 0.7144,
+    "auroc": 0.8465
+   }
+  },
+  "held_out": [
+   {
+    "learned_on_half": 1,
+    "applied_to_half": 2,
+    "rounds": 1,
+    "trace": [
+     {
+      "round": 1,
+      "n": 53,
+      "surface_auroc_oof": 0.786
+     }
+    ],
+    "n_half": 50,
+    "n_kept": 14,
+    "after": {
+     "verdict": "NOT_SCORABLE",
+     "n": 14,
+     "note": "fewer than 30 items or one class"
+    }
+   },
+   {
+    "learned_on_half": 2,
+    "applied_to_half": 1,
+    "rounds": 1,
+    "trace": [
+     {
+      "round": 1,
+      "n": 50,
+      "surface_auroc_oof": 0.967
+     }
+    ],
+    "n_half": 53,
+    "n_kept": 18,
+    "after": {
+     "verdict": "NOT_SCORABLE",
+     "n": 18,
+     "note": "fewer than 30 items or one class"
+    }
+   }
+  ],
+  "after_in_sample": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "n": 30,
+   "cells": 9,
+   "worst_cell": {
+    "astar": 1.0,
+    "adj_p": 0.0033,
+    "raw_p": 0.0017,
+    "null": "length",
+    "stratum": "astronomy",
+    "n": 14,
+    "threshold": 0.755,
+    "underpowered": false
+   },
+   "n_perm": 600,
+   "separating_cells": 1,
+   "baseline": {
+    "accuracy": 0.5667,
+    "accuracy_ci95": [
+     0.3743,
+     0.7454
+    ],
+    "majority_accuracy": 0.5,
+    "balanced_accuracy": 0.5667,
+    "auroc": 0.5289
+   }
+  },
+  "repaired": false,
+  "status": "not_repaired",
+  "reading": "NOT REPAIRED: a held-out half (or the full matched set) still DISQUALIFIES. The surface in this set is not removable by matching on six probes at this size; the kept subset is smaller but not clean.",
+  "input": {
+   "name": "aperture/photon-entities",
+   "url": "https://www.honesty.tools/verifier/batteries/photon-entities.json",
+   "sha256": "f97e87443535a036dcb2cd0240bbec6dec4025f8d618687d86f6cafc63a088cb",
+   "items_total": 103
+  }
+ }
+}
