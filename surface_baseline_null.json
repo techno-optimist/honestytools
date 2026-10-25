@@ -1,0 +1,51 @@
+{
+ "tool": "surface_baseline",
+ "version": "0.1",
+ "tool_sha256": "8b27ce5a760612348ba29a47ff4a7fe3ca0efa31f21122ba0f772dbfc2802e2d",
+ "nulltest_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+ "generated": "2026-10-24",
+ "construction": "nulltest._noise_battery(seed, 6 strata, 'coinword'): balanced labels, random tokens, no signal",
+ "reading": "a reported gain over the majority rate that lies inside [gain_min, gain_max] for the nearest n is within what this protocol reports on noise; below gain_min is the protocol's own pessimism, not a defect",
+ "rows": [
+  {
+   "n": 162,
+   "seeds": 30,
+   "gain_mean": -0.0272,
+   "gain_min": -0.1111,
+   "gain_max": 0.0741,
+   "gain_p975": 0.0741,
+   "auroc_mean": 0.4843,
+   "auroc_min": 0.3967
+  },
+  {
+   "n": 324,
+   "seeds": 20,
+   "gain_mean": -0.0312,
+   "gain_min": -0.0833,
+   "gain_max": 0.0093,
+   "gain_p975": 0.0093,
+   "auroc_mean": 0.4736,
+   "auroc_min": 0.3978
+  },
+  {
+   "n": 702,
+   "seeds": 12,
+   "gain_mean": -0.0055,
+   "gain_min": -0.0399,
+   "gain_max": 0.0186,
+   "gain_p975": 0.0186,
+   "auroc_mean": 0.4929,
+   "auroc_min": 0.4498
+  },
+  {
+   "n": 1496,
+   "seeds": 8,
+   "gain_mean": -0.0151,
+   "gain_min": -0.0314,
+   "gain_max": 0.004,
+   "gain_p975": 0.004,
+   "auroc_mean": 0.4915,
+   "auroc_min": 0.4622
+  }
+ ]
+}

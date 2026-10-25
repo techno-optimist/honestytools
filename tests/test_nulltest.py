@@ -10,6 +10,7 @@ decoration, so every one of these was watched failing against a deliberately bro
 import contextlib
 import io
 import json
+import math
 import os
 import random
 import sys
@@ -533,3 +534,74 @@ class AuditJoin(unittest.TestCase):
             items, info = A.load_items(spec, cache_dir=d)
         self.assertEqual(info["join_unmatched"], 0)
         self.assertFalse(any("category" in i for i in items))   # task_type is not on the rows without the join
+
+
+class SurfaceBaseline(unittest.TestCase):
+    """surface_baseline.py: how much held-out accuracy the six probes earn together. It must sit at
+    the class prior on noise, beat it on a battery with a surface artifact, and never let an item's
+    own label into the scores that classify it."""
+
+    def _sb(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("surface_baseline", os.path.join(HERE, "..", "surface_baseline.py"))
+        m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        return m
+
+    def test_noise_sits_at_the_prior(self):
+        S = self._sb()
+        # balanced noise: accuracy's interval must cover the majority rate, AUROC near one half
+        items = N._noise_battery(9002, 3, "coinword", n=300)
+        r = S.baseline(items, "entity", "label", "category")
+        lo, hi = r["accuracy_ci95"]
+        self.assertLessEqual(lo, r["majority_accuracy"])
+        self.assertLess(abs(r["auroc"] - 0.5), 0.1)
+
+    def test_balanced_strata_cannot_be_read_from_the_design(self):
+        S = self._sb()
+        # exactly 20/20 per stratum, no signal: a held-out number below chance here would mean the
+        # protocol, not the corpus, was being scored
+        rng = random.Random(3)
+        items = [{"entity": "w%d w%d" % (rng.randrange(500), rng.randrange(500)), "label": i % 2,
+                  "category": "s%d" % (i // 40)} for i in range(240)]
+        r = S.baseline(items, "entity", "label", "category")
+        self.assertGreaterEqual(r["accuracy_ci95"][1], 0.5)
+        self.assertGreater(r["auroc"], 0.4)
+
+    def test_imbalanced_noise_earns_nothing(self):
+        S = self._sb()
+        # 85/15 per stratum, no signal in the text: the baseline sits at the prior and the stratum
+        # label rate is reported beside it as a description, never fed to the combiner
+        items = N._noise_battery(9001, 3, "coinword_imb", n=300)
+        r = S.baseline(items, "entity", "label", "category")
+        lo, hi = r["accuracy_ci95"]
+        self.assertLessEqual(lo, r["majority_accuracy"])
+        self.assertGreaterEqual(r["stratum_prior_accuracy"], 0.8)     # the prior is reported, not used
+        self.assertNotIn("stratum_rate", r["features"])
+
+    def test_artifact_is_detected_and_quantified(self):
+        S = self._sb()
+        rng = random.Random(7)
+        items = []
+        for i in range(240):
+            y = i % 2
+            # label-1 items are long and carry a marker token: a surface artifact a regex would find
+            text = ("x%d " % rng.randrange(1000)) * (6 if y else 2) + ("zz" if y else "")
+            items.append({"entity": text, "label": y, "category": "a" if i % 3 else "b"})
+        r = S.baseline(items, "entity", "label", "category")
+        self.assertGreater(r["accuracy"], 0.9)
+        self.assertGreater(r["probe_auroc_held_out"]["length"], 0.9)
+        self.assertGreater(r["auroc"], 0.95)
+
+    def test_held_out_nb_matches_nulltest_arithmetic(self):
+        S = self._sb()
+        feats_tr = [["a", "b"], ["a", "c"], ["b", "c"], ["c", "d"]]
+        y_tr = [1, 1, 0, 0]
+        s = S._nb_train_test(feats_tr, y_tr, [["a"], ["c"], ["zzz"], ["d"]])
+        # 'a': seen twice, both label-1: log(2.5/3) - log(0.5/3) = log 5
+        self.assertAlmostEqual(s[0], math.log(5), places=8)
+        # 'zzz' unseen and 'd' hapax: no evidence
+        self.assertEqual(s[2], 0.0)
+        self.assertEqual(s[3], 0.0)
+        # 'c' three times, one label-1: log(1.5/3) - log(2.5/3)
+        self.assertAlmostEqual(s[1], math.log(1.5 / 3) - math.log(2.5 / 3), places=8)
