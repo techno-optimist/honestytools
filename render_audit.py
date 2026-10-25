@@ -39,9 +39,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 RESULTS = os.path.join(HERE, "nulltest_audit_results.json")
 NOTES = os.path.join(HERE, "audit_notes.json")
 SUMMARY = os.path.join(HERE, "nulltest_dossier_summary.json")   # written by nulltest_dossier.py
+BASELINE = os.path.join(HERE, "surface_baseline_results.json")   # written by surface_baseline.py --audit
 DOSSIER_URL = "https://github.com/techno-optimist/honestytools/blob/main/AUDIT_DOSSIER.md"
 THEAD = ("<thead><tr><th>benchmark</th><th>n</th><th>worst A*</th><th>adjusted p</th><th>verdict</th>"
-         "<th>what carries it</th><th>what the verdict can and cannot support</th></tr></thead>")
+         "<th>what carries it</th><th>surface baseline</th><th>what the verdict can and cannot support</th></tr></thead>")
 PAGE = os.path.abspath(os.path.join(HERE, "..", "audit.html"))
 ALPHA = 0.05
 MARGIN_FACTOR = 3.0
@@ -90,9 +91,32 @@ def carries(r, summary):
     return "%s<br>%s (%s)" % (probes, phrase, link)
 
 
-def render_rows(rows, notes, summary=None):
+def baseline_cell(r, base):
+    """Held-out accuracy of the six probes together against the majority rate: the number a detector
+    scored on this benchmark has to beat before its score says anything. Shown only when the
+    baseline was computed on the same corpus bytes (sha256) as the row."""
+    b = base.get(r["name"])
+    if r.get("status") != "scored" or not base:
+        return "—"
+    if not b or b.get("status") != "scored" or b.get("sha256") != r.get("sha256"):
+        return '<span class="nf-marg">not yet computed for this corpus version</span>'
+    acc, lo, hi = b["accuracy"], b["accuracy_ci95"][0], b["accuracy_ci95"][1]
+    gain = acc - b["majority_accuracy"]
+    line = ('<b>%.1f%%</b> <span class="nf-ci">[%.1f, %.1f]</span> vs %.1f%% majority'
+            % (100 * acc, 100 * lo, 100 * hi, 100 * b["majority_accuracy"]))
+    if b.get("n_strata", 1) > 1 and abs(b.get("stratum_prior_accuracy", 0) - b["majority_accuracy"]) >= 0.01:
+        line += ", %.1f%% from the stratum rate alone" % (100 * b["stratum_prior_accuracy"])
+    if gain <= 0.01:
+        line += "<br>no gain from the surface"
+    else:
+        line += "<br>AUROC %.3f" % b["auroc"]
+    return line
+
+
+def render_rows(rows, notes, summary=None, base=None):
     out = []
     summary = summary or {}
+    base = base or {}
     for r in sorted(rows, key=order_key):
         name = r["name"]
         w = r.get("worst_cell") or {}
@@ -119,14 +143,14 @@ def render_rows(rows, notes, summary=None):
         out.append(
             '<tr class="%s"><td><b>%s</b>%s</td><td class="num">%s</td><td class="num">%s</td>'
             '<td class="num">%s%s</td><td class="%s">%s</td><td class="nf-carry">%s</td>'
-            '<td class="nf-note">%s</td></tr>'
+            '<td class="nf-base">%s</td><td class="nf-note">%s</td></tr>'
             % ("nf-ours" if ours else "",
                html.escape(name),
                ' <span class="nf-tag">ours</span>' if ours else "",
                r.get("n", "—"),
                w.get("astar", "—"),
                ("%.4g" % adj) if adj is not None else "—", (" " + sat) if sat else "",
-               vcls, html.escape(verdict), carries(r, summary), note))
+               vcls, html.escape(verdict), carries(r, summary), baseline_cell(r, base), note))
     return out
 
 
@@ -147,7 +171,10 @@ def main(argv):
     summary = {}
     if os.path.exists(SUMMARY):
         summary = {e["name"]: e for e in json.load(open(SUMMARY))["rows"]}
-    body = "<tbody>" + "\n      ".join(render_rows(rows, notes, summary)) + "</tbody>"
+    base = {}
+    if os.path.exists(BASELINE):
+        base = {e["name"]: e for e in json.load(open(BASELINE))["rows"]}
+    body = "<tbody>" + "\n      ".join(render_rows(rows, notes, summary, base)) + "</tbody>"
     page = open(PAGE, encoding="utf-8").read()
     new = re.sub(r"<thead>.*?</thead>", lambda _: THEAD, page, count=1, flags=re.S)
     new = re.sub(r"<tbody>.*?</tbody>", lambda _: body, new, count=1, flags=re.S)
@@ -189,6 +216,10 @@ def main(argv):
           % (PAGE, len(rows),
              sum(1 for r in rows if r["name"].startswith("aperture/")),
              sum(1 for r in rows if not r["name"].startswith("aperture/"))))
+    nobase = [r["name"] for r in rows if r.get("status") == "scored" and base
+              and (r["name"] not in base or base[r["name"]].get("sha256") != r.get("sha256"))]
+    if nobase:
+        print("  BASELINE BEHIND THE TABLE (re-run surface_baseline.py --audit): %s" % ", ".join(nobase))
     behind = [r["name"] for r in rows if r.get("status") == "scored" and summary
               and (r["name"] not in summary or summary[r["name"]].get("sha256") != r.get("sha256"))]
     if behind:

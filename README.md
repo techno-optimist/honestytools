@@ -19,7 +19,7 @@ python3 nulltest.py your_benchmark.json --json              # machine-readable
 python3 nulltest.py your_benchmark.json --jobs 8            # permutations in parallel
 python3 nulltest.py your_benchmark.json --explain           # which strings carry the label
 python3 nulltest.py qa_data.json --explode right_answer=0,hallucinated_answer=1   # QA rows
-python3 -m unittest discover -s tests                        # 53 tests, a few seconds
+python3 -m unittest discover -s tests                        # 58 tests, a few seconds
 ```
 
 (`pip install honesttools` is the plan, and `pyproject.toml` is ready for it, but the package is
@@ -36,9 +36,10 @@ python3 -m unittest discover -s tests                        # 53 tests, a few s
 | publish a verdict someone else can check | `--json` writes a receipt with the file's sha256 and the tool's; `--check RECEIPT` replays it |
 | see how published benchmarks fare | the [audit table](https://www.honesty.tools/audit), 20 rows, every one with a URL and a sha256 |
 | know what carries the label in each of them | [AUDIT_DOSSIER.md](AUDIT_DOSSIER.md): every row's full report and `--explain` feature tables, generated, never typed |
+| know the number a detector has to beat | `python3 surface_baseline.py FILE`: held-out accuracy of the six probes together, against the majority rate; see [the number to beat](#the-number-to-beat) |
 | put your benchmark in that table | one manifest entry; see [CONTRIBUTING](CONTRIBUTING.md) or open an [issue](https://github.com/techno-optimist/honestytools/issues/new/choose) |
 | know what the tool cannot see | the measured [false-positive](#what-the-tool-says-about-itself) and power tables, and the [limits](#known-limits--read-these-before-quoting-a-verdict) |
-| one entry point for the toolbox | `honest null FILE`, `honest check RECEIPT FILE`, `honest audit`, `honest fpr null` |
+| one entry point for the toolbox | `honest null FILE`, `honest baseline FILE`, `honest check RECEIPT FILE`, `honest audit`, `honest fpr null` |
 
 ## Who this is for
 
@@ -307,7 +308,7 @@ still be contaminated, circular or mislabelled.
 |---|---|
 | `nulltest.py` | the instrument. `--selftest`, `--calibrate`, `--measure-power`, `--emit-grid` |
 | `nulltest.js` | the same instrument for a browser; `bash nulltest_parity.sh` (needs node) checks the two agree cell by cell. The browser engine scores flat two-class files and shows the WHY tables; `--explode` is command-line only |
-| `tests/` | 53 unit tests: every probe catches the artifact it was written for, the stratified null holds on unequal label rates, the loader refuses to guess and says what it dropped, parallel equals serial, receipts replay |
+| `tests/` | 58 unit tests: every probe catches the artifact it was written for, the stratified null holds on unequal label rates, the loader refuses to guess and says what it dropped, parallel equals serial, receipts replay |
 | `action.yml`, `nulltest_action.sh` | the GitHub Action; the script runs without GitHub too |
 | `CONTRIBUTING.md`, `CHANGELOG.md` | how to add a benchmark to the table, how to change the tool, what shipped and what did not |
 | `nulltest_audit.py` | scores a manifest of published benchmarks and writes the table behind [honesty.tools/audit](https://www.honesty.tools/audit) |
@@ -315,6 +316,9 @@ still be contaminated, circular or mislabelled.
 | `nulltest_audit_results.json` | the table. Every row carries the sha256 of the bytes scored |
 | `AUDIT_DOSSIER.md` | one section per row: what the corpus is, the full verdict, and the `--explain` feature tables that say what carries the label; rendered from the reports, never edited by hand |
 | `nulltest_dossier.py` | renders it: scores every manifest target with `--explain` (cached per row) and writes `AUDIT_DOSSIER.md` |
+| `surface_baseline.py` | the number to beat: nested five-fold held-out accuracy of the six probes combined by a ridge logistic regression, with a Clopper–Pearson interval, against the majority rate; `--audit` scores every manifest target, `--selftest` reports what it says on noise |
+| `surface_baseline_results.json` | that number for every audited benchmark, stamped with the corpus sha256 and the shas of `surface_baseline.py` and `nulltest.py`; `render_audit.py` shows it on the table only when the shas match the row |
+| `surface_baseline_null.json` | the baseline's own null: its gain over the majority rate on no-signal batteries at four sizes (slightly below zero at small n, the protocol's pessimism); gated in CI against the tool's sha |
 | `nulltest_dossier_summary.json` | the dossier's per-row summary (probes, the worst explain cell's reading, dossier anchor, corpus sha256); `render_audit.py` reads it for the table's "what carries it" column and refuses to show a summary rendered from different corpus bytes than the row |
 | `nulltest_grid.json` | the false-positive certificate, sha256-stamped to the tool that produced it |
 | `batteries/` | our own nine batteries, all of them in the table |
@@ -356,6 +360,80 @@ of 222 cells separate, was 77) because ties at the permutation floor are now bro
 size rather than by order of discovery, so a large cell wins over a small cell at A* 1.000; and
 `truth-is-universal/facts` is now marked BORDERLINE (adjusted p 0.038). The table therefore reads
 12 of 17 DISQUALIFIED, 5 of the 12 ours; two rows sit at A* 1.000 and both are ours. Three rows added later the same evening (HaluEval summarization, HaluEval general, RAGTruth) make it 15 of 20.
+
+## The number to beat
+
+`nulltest` says *whether* a surface probe separates the classes. `surface_baseline.py` says *how
+much*: the held-out accuracy all six probes earn together, with no model and without reading the
+question, passage or dialogue an item answers. That is the floor a detector or judge scored on the
+benchmark has to clear before its number says anything about hallucination, truth or familiarity.
+
+```
+python3 surface_baseline.py FILE [--text-key K --label-key K --stratum-key K]   # or: honest baseline FILE
+python3 surface_baseline.py --audit --out surface_baseline_results.json       # every row of the table
+python3 surface_baseline.py --selftest --out surface_baseline_null.json       # what it says on noise
+```
+
+Nested five-fold cross-validation on nulltest's own fold assignment: inside each training fold the
+naive-Bayes probes are scored out-of-fold again, a ridge logistic regression is fitted on those
+scores, and the held-out fold is scored against the whole training fold's counts. No item's label
+touches the score that classifies it. The report carries accuracy with a 95% Clopper–Pearson
+interval, balanced accuracy, AUROC, the majority-class rate, the in-sample accuracy of knowing each
+stratum's label rate, and each probe's held-out AUROC alone. Standard library only, seeded, no
+browser port. It is a *lower* bound on what the surface yields: six features and a linear combiner
+are not an adversary.
+
+Every audited benchmark, from `surface_baseline_results.json` (stamped with the corpus sha256 and
+the shas of `surface_baseline.py` and `nulltest.py`; the table on honesty.tools/audit shows the
+number only when the shas match the row):
+
+| benchmark | n | nulltest verdict | majority | surface baseline (95% CI) | balanced | AUROC |
+|---|---|---|---|---|---|---|
+| aperture/verifydomain-claims-147 | 147 | DISQUALIFIED | 75.5% | **88.4%** [82.1%, 93.1%] | 79.2% | 0.947 |
+| aperture/grounding-coordinate | 162 | DISQUALIFIED (borderline) | 50.0% | **40.7%** [33.1%, 48.7%] | 40.7% | 0.373 |
+| aperture/photon-entities | 103 | DISQUALIFIED | 73.8% | **82.5%** [73.8%, 89.3%] | 71.4% | 0.847 |
+| aperture/prominence-people-v2 | 156 | PASS | 50.0% | **48.7%** [40.6%, 56.8%] | 48.7% | 0.480 |
+| aperture/prominence-people-v1 | 168 | DISQUALIFIED | 50.0% | **61.9%** [54.1%, 69.3%] | 61.9% | 0.632 |
+| aperture/postcutoff-trials-v1 | 702 | PASS | 50.0% | **45.9%** [42.1%, 49.6%] | 45.9% | 0.464 |
+| bielik-entity-familiarity-v2 | 1440 | DISQUALIFIED | 83.3% | **90.0%** [88.3%, 91.5%] | 73.5% | 0.926 |
+| hallucinated-references/gpt-4 | 1000 | DISQUALIFIED | 53.2% | **77.9%** [75.2%, 80.4%] | 77.8% | 0.859 |
+| geometry-of-truth/cities | 1496 | DISQUALIFIED | 50.0% | **80.8%** [78.7%, 82.8%] | 80.8% | 0.871 |
+| geometry-of-truth/sp_en_trans | 354 | PASS | 50.0% | **49.7%** [44.4%, 55.0%] | 49.7% | 0.484 |
+| truth-is-universal/facts | 561 | DISQUALIFIED (borderline) | 50.3% | **59.0%** [54.8%, 63.1%] | 59.0% | 0.625 |
+| truthfulqa/answers | 6028 | DISQUALIFIED | 53.9% | **72.1%** [70.9%, 73.2%] | 71.2% | 0.796 |
+| halueval/qa | 20000 | DISQUALIFIED | 50.0% | **95.4%** [95.1%, 95.7%] | 95.4% | 0.980 |
+| halueval/dialogue | 20000 | DISQUALIFIED | 50.0% | **78.2%** [77.7%, 78.8%] | 78.2% | 0.862 |
+| aperture/knowledge-prominence-v1 | 324 | PASS | 50.0% | **48.8%** [43.2%, 54.4%] | 48.8% | 0.470 |
+| aperture/knowledge-prominence-v2 | 296 | PASS | 50.0% | **51.3%** [45.5%, 57.2%] | 51.3% | 0.518 |
+| aperture/calibration-battery-v1 | 168 | DISQUALIFIED | 50.0% | **92.3%** [87.1%, 95.8%] | 92.3% | 0.980 |
+| halueval/summarization | 20000 | DISQUALIFIED | 50.0% | **87.2%** [86.7%, 87.6%] | 87.2% | 0.945 |
+| halueval/general | 4507 | DISQUALIFIED | 81.9% | **81.8%** [80.7%, 83.0%] | 52.0% | 0.695 |
+| ragtruth/responses | 8000 | DISQUALIFIED | 57.1% | **70.8%** [69.8%, 71.8%] | 68.9% | 0.754 |
+
+Read each row against its prior. HaluEval QA scored by answer alone is 95% solvable from the
+surface; a judge reported at 80% on it has shown nothing yet. On HaluEval general the surface earns
+no accuracy at the 0.5 threshold because 82% of responses are clean, but the AUROC of 0.695 says the
+ranking carries task information; read balanced accuracy and AUROC when the prior is lopsided. On
+RAGTruth the surface (70.8%) is almost exactly the task prior (70.1%): a detector that knows which
+task it is looking at starts there. Our own two worst batteries are 88% and 92% solvable; four of
+ours sit at the prior.
+
+**What it reports on noise.** Cross-validated accuracy on no-signal data sits slightly *below* the
+majority rate at small n, because a combiner fitted to noise generalises a little worse than
+chance. The floor is therefore conservative, and a gain inside the band below is not evidence of a
+surface. From `surface_baseline_null.json` (balanced labels, six strata, random tokens):
+
+| n | null batteries | gain over majority, mean | range | AUROC mean (min) |
+|---|---|---|---|---|
+| 162 | 30 | -2.7 pts | [-11.1, +7.4] | 0.484 (0.397) |
+| 324 | 20 | -3.1 pts | [-8.3, +0.9] | 0.474 (0.398) |
+| 702 | 12 | -0.5 pts | [-4.0, +1.9] | 0.493 (0.450) |
+| 1496 | 8 | -1.5 pts | [-3.1, +0.4] | 0.491 (0.462) |
+
+So `grounding-coordinate` at 40.7% (a gain of −9 points at n=162) is inside this protocol's null
+band, while `prominence-people-v1` at 61.9% (+12 points at n=168) is above it, which is what its
+DISQUALIFIED verdict says in a second way. A verdict comes from `nulltest`; this number says what
+the verdict is worth in accuracy.
 
 ## Run it against us, and against the benchmarks the field uses
 

@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "honesttools"
-version = "0.3.1"
+version = "0.4.0"
 description = "Honesty tools that never take their own word for it — model-free checks for AI of every size, replayable offline."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -43,4 +43,4 @@ honest = "honest:main"
 # are not published to PyPI (they would only pollute the top-level namespace). Phase 1.1 moves
 # these three into a proper `honesttools/` package so the calibrated grid and example batteries can
 # ship as package data (today `honest fpr` degrades honestly when the grid is not installed).
-py-modules = ["honest", "contract", "nulltest"]
+py-modules = ["honest", "contract", "nulltest", "surface_baseline"]

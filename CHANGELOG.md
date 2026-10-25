@@ -4,6 +4,36 @@ Numbers quoted here come from the committed certificates (`nulltest_grid.json`,
 `nulltest_parity.json`, `nulltest_audit_results.json`), which carry the sha256 of the tool that
 produced them. What is listed under *not done* is as much a part of the record as what shipped.
 
+## 0.4.0 — 2026-10-25 — surface_baseline: the number to beat
+
+`nulltest.py` 1.4 is unchanged; its certificates still match. New tool, new certificates.
+
+**Instrument**
+- `surface_baseline.py` (also `honest baseline FILE`): held-out accuracy of the six probes together,
+  nested five-fold on nulltest's fold assignment, ridge logistic combiner, Clopper–Pearson interval,
+  balanced accuracy, AUROC, majority rate, stratum-prior accuracy, per-probe held-out AUROC. Stdlib
+  only. `--audit` scores every manifest target through `nulltest_audit.load_items`; `--selftest`
+  reports what it says on no-signal batteries at four sizes.
+- The stratum label rate is reported beside the baseline, not fed to the combiner: a first version
+  fed it in and scored a small battery balanced within each stratum at 40% accuracy, because the
+  training fold's rate is anti-correlated with the held-out label there. A floor that can sit below
+  chance by construction is not a floor.
+- `render_audit.py` shows the baseline on the table (sha-matched to the row); CI gates
+  `surface_baseline_null.json` against the shas of `surface_baseline.py` and `nulltest.py`.
+
+**Evidence** (`surface_baseline_results.json`, 20 rows)
+- HaluEval QA by answer alone: 95.4% [95.1, 95.7] against a 50% majority. HaluEval summarization
+  87.2%, dialogue 78.2%. TruthfulQA reference answers 72.1% against 53.9%. HaluEval general: no
+  accuracy gain over an 81.9% prior, AUROC 0.695. RAGTruth 70.8% against 57.2%, almost exactly the
+  task prior (70.1%). Ours: calibration-battery-v1 92.3%, verifydomain-claims-147 88.4%,
+  photon-entities 82.5%, prominence-people-v1 61.9%; the other five at the prior.
+- Null (`surface_baseline_null.json`): gain over majority on no-signal batteries −2.7 points mean
+  at n=162 (range −11.1 to +7.4), −0.5 at n=702, −1.5 at n=1496. Conservative by construction.
+- 58 tests.
+
+**Not done**
+- No browser port of the baseline. Still no PyPI release, no outside user, no Actions run.
+
 ## 0.3.1 — 2026-10-24 — audit harness: joins, and "what carries it" on the table
 
 The instrument (`nulltest.py` 1.4) is unchanged; every certificate's tool sha256 still matches.

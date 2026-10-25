@@ -64,6 +64,20 @@ jobs:
               # A check with no denominator printing "0 failures" is this repo's signature bug.
               sys.exit("no certificates were checked — refusing to report success")
           print("checked %d certificate(s) against nulltest.py %s" % (checked, actual[:16]))
+
+          # surface_baseline_null.json is a claim about surface_baseline.py (what it reports on
+          # noise), stamped with that file's sha256 and nulltest's; both must match.
+          sb = hashlib.sha256(open("surface_baseline.py", "rb").read()).hexdigest()
+          if os.path.exists("surface_baseline_null.json"):
+              d = json.load(open("surface_baseline_null.json"))
+              if d.get("tool_sha256") != sb:
+                  bad.append("surface_baseline_null.json: stamped %s but surface_baseline.py is %s"
+                             % (str(d.get("tool_sha256"))[:16], sb[:16]))
+              if d.get("nulltest_sha256") != actual:
+                  bad.append("surface_baseline_null.json: nulltest stamp %s but nulltest.py is %s"
+                             % (str(d.get("nulltest_sha256"))[:16], actual[:16]))
+              checked += 1
+              print("checked surface_baseline_null.json against surface_baseline.py %s" % sb[:16])
           if bad:
               sys.exit("\n".join(bad))
           PY
