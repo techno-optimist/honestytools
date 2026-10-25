@@ -141,7 +141,12 @@ def normalise(items, spec):
     share a row: `explode` maps answer fields to labels and `split` separates several answers in
     one cell, exactly as `nulltest.py --explode/--split` does, so the table and the command line
     cannot disagree. `max_items` draws a seeded subsample (seed 20260724) when a corpus is too
-    large to re-score in CI; the row records how many of how many were scored."""
+    large to re-score in CI; the row records how many of how many were scored.
+
+    Fields may be dotted paths into nested objects (`metadata.report_label`). `label_map` maps
+    label values to 0/1 and drops every other value (a grader's "ambiguous" or a middle grade),
+    and the row records how many were dropped. `zip` (see expand_items) has already turned
+    parallel lists into one item per entry."""
     sk = spec.get("stratum_field")
     if spec.get("explode"):
         nt = _nt()
@@ -158,23 +163,64 @@ def normalise(items, spec):
     pos = set(str(v).lower() for v in spec.get("label_positive", [1, "1", True, "true"]))
     invert = bool(spec.get("invert_label"))
     nonempty = bool(spec.get("label_nonempty"))      # label-1 when the field holds anything at all
+    # label_map: {"value": 0 or 1}. A value not in the map DROPS the item (graders' "ambiguous",
+    # "refusal", middle grades), the way the corpus authors drop them; the row records how many.
+    lmap = {str(k).lower(): int(v) for k, v in (spec.get("label_map") or {}).items()}
     out = []
     for it in items:
-        if tk not in it or lk not in it:
+        t, v = _field(it, tk), _field(it, lk)
+        if t is _MISSING or v is _MISSING:
             continue
-        if nonempty:
+        if lmap:
+            y = lmap.get(str(v).lower())
+            if y is None:
+                continue
+        elif nonempty:
             # span-annotated corpora (RAGTruth) mark a hallucinated response by a non-empty list
             # of spans; a clean response carries an empty list
-            y = 1 if it[lk] else 0
+            y = 1 if v else 0
         else:
-            v = str(it[lk]).lower()
-            y = 1 if v in pos else 0
+            y = 1 if str(v).lower() in pos else 0
         if invert:
             y = 1 - y
-        row = {"entity": str(it[tk]), "label": y}
-        if sk and it.get(sk) is not None:
-            row["category"] = str(it[sk])
+        row = {"entity": str(t), "label": y}
+        c = _field(it, sk) if sk else _MISSING
+        if c is not _MISSING and c is not None:
+            row["category"] = str(c)
         out.append(row)
+    return out
+
+
+_MISSING = object()
+
+
+def _field(it, path):
+    """A manifest field, or a dotted path into nested objects ("metadata.report_label")."""
+    cur = it
+    for part in str(path).split("."):
+        if not isinstance(cur, dict) or part not in cur:
+            return _MISSING
+        cur = cur[part]
+    return cur
+
+
+def expand_items(items, spec):
+    """`zip: [A, B, ...]`: rows that hold PARALLEL LISTS (one model response per entry of A, its
+    grade in the same position of B) become one item per position, the other fields copied.
+    Apollo's deception rollouts store several sampled responses and their grader verdicts this
+    way. Lists of unequal length are a malformed row and are skipped, not truncated."""
+    keys = spec.get("zip")
+    if not keys:
+        return items
+    out = []
+    for it in items:
+        lists = [it.get(k) for k in keys]
+        if not all(isinstance(x, list) for x in lists) or len(set(len(x) for x in lists)) != 1:
+            continue
+        for vals in zip(*lists):
+            row = dict(it)
+            row.update(zip(keys, vals))
+            out.append(row)
     return out
 
 
@@ -215,17 +261,20 @@ def join_items(items, spec, cache_dir=None):
 
 
 def load_items(spec, cache_dir=None):
-    """fetch -> parse -> join -> normalise -> subsample: the one pipeline every scorer uses, so the
+    """fetch -> parse -> zip -> join -> normalise -> subsample: the one pipeline every scorer uses, so the
     audit table, the dossier and the command line cannot score different items."""
     cache_dir = cache_dir or CACHE
     dest = os.path.join(cache_dir, spec.get("cache_as", spec["name"].replace("/", "_")))
     raw, sha = fetch(spec["url"], dest)
     items = parse_items(raw, spec)
+    items = expand_items(items, spec)
     items, unmatched = join_items(items, spec, cache_dir)
+    n_before = len(items)
     items = normalise(items, spec)
     n_total = len(items)
     items = _subsample(items, spec)
-    return items, {"sha256": sha, "bytes": len(raw), "items_total": n_total, "join_unmatched": unmatched}
+    return items, {"sha256": sha, "bytes": len(raw), "items_total": n_total, "join_unmatched": unmatched,
+                   "dropped": n_before - n_total}
 
 
 def _subsample(items, spec):
@@ -280,6 +329,9 @@ def run_one(spec, n_perm=600, verbose=True, jobs=1):
         return row
 
     n_total = info["items_total"]
+    if spec.get("zip") or spec.get("label_map"):
+        # say what the mapping left out (ambiguous grades, refusals), so n is not mistaken for the corpus size
+        row["dropped"] = info["dropped"]
     if spec.get("join"):
         row["join"] = {"url": spec["join"]["url"], "key": spec["join"]["key"],
                        "fields": spec["join"]["fields"], "unmatched": info["join_unmatched"]}

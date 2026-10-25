@@ -62,8 +62,8 @@ and no eulogies for tools that have a documented way back.
 - **`null`** — model-free surface floor. Measures whether a benchmark measures honesty or string
   shape before any score on it is trusted. Apache-2.0, 8-job CI, calibrated 4.0% pooled
   false-positive rate (v1.4: 10 constructions × 500 seeds, stratified null, worst row 4.8%).
-  15 of 20 audited benchmarks fail it; 5 of them are ours; two rows sit at A* 1.000 and both are
-  ours. *(figures updated in place 2026-10-24, three times; the rest of this section is as written.)*
+  19 of 24 audited benchmarks fail it; 5 of them are ours; three rows sit at A* 1.000 and two of
+  them are ours. *(figures updated in place 2026-10-24, three times, and 2026-10-25 for the deception rows; the rest of this section is as written.)*
 - **`gate`** — binds every published numeral to a registry id and fails closed. 0 unannotated
   numerals across 9 live pages.
 - **`verify`** — re-derives a signed verdict from one stdlib+crypto file with no call back to us.

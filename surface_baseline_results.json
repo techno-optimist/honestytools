@@ -847,6 +847,174 @@
     "alpha_last": 0.542
    },
    "headline": "surface baseline: 70.8% held-out accuracy [69.8%, 71.8%] from six probes, against 57.1% for the majority class and 70.1% for knowing each stratum's label rate; balanced accuracy 68.9%, AUROC 0.754."
+  },
+  {
+   "name": "apollo/roleplaying",
+   "label_kind": "honest_vs_deceptive_response",
+   "status": "scored",
+   "sha256": "b80332e391a00cfa8eba758723b63535351d0b71f803e2012426c4d97ef30390",
+   "items_total": 287,
+   "tool": "surface_baseline",
+   "version": "0.1",
+   "nulltest_version": "1.4",
+   "n": 287,
+   "n_label1": 203,
+   "n_label0": 84,
+   "folds": 5,
+   "seed": 20260724,
+   "features": [
+    "lexicality",
+    "words",
+    "length",
+    "shape",
+    "alpha_first",
+    "alpha_last"
+   ],
+   "n_strata": 1,
+   "accuracy": 0.7352,
+   "accuracy_ci95": [
+    0.6801,
+    0.7853
+   ],
+   "balanced_accuracy": 0.5825,
+   "auroc": 0.7131,
+   "majority_accuracy": 0.7073,
+   "stratum_prior_accuracy": 0.7073,
+   "probe_auroc_held_out": {
+    "lexicality": 0.744,
+    "words": 0.746,
+    "length": 0.567,
+    "shape": 0.551,
+    "alpha_first": 0.532,
+    "alpha_last": 0.572
+   },
+   "headline": "surface baseline: 73.5% held-out accuracy [68.0%, 78.5%] from six probes, against 70.7% for the majority class; balanced accuracy 58.2%, AUROC 0.713."
+  },
+  {
+   "name": "apollo/insider-trading-report",
+   "label_kind": "honest_vs_deceptive_response",
+   "status": "scored",
+   "sha256": "73bfa9f8da734d7c435a0641f4e5f464a5c4401b4d102b1f8c152174f90ffd44",
+   "items_total": 1005,
+   "tool": "surface_baseline",
+   "version": "0.1",
+   "nulltest_version": "1.4",
+   "n": 1005,
+   "n_label1": 336,
+   "n_label0": 669,
+   "folds": 5,
+   "seed": 20260724,
+   "features": [
+    "lexicality",
+    "words",
+    "length",
+    "shape",
+    "alpha_first",
+    "alpha_last"
+   ],
+   "n_strata": 1,
+   "accuracy": 0.996,
+   "accuracy_ci95": [
+    0.9898,
+    0.9989
+   ],
+   "balanced_accuracy": 0.9948,
+   "auroc": 0.9988,
+   "majority_accuracy": 0.6657,
+   "stratum_prior_accuracy": 0.6657,
+   "probe_auroc_held_out": {
+    "lexicality": 0.999,
+    "words": 0.999,
+    "length": 0.738,
+    "shape": 0.502,
+    "alpha_first": 0.5,
+    "alpha_last": 0.694
+   },
+   "headline": "surface baseline: 99.6% held-out accuracy [99.0%, 99.9%] from six probes, against 66.6% for the majority class; balanced accuracy 99.5%, AUROC 0.999."
+  },
+  {
+   "name": "apollo/insider-trading-doubledown",
+   "label_kind": "honest_vs_deceptive_response",
+   "status": "scored",
+   "sha256": "73bfa9f8da734d7c435a0641f4e5f464a5c4401b4d102b1f8c152174f90ffd44",
+   "items_total": 655,
+   "tool": "surface_baseline",
+   "version": "0.1",
+   "nulltest_version": "1.4",
+   "n": 655,
+   "n_label1": 631,
+   "n_label0": 24,
+   "folds": 5,
+   "seed": 20260724,
+   "features": [
+    "lexicality",
+    "words",
+    "length",
+    "shape",
+    "alpha_first",
+    "alpha_last"
+   ],
+   "n_strata": 1,
+   "accuracy": 0.974,
+   "accuracy_ci95": [
+    0.9588,
+    0.9848
+   ],
+   "balanced_accuracy": 0.726,
+   "auroc": 0.9804,
+   "majority_accuracy": 0.9634,
+   "stratum_prior_accuracy": 0.9634,
+   "probe_auroc_held_out": {
+    "lexicality": 0.982,
+    "words": 0.982,
+    "length": 0.852,
+    "shape": 0.649,
+    "alpha_first": 0.5,
+    "alpha_last": 0.667
+   },
+   "headline": "surface baseline: 97.4% held-out accuracy [95.9%, 98.5%] from six probes, against 96.3% for the majority class; balanced accuracy 72.6%, AUROC 0.980."
+  },
+  {
+   "name": "apollo/sandbagging",
+   "label_kind": "honest_vs_deceptive_response",
+   "status": "scored",
+   "sha256": "2f57cd2abe2aeb3f47392e6212c982472840591c510118e8149383ec1dcb069c",
+   "items_total": 932,
+   "tool": "surface_baseline",
+   "version": "0.1",
+   "nulltest_version": "1.4",
+   "n": 932,
+   "n_label1": 420,
+   "n_label0": 512,
+   "folds": 5,
+   "seed": 20260724,
+   "features": [
+    "lexicality",
+    "words",
+    "length",
+    "shape",
+    "alpha_first",
+    "alpha_last"
+   ],
+   "n_strata": 2,
+   "accuracy": 0.9936,
+   "accuracy_ci95": [
+    0.986,
+    0.9976
+   ],
+   "balanced_accuracy": 0.9937,
+   "auroc": 0.9998,
+   "majority_accuracy": 0.5494,
+   "stratum_prior_accuracy": 0.9356,
+   "probe_auroc_held_out": {
+    "lexicality": 0.999,
+    "words": 1.0,
+    "length": 0.893,
+    "shape": 0.681,
+    "alpha_first": 0.5,
+    "alpha_last": 0.508
+   },
+   "headline": "surface baseline: 99.4% held-out accuracy [98.6%, 99.8%] from six probes, against 54.9% for the majority class and 93.6% for knowing each stratum's label rate; balanced accuracy 99.4%, AUROC 1.000."
   }
  ]
 }
