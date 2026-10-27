@@ -4,6 +4,26 @@ Numbers quoted here come from the committed certificates (`nulltest_grid.json`,
 `nulltest_parity.json`, `nulltest_audit_results.json`), which carry the sha256 of the tool that
 produced them. What is listed under *not done* is as much a part of the record as what shipped.
 
+## 0.7.1 — 2026-10-26 — the receipt verifier ships with the tools
+
+`nulltest.py` and `nulltest_paired.py` are byte-identical to 0.7.0.
+
+- `verifier/` mirrors the offline verifier published at honesty.tools/verifier, byte for byte. The source is site commit 2813cec. `CHARTER.md` lists `verify`, but until now the repo shipped no verifier code. The mirror holds:
+  - `aperture_verify.py`;
+  - `transparency_log.py`;
+  - `aperture_witness.py`, with `WITNESS_SPEC.md` and `demo_witnesses/`.
+
+  `verifier/SOURCE.sha256` pins the bytes.
+- `tests/test_verifier.py` has 10 tests:
+  - the manifest matches;
+  - RFC 6962 Merkle inclusion and consistency, including a forged leaf and a rewritten history, plus the small-tree hashes from RFC 6962 §2.1 (stdlib only);
+  - with `cryptography` installed: a real read receipt and a real certificate, fetched from www.honesty.tools on 2026-10-26, verify offline under the pinned keys with their recorded leaf hashes; a one-character edit fails; an unpinned key fails; the `aperture_verify` (3/3) and `transparency_log` (8/8) selftests pass;
+  - with `sympy` also installed, the `aperture_witness` selftest passes (67/67).
+
+**Not done:**
+- CI does not install `cryptography`, so in CI only the manifest and Merkle tests run. The receipt tests skip. Adding `pip install cryptography sympy` to the unit-test job needs a workflow edit.
+- The receipt log is still not published as signed tree heads, and there is still no external co-signer. The design (C2SP checkpoints, anchored in Sigstore Rekor v2 or via C2SP witness cosignatures) is drafted but not built.
+
 ## 0.7.0 — 2026-10-26 — the stable/experimental wall, tested; paired mode registered experimental
 
 `nulltest.py` and `nulltest_paired.py` are byte-identical to 0.6.0, so their sha256 values, every
