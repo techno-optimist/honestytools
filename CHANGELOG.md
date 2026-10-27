@@ -4,6 +4,19 @@ Numbers quoted here come from the committed certificates (`nulltest_grid.json`,
 `nulltest_parity.json`, `nulltest_audit_results.json`), which carry the sha256 of the tool that
 produced them. What is listed under *not done* is as much a part of the record as what shipped.
 
+## 0.7.3 — 2026-10-27 — the receipt log is anchored
+
+`nulltest.py` and `nulltest_paired.py` are byte-identical to 0.7.2.
+
+- New receipt-log signing key, held by Kevin Russell. It was generated on the DGX and stays there. The public key, fingerprint `d1f9d938…a76342` and the keyholder statement are in `keys/`.
+- The genesis checkpoint (C2SP format, 22 leaves, root `890d25bd…`) is anchored in Sigstore Rekor v2 `log2025-1` at index 171316570. Details are in `ANCHORING.md`.
+- `verifier/` is re-mirrored from site commit f1f2b50 and adds the following:
+  - `transparency_log.py verify-checkpoint`, `verify-anchor` and `keys`;
+  - `verifier/log/`;
+  - `SOURCE.sha256` now pins 17 files.
+- `tests/test_verifier.py` adds 4 anchor tests. A tampered checkpoint or a wrong log index fails.
+- *Not done:* no RFC 3161 timestamp, no witness enrolment, and no re-anchoring schedule. Database-only read receipts are not in the genesis tree.
+
 ## 0.7.2 — 2026-10-26 — FLOOR: certificates can say "not certifiable"
 
 `nulltest.py` and `nulltest_paired.py` are byte-identical to 0.7.1.

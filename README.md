@@ -19,7 +19,7 @@ python3 nulltest.py your_benchmark.json --json              # machine-readable
 python3 nulltest.py your_benchmark.json --jobs 8            # permutations in parallel
 python3 nulltest.py your_benchmark.json --explain           # which strings carry the label
 python3 nulltest.py qa_data.json --explode right_answer=0,hallucinated_answer=1   # QA rows
-python3 -m unittest discover -s tests                        # 63 tests, a few seconds
+python3 -m unittest discover -s tests                        # 112 tests, a few seconds
 ```
 
 (`pip install honesttools` is the plan, and `pyproject.toml` is ready for it, but the package is
