@@ -4,6 +4,41 @@ Numbers quoted here come from the committed certificates (`nulltest_grid.json`,
 `nulltest_parity.json`, `nulltest_audit_results.json`), which carry the sha256 of the tool that
 produced them. What is listed under *not done* is as much a part of the record as what shipped.
 
+## 0.6.0 — 2026-10-26 — nulltest paired mode
+
+`nulltest.py` 1.4 is byte-identical: its sha256 does not change, so every committed certificate
+(`nulltest_grid.json`, `nulltest_parity.json`, `surface_baseline_null.json`) and every published
+receipt still describes the code beside it, and `--check` on an old receipt replays as before.
+Paired mode was first written as a `--pair-key` flag inside `nulltest.py`; that would have changed
+the tool hash and failed the `certificates` gate, so it ships as its own module. Old receipts'
+verdicts are unaffected either way: the unpaired path was never touched.
+
+**Instrument**
+- `nulltest_paired.py` (also `honest paired FILE --pair-key F`): for matched pairs (one label-0, one
+  label-1 per pair key; under `--explode` use `--pair-key _row`). Statistic per probe and stratum:
+  A*_pair = max(w, 1-w), w = share of pairs where the label-1 member outscores the label-0 member
+  (ties 1/2). Folds grouped by pair. Null: each pair's labels swapped with probability 1/2, every
+  fitted probe refit. Westfall-Young min-p over the family, same pool rule and permutation floor
+  rule as v1.4. Pairs that are not exactly 1-vs-1 are dropped and counted.
+- 9 tests (`tests/test_nulltest_paired.py`), including one that fails if the flag is ever moved into
+  `nulltest.py`.
+
+**Evidence** (runs on the Judging-by-the-Cover binary TruthfulQA sets, arXiv 2609.13003, stratified
+by TruthfulQA category)
+- 790 pairs: DISQUALIFIED, words A*_pair 0.825, adjusted p 0.0038 over 226 cells.
+- 476 pairs (the paper's cleaned subset): DISQUALIFIED, lexicality A*_pair 0.762, adjusted p 0.0027
+  over 223 cells. Unpaired nulltest 1.4 had given this set a borderline PASS (length A* 0.551,
+  adjusted p 0.0649).
+- Calibration on the real 476 texts with labels coin-flipped inside each pair (null true by
+  construction): 5 of 100 rejections at alpha 0.05, 200 permutations each.
+
+**Known CI red, not caused by this change**: the `pip install .` job has failed on main since
+PR #9, because `python -m nulltest` exits 1 on a DISQUALIFIED verdict by design and the step runs
+under `bash -e`. The fix is a workflow edit, which needs a token with `workflow` scope.
+
+**Not done**: no JS port of paired mode, so the browser checker cannot run it; no power grid for
+paired mode yet.
+
 ## 0.5.0 — 2026-10-25 — surface_match: repair, verified held-out
 
 `nulltest.py` 1.4 and `surface_baseline.py` are unchanged; their certificates still match.
