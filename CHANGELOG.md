@@ -4,6 +4,19 @@ Numbers quoted here come from the committed certificates (`nulltest_grid.json`,
 `nulltest_parity.json`, `nulltest_audit_results.json`), which carry the sha256 of the tool that
 produced them. What is listed under *not done* is as much a part of the record as what shipped.
 
+## 0.7.2 — 2026-10-26 — FLOOR: certificates can say "not certifiable"
+
+`nulltest.py` and `nulltest_paired.py` are byte-identical to 0.7.1.
+
+- The flagship benchmark is named FLOOR. `benchmark/` holds Phase 1, the certified splits.
+- Certificates use format `floor/certificate/v1` and carry one of three statuses: `CERTIFIED`, `NOT_CERTIFIED`, or the new `NOT_CERTIFIABLE`.
+  - The filter stops at a floor of max(50% of source pairs, 320 pairs).
+  - If cues still fire there, or the source is smaller than the floor, the dataset is labelled not certifiable instead of being filtered down to a remnant.
+  - 320 is the smallest n at which an exact sign test at 0.05/8 has 80% power against a 60/40 held-out probe.
+- TruthfulQA (790 pairs) is **NOT_CERTIFIABLE**. At 405 pairs the paired, unpaired and held-out gates all still fail. The earlier unconstrained result (49 pairs, NOT_CERTIFIED) is kept as `certificate.v0-unconstrained.json`.
+- Phase 1b option A (`balance_negation.py`) selects existing pairs, with no rewriting, so negation is balanced within each category. It keeps 491 pairs and is **NOT_CERTIFIED**: char n-gram 0.772 and hedge 0.580 still fire. Its negation pass is circular by construction.
+- `tests/test_floor.py` covers the status rule, the floor and the selector.
+
 ## 0.7.1 — 2026-10-26 — the receipt verifier ships with the tools
 
 `nulltest.py` and `nulltest_paired.py` are byte-identical to 0.7.0.
