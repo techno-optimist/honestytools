@@ -20,9 +20,10 @@ Retraction was treated as an edit to prose. The unit that actually propagates is
 WHAT THIS CHECKS
 
   1. UNANNOTATED FIGURES.  Any element whose text carries a benchmark-shaped numeral must declare
-     data-claim="<registry-id>". This rule fails CLOSED — a new unannotated number is a failure, so
-     coverage cannot silently rot. It is the load-bearing rule; the rest only work on what it forces
-     to be labelled.
+     data-claim="<registry-id>". Under --strict this rule fails CLOSED — a new unannotated number
+     is a failure, so coverage cannot silently rot. Without --strict (the default) it only WARNS and
+     prints the count, so a default run exiting 0 does not mean every figure is annotated. It is the
+     load-bearing rule; the rest only work on what it forces to be labelled.
 
   2. RETRACTED SOURCES.  If data-claim names a registry entry whose status is falsified-negative,
      retracted or withdrawn, the element must itself render the withdrawal — a <s> strike or the
@@ -39,7 +40,8 @@ WHAT THIS CHECKS
 
 Rule 4 alone would have caught the 17-vs-16. Rule 1 would have caught all four pages.
 
-    python3 claim_gate.py                 # check the served tree
+    python3 claim_gate.py                 # check the served tree (rule 1 warns only)
+    python3 claim_gate.py --strict        # same, but unannotated figures fail the run
     python3 claim_gate.py --retract <id>  # every file:line citing a registry id, plus every
                                           # distinct numeral inside those elements, then every
                                           # unannotated occurrence of those numerals tree-wide
