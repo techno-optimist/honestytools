@@ -135,7 +135,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "${{ matrix.python }}" }
-      - name: stdlib unittest, no dependencies
+      # The tools themselves stay stdlib-only. These two are installed so the receipt-verifier tests
+      # (cryptography) and the aperture_witness math-cell selftest (sympy) run instead of skipping.
+      - name: install the verifier's test dependencies
+        run: python3 -m pip install --quiet cryptography sympy
+      - name: stdlib unittest
         run: python3 -W error::ResourceWarning -m unittest discover -s tests -v
 
   parity:
