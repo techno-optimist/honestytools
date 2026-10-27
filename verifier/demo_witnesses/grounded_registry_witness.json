@@ -1,0 +1,86 @@
+{
+  "schema": "aperture.witness/v1",
+  "cell": "grounded_registry",
+  "answer_sha256": "bc81039dc554f0d2d09126a89048737ec65a65a39e28f73a32219c73a4b32919",
+  "emitted_at": "2026-07-24T21:56:26Z",
+  "emitted_with": {
+    "interpreter": "cpython-3.14.2"
+  },
+  "claim": {
+    "kind": "fact_grounding",
+    "fact_id": "reg:math:pi_decimal_6dp",
+    "asserted_values": [
+      {
+        "answer_span": [
+          36,
+          44
+        ],
+        "fact_field": "object",
+        "norm": "exact"
+      }
+    ]
+  },
+  "witness": {
+    "fact": {
+      "fact_id": "reg:math:pi_decimal_6dp",
+      "subject": "pi",
+      "predicate": "decimal_expansion_6dp",
+      "object": "3.141593",
+      "unit": null,
+      "source": "OEIS A000796",
+      "as_of": "2024-01-01"
+    },
+    "leaf_index": 7,
+    "tree_size": 12,
+    "audit_path": [
+      "5e90a0cd7176b7b714853e1b366c35c7278c441a9932a4d5e6448fbb504b4f80",
+      "5d1008c736a94bc4e6a5054a914cbedaa04905d42b6dfdd39c3df5cb128e0233",
+      "7fa2483305f7562bb91eb2321ff65997b7806315a00b613406d5d9368fc19c37",
+      "6729f9982c89d2e2009b934fff9de34f33ca8a5a15422118557cdc4d416ac9a5"
+    ],
+    "registry_root": {
+      "schema": "aperture.registry.root/v1",
+      "epoch": "2026-07-18T00:00:00Z",
+      "tree_size": 12,
+      "root_sha256": "d60ad86fd00df0b3f7b6b8fd5f03a536b1ee741dce8bcb9066a29ffa83a4a45a",
+      "leaf_order": "fact_id_ascending",
+      "prev_epoch": "2026-07-11T00:00:00Z",
+      "prev_tree_size": 10,
+      "trust": "operator_self_signed",
+      "signature": {
+        "alg": "ed25519",
+        "pub": "kV1vJ9LRSpppJeUjwjDenhv9Cha43WPQUNAjNOs5IcI=",
+        "sig": "LYfZjpl7zy5R0AV9XMgXSEDMSlRVvC7fuFQqECiQ6C4czUdrrsYKA5r3EpqSJVoIqLkD/knmRrc2HlaHzWskCA=="
+      }
+    },
+    "consistency_path": [
+      "592cadea600cb6190ece8e6637312c84cd09f2b5d395ac92f9afa16b5dc57a39",
+      "145af81ef7c261b872906f5d3127c6841b022cc1f974fa4d35b762630b2f8111",
+      "04bb1232c41a02b2415df4db788a5ebf4b44e6616acbaeffc5d610747085f5fd"
+    ],
+    "token_trace": [
+      {
+        "answer_span": [
+          36,
+          44
+        ],
+        "fact_field": "object",
+        "fact_span": [
+          0,
+          8
+        ],
+        "norm": "exact"
+      }
+    ],
+    "unwitnessed_byte_ranges": [
+      [
+        0,
+        36
+      ],
+      [
+        44,
+        87
+      ]
+    ]
+  }
+}

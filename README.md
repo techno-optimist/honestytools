@@ -310,7 +310,7 @@ still be contaminated, circular or mislabelled.
 |---|---|
 | `nulltest.py` | the instrument. `--selftest`, `--calibrate`, `--measure-power`, `--emit-grid` |
 | `nulltest.js` | the same instrument for a browser; `bash nulltest_parity.sh` (needs node) checks the two agree cell by cell. The browser engine scores flat two-class files and shows the WHY tables; `--explode` is command-line only |
-| `tests/` | 63 unit tests: every probe catches the artifact it was written for, the stratified null holds on unequal label rates, the loader refuses to guess and says what it dropped, parallel equals serial, receipts replay |
+| `tests/` | 98 unit tests: every probe catches the artifact it was written for, the stratified null holds on unequal label rates, the loader refuses to guess and says what it dropped, parallel equals serial, receipts replay, the stable/experimental wall holds, the verifier mirror matches its source and verifies real receipts |
 | `action.yml`, `nulltest_action.sh` | the GitHub Action; the script runs without GitHub too |
 | `CONTRIBUTING.md`, `CHANGELOG.md` | how to add a benchmark to the table, how to change the tool, what shipped and what did not |
 | `nulltest_audit.py` | scores a manifest of published benchmarks and writes the table behind [honesty.tools/audit](https://www.honesty.tools/audit) |
@@ -326,6 +326,7 @@ still be contaminated, circular or mislabelled.
 | `nulltest_dossier_summary.json` | the dossier's per-row summary (probes, the worst explain cell's reading, dossier anchor, corpus sha256); `render_audit.py` reads it for the table's "what carries it" column and refuses to show a summary rendered from different corpus bytes than the row |
 | `nulltest_grid.json` | the false-positive certificate, sha256-stamped to the tool that produced it |
 | `batteries/` | our own nine batteries, all of them in the table |
+| `verifier/` | the offline verifier for signed honesty.tools receipts and certificates (`aperture_verify.py`), the RFC 6962 receipt log primitives (`transparency_log.py`) and the witness checker (`aperture_witness.py`). Byte-identical mirror of [honesty.tools/verifier](https://www.honesty.tools/verifier/aperture_verify.py), pinned by `verifier/SOURCE.sha256`; needs `cryptography`. A pass is provenance, not truth |
 | `honest.py`, `contract.py` | the toolbox entry point (`honest null`, `honest check`, `honest audit`, `honest fpr`) and the four-method tool contract; see `CHARTER.md` |
 | `render_audit.py`, `claim_gate.py`, `null_floor_reconcile.py`, `demo.sh` | the harness we run against our own site; they expect the site tree beside them and do nothing useful in a bare checkout |
 
