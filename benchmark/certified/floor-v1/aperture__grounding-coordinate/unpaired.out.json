@@ -1,0 +1,425 @@
+{
+ "tool": "nulltest",
+ "version": "1.4",
+ "probes": [
+  "lexicality",
+  "words",
+  "length",
+  "shape",
+  "alpha_first",
+  "alpha_last"
+ ],
+ "n": 162,
+ "n_fake": 81,
+ "n_real": 81,
+ "strata": [
+  "drugs_compounds",
+  "eponymous_signs",
+  "eponymous_theorems",
+  "firms",
+  "obscure_people",
+  "two_author_papers"
+ ],
+ "min_cell": 12,
+ "n_perm": 1500,
+ "n_perm_requested": 600,
+ "alpha": 0.05,
+ "family_size": 35,
+ "correction": "westfall_young_min_p",
+ "null": "labels shuffled within stratum (stratified permutation), every probe refit",
+ "label_rate_by_stratum": {
+  "drugs_compounds": {
+   "n": 28,
+   "label1_rate": 0.5
+  },
+  "eponymous_signs": {
+   "n": 28,
+   "label1_rate": 0.5
+  },
+  "eponymous_theorems": {
+   "n": 28,
+   "label1_rate": 0.5
+  },
+  "firms": {
+   "n": 22,
+   "label1_rate": 0.5
+  },
+  "obscure_people": {
+   "n": 28,
+   "label1_rate": 0.5
+  },
+  "two_author_papers": {
+   "n": 28,
+   "label1_rate": 0.5
+  }
+ },
+ "nulls": {
+  "lexicality": {
+   "per_stratum": {
+    "drugs_compounds": {
+     "n": 28,
+     "astar": 0.551,
+     "threshold": 0.76,
+     "raw_p": 0.7508,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "eponymous_signs": {
+     "n": 28,
+     "astar": 0.791,
+     "threshold": 0.77,
+     "raw_p": 0.0326,
+     "adj_p": 0.6269,
+     "separates": false,
+     "underpowered": false
+    },
+    "eponymous_theorems": {
+     "n": 28,
+     "astar": 0.878,
+     "threshold": 0.786,
+     "raw_p": 0.004,
+     "adj_p": 0.1099,
+     "separates": false,
+     "underpowered": false
+    },
+    "firms": {
+     "n": 22,
+     "astar": 0.603,
+     "threshold": 0.769,
+     "raw_p": 0.491,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "obscure_people": {
+     "n": 28,
+     "astar": 0.638,
+     "threshold": 0.74,
+     "raw_p": 0.2838,
+     "adj_p": 0.9993,
+     "separates": false,
+     "underpowered": false
+    },
+    "two_author_papers": {
+     "n": 28,
+     "astar": 0.638,
+     "threshold": 0.801,
+     "raw_p": 0.427,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  },
+  "words": {
+   "per_stratum": {
+    "eponymous_signs": {
+     "n": 28,
+     "astar": 0.747,
+     "threshold": 0.768,
+     "raw_p": 0.0939,
+     "adj_p": 0.9567,
+     "separates": false,
+     "underpowered": false
+    },
+    "eponymous_theorems": {
+     "n": 28,
+     "astar": 0.842,
+     "threshold": 0.76,
+     "raw_p": 0.0033,
+     "adj_p": 0.0899,
+     "separates": false,
+     "underpowered": false
+    },
+    "firms": {
+     "n": 22,
+     "astar": 0.504,
+     "threshold": 0.591,
+     "raw_p": 0.8401,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "obscure_people": {
+     "n": 28,
+     "astar": 0.633,
+     "threshold": 0.643,
+     "raw_p": 0.1692,
+     "adj_p": 0.998,
+     "separates": false,
+     "underpowered": false
+    },
+    "two_author_papers": {
+     "n": 28,
+     "astar": 0.556,
+     "threshold": 0.798,
+     "raw_p": 0.7249,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  },
+  "length": {
+   "per_stratum": {
+    "drugs_compounds": {
+     "n": 28,
+     "astar": 0.645,
+     "threshold": 0.709,
+     "raw_p": 0.1905,
+     "adj_p": 0.9993,
+     "separates": false,
+     "underpowered": false
+    },
+    "eponymous_signs": {
+     "n": 28,
+     "astar": 0.855,
+     "threshold": 0.719,
+     "raw_p": 0.0013,
+     "adj_p": 0.0366,
+     "separates": true,
+     "underpowered": false
+    },
+    "eponymous_theorems": {
+     "n": 28,
+     "astar": 0.668,
+     "threshold": 0.724,
+     "raw_p": 0.1359,
+     "adj_p": 0.9887,
+     "separates": false,
+     "underpowered": false
+    },
+    "firms": {
+     "n": 22,
+     "astar": 0.632,
+     "threshold": 0.748,
+     "raw_p": 0.3231,
+     "adj_p": 0.9993,
+     "separates": false,
+     "underpowered": false
+    },
+    "obscure_people": {
+     "n": 28,
+     "astar": 0.691,
+     "threshold": 0.712,
+     "raw_p": 0.0886,
+     "adj_p": 0.946,
+     "separates": false,
+     "underpowered": false
+    },
+    "two_author_papers": {
+     "n": 28,
+     "astar": 0.663,
+     "threshold": 0.724,
+     "raw_p": 0.1606,
+     "adj_p": 0.9973,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  },
+  "shape": {
+   "per_stratum": {
+    "drugs_compounds": {
+     "n": 28,
+     "astar": 0.699,
+     "threshold": 0.786,
+     "raw_p": 0.2265,
+     "adj_p": 0.9993,
+     "separates": false,
+     "underpowered": false
+    },
+    "eponymous_signs": {
+     "n": 28,
+     "astar": 0.638,
+     "threshold": 0.75,
+     "raw_p": 0.3011,
+     "adj_p": 0.9993,
+     "separates": false,
+     "underpowered": false
+    },
+    "eponymous_theorems": {
+     "n": 28,
+     "astar": 0.543,
+     "threshold": 0.76,
+     "raw_p": 0.7761,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "firms": {
+     "n": 22,
+     "astar": 0.533,
+     "threshold": 0.769,
+     "raw_p": 0.8221,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "obscure_people": {
+     "n": 28,
+     "astar": 0.656,
+     "threshold": 0.74,
+     "raw_p": 0.1925,
+     "adj_p": 0.9993,
+     "separates": false,
+     "underpowered": false
+    },
+    "two_author_papers": {
+     "n": 28,
+     "astar": 0.615,
+     "threshold": 0.793,
+     "raw_p": 0.6929,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  },
+  "alpha_first": {
+   "per_stratum": {
+    "drugs_compounds": {
+     "n": 28,
+     "astar": 0.515,
+     "threshold": 0.714,
+     "raw_p": 0.8854,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "eponymous_signs": {
+     "n": 28,
+     "astar": 0.556,
+     "threshold": 0.714,
+     "raw_p": 0.6422,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "eponymous_theorems": {
+     "n": 28,
+     "astar": 0.51,
+     "threshold": 0.719,
+     "raw_p": 0.9487,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "firms": {
+     "n": 22,
+     "astar": 0.587,
+     "threshold": 0.74,
+     "raw_p": 0.5017,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "obscure_people": {
+     "n": 28,
+     "astar": 0.515,
+     "threshold": 0.719,
+     "raw_p": 0.8887,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "two_author_papers": {
+     "n": 28,
+     "astar": 0.612,
+     "threshold": 0.719,
+     "raw_p": 0.3158,
+     "adj_p": 0.9993,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  },
+  "alpha_last": {
+   "per_stratum": {
+    "drugs_compounds": {
+     "n": 28,
+     "astar": 0.515,
+     "threshold": 0.714,
+     "raw_p": 0.8854,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "eponymous_signs": {
+     "n": 28,
+     "astar": 0.577,
+     "threshold": 0.689,
+     "raw_p": 0.4151,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "eponymous_theorems": {
+     "n": 28,
+     "astar": 0.5,
+     "threshold": 0.689,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "firms": {
+     "n": 22,
+     "astar": 0.533,
+     "threshold": 0.74,
+     "raw_p": 0.8215,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "obscure_people": {
+     "n": 28,
+     "astar": 0.633,
+     "threshold": 0.712,
+     "raw_p": 0.2285,
+     "adj_p": 0.9993,
+     "separates": false,
+     "underpowered": false
+    },
+    "two_author_papers": {
+     "n": 28,
+     "astar": 0.643,
+     "threshold": 0.714,
+     "raw_p": 0.2059,
+     "adj_p": 0.9993,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  }
+ },
+ "underpowered_cells": [],
+ "n_perm_note": "600 permutations requested; 35 cells need at least 1500 to resolve alpha=0.05 under min-p, so 1500 were run.",
+ "worst_cell": {
+  "astar": 0.855,
+  "adj_p": 0.0366,
+  "raw_p": 0.0013,
+  "null": "length",
+  "stratum": "eponymous_signs",
+  "n": 28,
+  "threshold": 0.719,
+  "underpowered": false
+ },
+ "n_separating_cells": 1,
+ "verdict": "DISQUALIFIED",
+ "borderline": true,
+ "borderline_note": "DISQUALIFIED, but the worst cell's family-adjusted p (0.0366) is within a factor of two of alpha (0.05). Treat this as 'close to the line at this n and this family size', not as settled. More items, or a different family size, could flip it either way.",
+ "headline": "worst cell A* = 0.855 in length/eponymous_signs (n=28), family-adjusted p = 0.0366 over 35 cells",
+ "p_floor": 0.000666,
+ "saturated": false,
+ "power": {
+  "n": 162,
+  "measured_mde": 0.6,
+  "mde_basis": "one planted spelling/length artifact (a character appended to a fraction of the label-1 items) in a single stratum, 4 seeds; a wider family, a smaller cell or an artifact of another shape lowers power below this",
+  "comparable_across_batteries": false,
+  "note_on_comparison": "A* depends on n. Do not rank this battery against one of a different size: cities.csv is DISQUALIFIED at n=1496 and PASSES 5 of 5 subsamples at n=354.",
+  "reading": "DISQUALIFIED at n=162, which is above the measured detection threshold (~60% coverage) \u2014 the artifact is large enough to see at this size."
+ },
+ "scope": "SCOPE: this measures how much of the label signal is recoverable from SURFACE FORM alone by six model-free probes, two-sided, refit inside every permutation (labels shuffled within stratum) and family-wise corrected across all cells (Westfall-Young min-p). A PASS does NOT certify the benchmark is good: it cannot see circularity (labels drawn from the same store the system under test retrieves from), contamination, or mislabelling. It scores no model."
+}

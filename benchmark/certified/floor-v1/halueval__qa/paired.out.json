@@ -1,0 +1,128 @@
+{
+ "tool": "nulltest",
+ "version": "1.4",
+ "mode": "paired",
+ "paired_version": "0.1",
+ "probes": [
+  "lexicality",
+  "words",
+  "length",
+  "shape",
+  "alpha_first",
+  "alpha_last"
+ ],
+ "n_items": 2054,
+ "n_pairs": 1027,
+ "pairs_dropped_not_1v1": 0,
+ "items_without_pair_key": 0,
+ "pair_key": "_row",
+ "strata": [
+  "_all"
+ ],
+ "alpha": 0.05,
+ "family_size": 6,
+ "correction": "westfall_young_min_p",
+ "null": "labels swapped within each pair with probability 1/2 (sign flip), every probe refit",
+ "statistic": "A*_pair = max(w, 1-w), w = share of pairs where label-1 outscores label-0 (ties 1/2)",
+ "folds": "grouped by pair (both members held out together)",
+ "nulls": {
+  "lexicality": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 1027,
+     "astar_pair": 0.963,
+     "threshold": 0.539,
+     "raw_p": 0.0017,
+     "adj_p": 0.0033,
+     "separates": true,
+     "underpowered": false
+    }
+   }
+  },
+  "words": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 1027,
+     "astar_pair": 0.947,
+     "threshold": 0.536,
+     "raw_p": 0.0017,
+     "adj_p": 0.0033,
+     "separates": true,
+     "underpowered": false
+    }
+   }
+  },
+  "length": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 1027,
+     "astar_pair": 0.954,
+     "threshold": 0.53,
+     "raw_p": 0.0017,
+     "adj_p": 0.0033,
+     "separates": true,
+     "underpowered": false
+    }
+   }
+  },
+  "shape": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 1027,
+     "astar_pair": 0.963,
+     "threshold": 0.538,
+     "raw_p": 0.0017,
+     "adj_p": 0.0033,
+     "separates": true,
+     "underpowered": false
+    }
+   }
+  },
+  "alpha_first": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 1027,
+     "astar_pair": 0.648,
+     "threshold": 0.526,
+     "raw_p": 0.0017,
+     "adj_p": 0.0033,
+     "separates": true,
+     "underpowered": false
+    }
+   }
+  },
+  "alpha_last": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 1027,
+     "astar_pair": 0.521,
+     "threshold": 0.526,
+     "raw_p": 0.1281,
+     "adj_p": 0.5374,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  }
+ },
+ "n_perm_requested": 600,
+ "n_perm": 600,
+ "worst_cell": {
+  "n_pairs": 1027,
+  "astar_pair": 0.963,
+  "threshold": 0.538,
+  "raw_p": 0.0017,
+  "adj_p": 0.0033,
+  "separates": true,
+  "underpowered": false,
+  "null": "shape",
+  "stratum": "_all"
+ },
+ "n_separating_cells": 5,
+ "verdict": "DISQUALIFIED",
+ "borderline": false,
+ "p_floor": 0.001664,
+ "saturated": false,
+ "headline": "worst cell A*_pair = 0.963 in shape/_all (1027 pairs), family-adjusted p = 0.0033 over 6 cells",
+ "scope": "SCOPE: this measures how much of the label signal is recoverable from SURFACE FORM alone by six model-free probes, two-sided, refit inside every permutation (labels shuffled within stratum) and family-wise corrected across all cells (Westfall-Young min-p). A PASS does NOT certify the benchmark is good: it cannot see circularity (labels drawn from the same store the system under test retrieves from), contamination, or mislabelling. It scores no model."
+}

@@ -1,0 +1,184 @@
+{
+ "kept": {
+  "family": "held-out (never used by the filter)",
+  "backend": "heldout_np",
+  "probes": {
+   "negation": {
+    "astar": 0.502,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.304,
+    "adj_p": 0.9,
+    "separates": false
+   },
+   "hedge": {
+    "astar": 0.5,
+    "direction": "none",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "function": {
+    "astar": 0.508,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.057,
+    "adj_p": 0.303,
+    "separates": false
+   },
+   "punct": {
+    "astar": 0.591,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "digits": {
+    "astar": 0.502,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.597,
+    "adj_p": 0.995,
+    "separates": false
+   },
+   "caps": {
+    "astar": 0.541,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "word_len": {
+    "astar": 0.534,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.0985,
+    "adj_p": 0.466,
+    "separates": false
+   },
+   "char_ngram": {
+    "astar": 0.846,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   }
+  },
+  "n_items": 1440,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "worst": "char_ngram",
+  "separating": [
+   "punct",
+   "caps",
+   "char_ngram"
+  ],
+  "verdict": "DISQUALIFIED",
+  "borderline": false,
+  "headline": "worst held-out probe char_ngram: A* 0.846, adjusted p 0.0004998 over 8 probes",
+  "strata": [
+   "athletes",
+   "cities",
+   "musicians",
+   "writers"
+  ],
+  "null": "labels permuted within stratum, char_ngram refit",
+  "negation_check": {
+   "items": 1440,
+   "mean_negation_label1": 0.0042,
+   "mean_negation_label0": 0.0008,
+   "items_with_negation": 2,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 0.304,
+   "cue_present": false
+  }
+ },
+ "source": {
+  "family": "held-out (never used by the filter)",
+  "backend": "heldout_np",
+  "probes": {
+   "negation": {
+    "astar": 0.502,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.304,
+    "adj_p": 0.9,
+    "separates": false
+   },
+   "hedge": {
+    "astar": 0.5,
+    "direction": "none",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "function": {
+    "astar": 0.508,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.057,
+    "adj_p": 0.303,
+    "separates": false
+   },
+   "punct": {
+    "astar": 0.591,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "digits": {
+    "astar": 0.502,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.597,
+    "adj_p": 0.995,
+    "separates": false
+   },
+   "caps": {
+    "astar": 0.541,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "word_len": {
+    "astar": 0.534,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.0985,
+    "adj_p": 0.466,
+    "separates": false
+   },
+   "char_ngram": {
+    "astar": 0.846,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   }
+  },
+  "n_items": 1440,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "worst": "char_ngram",
+  "separating": [
+   "punct",
+   "caps",
+   "char_ngram"
+  ],
+  "verdict": "DISQUALIFIED",
+  "borderline": false,
+  "headline": "worst held-out probe char_ngram: A* 0.846, adjusted p 0.0004998 over 8 probes",
+  "strata": [
+   "athletes",
+   "cities",
+   "musicians",
+   "writers"
+  ],
+  "null": "labels permuted within stratum, char_ngram refit",
+  "negation_check": {
+   "items": 1440,
+   "mean_negation_label1": 0.0042,
+   "mean_negation_label0": 0.0008,
+   "items_with_negation": 2,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 0.304,
+   "cue_present": false
+  }
+ }
+}

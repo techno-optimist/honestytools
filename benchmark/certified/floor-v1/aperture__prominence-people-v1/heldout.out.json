@@ -1,0 +1,170 @@
+{
+ "kept": {
+  "family": "held-out (never used by the filter)",
+  "backend": "heldout_np",
+  "probes": {
+   "negation": {
+    "astar": 0.5,
+    "direction": "none",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "hedge": {
+    "astar": 0.5,
+    "direction": "none",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "function": {
+    "astar": 0.5,
+    "direction": "label-0 scores higher",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "punct": {
+    "astar": 0.512,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.554,
+    "adj_p": 0.952,
+    "separates": false
+   },
+   "digits": {
+    "astar": 0.5,
+    "direction": "none",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "caps": {
+    "astar": 0.554,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0585,
+    "adj_p": 0.199,
+    "separates": false
+   },
+   "word_len": {
+    "astar": 0.553,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.236,
+    "adj_p": 0.68,
+    "separates": false
+   },
+   "char_ngram": {
+    "astar": 0.598,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.11,
+    "adj_p": 0.285,
+    "separates": false
+   }
+  },
+  "n_items": 168,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "worst": "caps",
+  "separating": [],
+  "verdict": "PASS",
+  "borderline": false,
+  "headline": "worst held-out probe caps: A* 0.554, adjusted p 0.1989 over 8 probes",
+  "strata": [
+   "_all"
+  ],
+  "null": "labels permuted within stratum, char_ngram refit",
+  "negation_check": {
+   "items": 168,
+   "mean_negation_label1": 0.0,
+   "mean_negation_label0": 0.0,
+   "items_with_negation": 0,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 1.0,
+   "cue_present": false
+  }
+ },
+ "source": {
+  "family": "held-out (never used by the filter)",
+  "backend": "heldout_np",
+  "probes": {
+   "negation": {
+    "astar": 0.5,
+    "direction": "none",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "hedge": {
+    "astar": 0.5,
+    "direction": "none",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "function": {
+    "astar": 0.5,
+    "direction": "label-0 scores higher",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "punct": {
+    "astar": 0.512,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.554,
+    "adj_p": 0.952,
+    "separates": false
+   },
+   "digits": {
+    "astar": 0.5,
+    "direction": "none",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "caps": {
+    "astar": 0.554,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0585,
+    "adj_p": 0.199,
+    "separates": false
+   },
+   "word_len": {
+    "astar": 0.553,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.236,
+    "adj_p": 0.68,
+    "separates": false
+   },
+   "char_ngram": {
+    "astar": 0.598,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.11,
+    "adj_p": 0.285,
+    "separates": false
+   }
+  },
+  "n_items": 168,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "worst": "caps",
+  "separating": [],
+  "verdict": "PASS",
+  "borderline": false,
+  "headline": "worst held-out probe caps: A* 0.554, adjusted p 0.1989 over 8 probes",
+  "strata": [
+   "_all"
+  ],
+  "null": "labels permuted within stratum, char_ngram refit",
+  "negation_check": {
+   "items": 168,
+   "mean_negation_label1": 0.0,
+   "mean_negation_label0": 0.0,
+   "items_with_negation": 0,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 1.0,
+   "cue_present": false
+  }
+ }
+}

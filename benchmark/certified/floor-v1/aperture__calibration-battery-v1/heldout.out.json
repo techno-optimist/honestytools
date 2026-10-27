@@ -1,0 +1,190 @@
+{
+ "kept": {
+  "family": "held-out (never used by the filter)",
+  "backend": "heldout_np",
+  "probes": {
+   "negation": {
+    "astar": 0.5,
+    "direction": "none",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "hedge": {
+    "astar": 0.5,
+    "direction": "none",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "function": {
+    "astar": 0.568,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.006,
+    "adj_p": 0.0205,
+    "separates": true
+   },
+   "punct": {
+    "astar": 0.524,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.116,
+    "adj_p": 0.442,
+    "separates": false
+   },
+   "digits": {
+    "astar": 0.512,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.469,
+    "adj_p": 0.959,
+    "separates": false
+   },
+   "caps": {
+    "astar": 0.665,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "word_len": {
+    "astar": 0.786,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "char_ngram": {
+    "astar": 0.986,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   }
+  },
+  "n_items": 168,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "worst": "char_ngram",
+  "separating": [
+   "function",
+   "caps",
+   "word_len",
+   "char_ngram"
+  ],
+  "verdict": "DISQUALIFIED",
+  "borderline": false,
+  "headline": "worst held-out probe char_ngram: A* 0.986, adjusted p 0.0004998 over 8 probes",
+  "strata": [
+   "book",
+   "compound",
+   "firm",
+   "painting",
+   "person",
+   "place"
+  ],
+  "null": "labels permuted within stratum, char_ngram refit",
+  "negation_check": {
+   "items": 168,
+   "mean_negation_label1": 0.0,
+   "mean_negation_label0": 0.0,
+   "items_with_negation": 0,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 1.0,
+   "cue_present": false
+  }
+ },
+ "source": {
+  "family": "held-out (never used by the filter)",
+  "backend": "heldout_np",
+  "probes": {
+   "negation": {
+    "astar": 0.5,
+    "direction": "none",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "hedge": {
+    "astar": 0.5,
+    "direction": "none",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "function": {
+    "astar": 0.568,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.006,
+    "adj_p": 0.0205,
+    "separates": true
+   },
+   "punct": {
+    "astar": 0.524,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.116,
+    "adj_p": 0.442,
+    "separates": false
+   },
+   "digits": {
+    "astar": 0.512,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.469,
+    "adj_p": 0.959,
+    "separates": false
+   },
+   "caps": {
+    "astar": 0.665,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "word_len": {
+    "astar": 0.786,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "char_ngram": {
+    "astar": 0.986,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   }
+  },
+  "n_items": 168,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "worst": "char_ngram",
+  "separating": [
+   "function",
+   "caps",
+   "word_len",
+   "char_ngram"
+  ],
+  "verdict": "DISQUALIFIED",
+  "borderline": false,
+  "headline": "worst held-out probe char_ngram: A* 0.986, adjusted p 0.0004998 over 8 probes",
+  "strata": [
+   "book",
+   "compound",
+   "firm",
+   "painting",
+   "person",
+   "place"
+  ],
+  "null": "labels permuted within stratum, char_ngram refit",
+  "negation_check": {
+   "items": 168,
+   "mean_negation_label1": 0.0,
+   "mean_negation_label0": 0.0,
+   "items_with_negation": 0,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 1.0,
+   "cue_present": false
+  }
+ }
+}

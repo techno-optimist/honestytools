@@ -1,0 +1,177 @@
+{
+ "kept": {
+  "family": "held-out (never used by the filter)",
+  "backend": "heldout_np",
+  "probes": {
+   "negation": {
+    "direction": "right scores higher",
+    "raw_p": 0.27,
+    "adj_p": 0.888,
+    "separates": false,
+    "astar_pair": 0.51
+   },
+   "hedge": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.054,
+    "adj_p": 0.313,
+    "separates": false,
+    "astar_pair": 0.517
+   },
+   "function": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.725
+   },
+   "punct": {
+    "direction": "right scores higher",
+    "raw_p": 0.023,
+    "adj_p": 0.144,
+    "separates": false,
+    "astar_pair": 0.534
+   },
+   "digits": {
+    "direction": "right scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.566
+   },
+   "caps": {
+    "direction": "right scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.606
+   },
+   "word_len": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.579
+   },
+   "char_ngram": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.944
+   }
+  },
+  "n_pairs": 1027,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "worst": "char_ngram",
+  "separating": [
+   "function",
+   "digits",
+   "caps",
+   "word_len",
+   "char_ngram"
+  ],
+  "verdict": "DISQUALIFIED",
+  "borderline": false,
+  "headline": "worst held-out probe char_ngram: A* 0.944, adjusted p 0.0004998 over 8 probes",
+  "stratum": "_all",
+  "negation_check": {
+   "pairs": 1027,
+   "pairs_differing": 331,
+   "right_more_negated": 176,
+   "wrong_more_negated": 155,
+   "share_right_more_negated_of_differing": 0.532,
+   "sign_test_p_two_sided": 0.272,
+   "cue_present": false
+  }
+ },
+ "source": {
+  "family": "held-out (never used by the filter)",
+  "backend": "heldout_np",
+  "probes": {
+   "negation": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.29,
+    "adj_p": 0.926,
+    "separates": false,
+    "astar_pair": 0.507
+   },
+   "hedge": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.535
+   },
+   "function": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.751
+   },
+   "punct": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.54
+   },
+   "digits": {
+    "direction": "right scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.621
+   },
+   "caps": {
+    "direction": "right scores higher",
+    "raw_p": 0.809,
+    "adj_p": 1.0,
+    "separates": false,
+    "astar_pair": 0.503
+   },
+   "word_len": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.604
+   },
+   "char_ngram": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.965
+   }
+  },
+  "n_pairs": 2000,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "worst": "char_ngram",
+  "separating": [
+   "hedge",
+   "function",
+   "punct",
+   "digits",
+   "word_len",
+   "char_ngram"
+  ],
+  "verdict": "DISQUALIFIED",
+  "borderline": false,
+  "headline": "worst held-out probe char_ngram: A* 0.965, adjusted p 0.0004998 over 8 probes",
+  "stratum": "_all",
+  "negation_check": {
+   "pairs": 2000,
+   "pairs_differing": 643,
+   "right_more_negated": 308,
+   "wrong_more_negated": 335,
+   "share_right_more_negated_of_differing": 0.479,
+   "sign_test_p_two_sided": 0.305,
+   "cue_present": false
+  }
+ }
+}

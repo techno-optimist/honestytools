@@ -1,0 +1,236 @@
+{
+ "kept": {
+  "family": "held-out (never used by the filter)",
+  "probes": {
+   "negation": {
+    "astar_pair": 0.677,
+    "direction": "right scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "hedge": {
+    "astar_pair": 0.579,
+    "direction": "right scores higher",
+    "raw_p": 0.0025,
+    "adj_p": 0.009,
+    "separates": true
+   },
+   "function": {
+    "astar_pair": 0.537,
+    "direction": "wrong scores higher",
+    "raw_p": 0.531,
+    "adj_p": 0.968,
+    "separates": false
+   },
+   "punct": {
+    "astar_pair": 0.518,
+    "direction": "right scores higher",
+    "raw_p": 0.67,
+    "adj_p": 0.994,
+    "separates": false
+   },
+   "digits": {
+    "astar_pair": 0.506,
+    "direction": "right scores higher",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "caps": {
+    "astar_pair": 0.537,
+    "direction": "wrong scores higher",
+    "raw_p": 0.349,
+    "adj_p": 0.906,
+    "separates": false
+   },
+   "word_len": {
+    "astar_pair": 0.585,
+    "direction": "right scores higher",
+    "raw_p": 0.141,
+    "adj_p": 0.544,
+    "separates": false
+   },
+   "char_ngram": {
+    "astar_pair": 0.707,
+    "direction": "wrong scores higher",
+    "raw_p": 0.0055,
+    "adj_p": 0.018,
+    "separates": true
+   }
+  },
+  "n_pairs": 82,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "stratum": "_all",
+  "worst": "negation",
+  "separating": [
+   "negation",
+   "hedge",
+   "char_ngram"
+  ],
+  "verdict": "DISQUALIFIED",
+  "borderline": false,
+  "headline": "worst held-out probe negation: A*_pair 0.677, adjusted p 0.0004998 over 8 probes",
+  "negation_check": {
+   "pairs": 82,
+   "pairs_differing": 39,
+   "right_more_negated": 34,
+   "wrong_more_negated": 5,
+   "share_right_more_negated_of_differing": 0.872,
+   "sign_test_p_two_sided": 2.43e-06,
+   "cue_present": true,
+   "lexicon": [
+    "aren't",
+    "can't",
+    "cannot",
+    "couldn't",
+    "didn't",
+    "doesn't",
+    "don't",
+    "false",
+    "hasn't",
+    "haven't",
+    "impossible",
+    "isn't",
+    "mustn't",
+    "myth",
+    "neither",
+    "never",
+    "no",
+    "nobody",
+    "none",
+    "nor",
+    "not",
+    "nothing",
+    "nowhere",
+    "shouldn't",
+    "untrue",
+    "wasn't",
+    "weren't",
+    "without",
+    "won't",
+    "wouldn't",
+    "*n't"
+   ]
+  }
+ },
+ "source": {
+  "family": "held-out (never used by the filter)",
+  "probes": {
+   "negation": {
+    "astar_pair": 0.675,
+    "direction": "right scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "hedge": {
+    "astar_pair": 0.58,
+    "direction": "right scores higher",
+    "raw_p": 0.002,
+    "adj_p": 0.0105,
+    "separates": true
+   },
+   "function": {
+    "astar_pair": 0.535,
+    "direction": "wrong scores higher",
+    "raw_p": 0.488,
+    "adj_p": 0.974,
+    "separates": false
+   },
+   "punct": {
+    "astar_pair": 0.515,
+    "direction": "right scores higher",
+    "raw_p": 0.659,
+    "adj_p": 0.997,
+    "separates": false
+   },
+   "digits": {
+    "astar_pair": 0.505,
+    "direction": "right scores higher",
+    "raw_p": 1.0,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "caps": {
+    "astar_pair": 0.54,
+    "direction": "wrong scores higher",
+    "raw_p": 0.234,
+    "adj_p": 0.748,
+    "separates": false
+   },
+   "word_len": {
+    "astar_pair": 0.6,
+    "direction": "right scores higher",
+    "raw_p": 0.052,
+    "adj_p": 0.236,
+    "separates": false
+   },
+   "char_ngram": {
+    "astar_pair": 0.72,
+    "direction": "wrong scores higher",
+    "raw_p": 0.001,
+    "adj_p": 0.003,
+    "separates": true
+   }
+  },
+  "n_pairs": 100,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "stratum": "_all",
+  "worst": "negation",
+  "separating": [
+   "negation",
+   "hedge",
+   "char_ngram"
+  ],
+  "verdict": "DISQUALIFIED",
+  "borderline": false,
+  "headline": "worst held-out probe negation: A*_pair 0.675, adjusted p 0.0004998 over 8 probes",
+  "negation_check": {
+   "pairs": 100,
+   "pairs_differing": 49,
+   "right_more_negated": 42,
+   "wrong_more_negated": 7,
+   "share_right_more_negated_of_differing": 0.857,
+   "sign_test_p_two_sided": 3.62e-07,
+   "cue_present": true,
+   "lexicon": [
+    "aren't",
+    "can't",
+    "cannot",
+    "couldn't",
+    "didn't",
+    "doesn't",
+    "don't",
+    "false",
+    "hasn't",
+    "haven't",
+    "impossible",
+    "isn't",
+    "mustn't",
+    "myth",
+    "neither",
+    "never",
+    "no",
+    "nobody",
+    "none",
+    "nor",
+    "not",
+    "nothing",
+    "nowhere",
+    "shouldn't",
+    "untrue",
+    "wasn't",
+    "weren't",
+    "without",
+    "won't",
+    "wouldn't",
+    "*n't"
+   ]
+  }
+ }
+}
