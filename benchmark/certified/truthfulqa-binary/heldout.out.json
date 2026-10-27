@@ -3,63 +3,63 @@
   "family": "held-out (never used by the filter)",
   "probes": {
    "negation": {
-    "astar_pair": 0.673,
+    "astar_pair": 0.649,
     "direction": "right scores higher",
     "raw_p": 0.0005,
     "adj_p": 0.0005,
     "separates": true
    },
    "hedge": {
-    "astar_pair": 0.551,
+    "astar_pair": 0.556,
     "direction": "right scores higher",
-    "raw_p": 0.058,
-    "adj_p": 0.248,
-    "separates": false
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
    },
    "function": {
-    "astar_pair": 0.582,
+    "astar_pair": 0.53,
     "direction": "wrong scores higher",
-    "raw_p": 0.19,
-    "adj_p": 0.645,
+    "raw_p": 0.196,
+    "adj_p": 0.749,
     "separates": false
    },
    "punct": {
-    "astar_pair": 0.52,
+    "astar_pair": 0.519,
     "direction": "wrong scores higher",
-    "raw_p": 0.74,
-    "adj_p": 0.997,
+    "raw_p": 0.186,
+    "adj_p": 0.738,
     "separates": false
    },
    "digits": {
-    "astar_pair": 0.5,
-    "direction": "none",
-    "raw_p": 1.0,
-    "adj_p": 1.0,
+    "astar_pair": 0.506,
+    "direction": "wrong scores higher",
+    "raw_p": 0.23,
+    "adj_p": 0.847,
     "separates": false
    },
    "caps": {
-    "astar_pair": 0.622,
+    "astar_pair": 0.568,
     "direction": "wrong scores higher",
-    "raw_p": 0.0025,
-    "adj_p": 0.008,
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
     "separates": true
    },
    "word_len": {
-    "astar_pair": 0.561,
+    "astar_pair": 0.502,
     "direction": "right scores higher",
-    "raw_p": 0.426,
-    "adj_p": 0.963,
+    "raw_p": 0.957,
+    "adj_p": 1.0,
     "separates": false
    },
    "char_ngram": {
-    "astar_pair": 0.898,
+    "astar_pair": 0.76,
     "direction": "wrong scores higher",
     "raw_p": 0.0005,
     "adj_p": 0.0005,
     "separates": true
    }
   },
-  "n_pairs": 49,
+  "n_pairs": 405,
   "n_perm": 2000,
   "seed": 20261026,
   "correction": "westfall_young_min_p over 8 probes",
@@ -67,19 +67,20 @@
   "worst": "char_ngram",
   "separating": [
    "negation",
+   "hedge",
    "caps",
    "char_ngram"
   ],
   "verdict": "DISQUALIFIED",
   "borderline": false,
-  "headline": "worst held-out probe char_ngram: A*_pair 0.898, adjusted p 0.0004998 over 8 probes",
+  "headline": "worst held-out probe char_ngram: A*_pair 0.760, adjusted p 0.0004998 over 8 probes",
   "negation_check": {
-   "pairs": 49,
-   "pairs_differing": 17,
-   "right_more_negated": 17,
-   "wrong_more_negated": 0,
-   "share_right_more_negated_of_differing": 1.0,
-   "sign_test_p_two_sided": 1.53e-05,
+   "pairs": 405,
+   "pairs_differing": 179,
+   "right_more_negated": 150,
+   "wrong_more_negated": 29,
+   "share_right_more_negated_of_differing": 0.838,
+   "sign_test_p_two_sided": 7.12e-21,
    "cue_present": true,
    "lexicon": [
     "aren't",

@@ -1,0 +1,235 @@
+{
+ "seed": 20261027,
+ "n_source": 790,
+ "n_kept": 491,
+ "totals": {
+  "ties": 417,
+  "right_more_neg": 322,
+  "wrong_more_neg": 51,
+  "kept_each_side": 37
+ },
+ "by_category": {
+  "Advertising": {
+   "ties": 10,
+   "right_more_neg": 3,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Confusion: Other": {
+   "ties": 8,
+   "right_more_neg": 0,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Confusion: People": {
+   "ties": 23,
+   "right_more_neg": 0,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Confusion: Places": {
+   "ties": 15,
+   "right_more_neg": 0,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Conspiracies": {
+   "ties": 15,
+   "right_more_neg": 9,
+   "wrong_more_neg": 2,
+   "kept_each_side": 2
+  },
+  "Distraction": {
+   "ties": 12,
+   "right_more_neg": 2,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Economics": {
+   "ties": 20,
+   "right_more_neg": 8,
+   "wrong_more_neg": 3,
+   "kept_each_side": 3
+  },
+  "Education": {
+   "ties": 2,
+   "right_more_neg": 8,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Fiction": {
+   "ties": 9,
+   "right_more_neg": 20,
+   "wrong_more_neg": 1,
+   "kept_each_side": 1
+  },
+  "Finance": {
+   "ties": 7,
+   "right_more_neg": 1,
+   "wrong_more_neg": 1,
+   "kept_each_side": 1
+  },
+  "Health": {
+   "ties": 27,
+   "right_more_neg": 26,
+   "wrong_more_neg": 2,
+   "kept_each_side": 2
+  },
+  "History": {
+   "ties": 21,
+   "right_more_neg": 3,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Indexical Error: Identity": {
+   "ties": 2,
+   "right_more_neg": 5,
+   "wrong_more_neg": 1,
+   "kept_each_side": 1
+  },
+  "Indexical Error: Location": {
+   "ties": 10,
+   "right_more_neg": 0,
+   "wrong_more_neg": 1,
+   "kept_each_side": 0
+  },
+  "Indexical Error: Other": {
+   "ties": 2,
+   "right_more_neg": 16,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Language": {
+   "ties": 9,
+   "right_more_neg": 10,
+   "wrong_more_neg": 2,
+   "kept_each_side": 2
+  },
+  "Law": {
+   "ties": 38,
+   "right_more_neg": 22,
+   "wrong_more_neg": 4,
+   "kept_each_side": 4
+  },
+  "Logical Falsehood": {
+   "ties": 1,
+   "right_more_neg": 1,
+   "wrong_more_neg": 12,
+   "kept_each_side": 1
+  },
+  "Mandela Effect": {
+   "ties": 3,
+   "right_more_neg": 2,
+   "wrong_more_neg": 1,
+   "kept_each_side": 1
+  },
+  "Misconceptions": {
+   "ties": 66,
+   "right_more_neg": 28,
+   "wrong_more_neg": 6,
+   "kept_each_side": 6
+  },
+  "Misconceptions: Topical": {
+   "ties": 0,
+   "right_more_neg": 3,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Misinformation": {
+   "ties": 3,
+   "right_more_neg": 3,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Misquotations": {
+   "ties": 14,
+   "right_more_neg": 2,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Myths and Fairytales": {
+   "ties": 5,
+   "right_more_neg": 16,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Nutrition": {
+   "ties": 5,
+   "right_more_neg": 10,
+   "wrong_more_neg": 1,
+   "kept_each_side": 1
+  },
+  "Paranormal": {
+   "ties": 8,
+   "right_more_neg": 18,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Politics": {
+   "ties": 1,
+   "right_more_neg": 9,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Proverbs": {
+   "ties": 6,
+   "right_more_neg": 8,
+   "wrong_more_neg": 4,
+   "kept_each_side": 4
+  },
+  "Psychology": {
+   "ties": 5,
+   "right_more_neg": 14,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Religion": {
+   "ties": 4,
+   "right_more_neg": 10,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Science": {
+   "ties": 6,
+   "right_more_neg": 3,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Sociology": {
+   "ties": 33,
+   "right_more_neg": 18,
+   "wrong_more_neg": 4,
+   "kept_each_side": 4
+  },
+  "Statistics": {
+   "ties": 1,
+   "right_more_neg": 1,
+   "wrong_more_neg": 3,
+   "kept_each_side": 1
+  },
+  "Stereotypes": {
+   "ties": 7,
+   "right_more_neg": 16,
+   "wrong_more_neg": 1,
+   "kept_each_side": 1
+  },
+  "Subjective": {
+   "ties": 7,
+   "right_more_neg": 2,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Superstitions": {
+   "ties": 3,
+   "right_more_neg": 19,
+   "wrong_more_neg": 0,
+   "kept_each_side": 0
+  },
+  "Weather": {
+   "ties": 9,
+   "right_more_neg": 6,
+   "wrong_more_neg": 2,
+   "kept_each_side": 2
+  }
+ }
+}

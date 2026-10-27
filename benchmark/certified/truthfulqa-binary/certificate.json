@@ -1,8 +1,30 @@
 {
- "format": "honesty.tools/certificate/v0",
+ "format": "floor/certificate/v1",
+ "benchmark": "FLOOR",
  "dataset": "truthfulqa-binary-790",
- "issued": "2026-10-26T23:07:52-0600",
- "status": "NOT_CERTIFIED",
+ "issued": "2026-10-26T23:36:42-0600",
+ "status": "NOT_CERTIFIABLE",
+ "status_reasons": [
+  "filter_reached_floor_with_cues"
+ ],
+ "status_rule": {
+  "statuses": [
+   "CERTIFIED",
+   "NOT_CERTIFIED",
+   "NOT_CERTIFIABLE"
+  ],
+  "floor_pairs": 395,
+  "min_kept_share": 0.5,
+  "min_kept_pairs": 320,
+  "min_kept_pairs_basis": {
+   "test": "exact two-sided sign test",
+   "alpha": 0.05,
+   "bonferroni_k": 8,
+   "alt_rate": 0.6,
+   "power": 0.8
+  },
+  "stopped_at_floor": true
+ },
  "source": {
   "file": "source_790.json",
   "sha256": "f20eb152be2e40d9c7ad6bef577165c9496b67ea0decd7f281a2bdcae7249346",
@@ -10,9 +32,9 @@
  },
  "split": {
   "file": "certified.json",
-  "sha256": "45414c11e01194164ef18c36c32bb2396795bdd7ff4fdbd5320ad59b598d4c52",
-  "n_pairs": 49,
-  "retained_share": 0.062,
+  "sha256": "2b2290828737a83d925a49b0ed0e0c3d39d0500865ecb858835ce2462e3d1a65",
+  "n_pairs": 405,
+  "retained_share": 0.513,
   "by_category_source": {
    "Misconceptions": 100,
    "Proverbs": 18,
@@ -53,24 +75,43 @@
    "Mandela Effect": 6
   },
   "by_category_kept": {
-   "Paranormal": 2,
-   "Stereotypes": 1,
-   "Health": 4,
-   "Economics": 4,
-   "Language": 4,
-   "Confusion: People": 5,
-   "Sociology": 5,
-   "Law": 4,
-   "Indexical Error: Other": 1,
-   "Misconceptions": 8,
-   "History": 2,
-   "Proverbs": 1,
-   "Fiction": 2,
-   "Conspiracies": 1,
-   "Advertising": 1,
-   "Superstitions": 1,
-   "Myths and Fairytales": 2,
-   "Mandela Effect": 1
+   "Misconceptions": 49,
+   "Misquotations": 9,
+   "Conspiracies": 8,
+   "Superstitions": 11,
+   "Paranormal": 11,
+   "Fiction": 11,
+   "Myths and Fairytales": 7,
+   "Indexical Error: Identity": 1,
+   "Indexical Error: Location": 6,
+   "Distraction": 5,
+   "Subjective": 3,
+   "Advertising": 5,
+   "Religion": 5,
+   "Logical Falsehood": 13,
+   "Stereotypes": 11,
+   "Nutrition": 5,
+   "Indexical Error: Other": 17,
+   "Education": 2,
+   "Proverbs": 9,
+   "Health": 36,
+   "Misconceptions: Topical": 1,
+   "Psychology": 11,
+   "Sociology": 29,
+   "Economics": 20,
+   "Politics": 5,
+   "Law": 30,
+   "Science": 7,
+   "History": 14,
+   "Language": 12,
+   "Weather": 7,
+   "Confusion: People": 13,
+   "Confusion: Places": 8,
+   "Confusion: Other": 4,
+   "Finance": 7,
+   "Misinformation": 5,
+   "Statistics": 3,
+   "Mandela Effect": 5
   }
  },
  "filter": {
@@ -92,7 +133,7 @@
   "screen_perm": 200,
   "screen_seed": 7,
   "screen_stop": 0.2,
-  "min_pairs": 50,
+  "floor_pairs": 395,
   "rounds": [
    {
     "in": 790,
@@ -176,247 +217,7 @@
     "in": 405,
     "screen_paired_adj_p": 0.0133,
     "screen_unpaired_adj_p": 0.0199,
-    "dropped": 20
-   },
-   {
-    "in": 385,
-    "screen_paired_adj_p": 0.0133,
-    "screen_unpaired_adj_p": 0.0199,
-    "dropped": 19
-   },
-   {
-    "in": 366,
-    "screen_paired_adj_p": 0.0066,
-    "screen_unpaired_adj_p": 0.0199,
-    "dropped": 18
-   },
-   {
-    "in": 348,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.0199,
-    "dropped": 17
-   },
-   {
-    "in": 331,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.0199,
-    "dropped": 17
-   },
-   {
-    "in": 314,
-    "screen_paired_adj_p": 0.0133,
-    "screen_unpaired_adj_p": 0.0199,
-    "dropped": 16
-   },
-   {
-    "in": 298,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.0199,
-    "dropped": 15
-   },
-   {
-    "in": 283,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.0199,
-    "dropped": 14
-   },
-   {
-    "in": 269,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.0199,
-    "dropped": 13
-   },
-   {
-    "in": 256,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.0199,
-    "dropped": 13
-   },
-   {
-    "in": 243,
-    "screen_paired_adj_p": 0.0133,
-    "screen_unpaired_adj_p": 0.0199,
-    "dropped": 12
-   },
-   {
-    "in": 231,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.1728,
-    "dropped": 12
-   },
-   {
-    "in": 219,
-    "screen_paired_adj_p": 0.0133,
-    "screen_unpaired_adj_p": 0.0365,
-    "dropped": 11
-   },
-   {
-    "in": 208,
-    "screen_paired_adj_p": 0.0133,
-    "screen_unpaired_adj_p": 0.2824,
-    "dropped": 10
-   },
-   {
-    "in": 198,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.0698,
-    "dropped": 10
-   },
-   {
-    "in": 188,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.0166,
-    "dropped": 9
-   },
-   {
-    "in": 179,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.1296,
-    "dropped": 9
-   },
-   {
-    "in": 170,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.0199,
-    "dropped": 8
-   },
-   {
-    "in": 162,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.0199,
-    "dropped": 8
-   },
-   {
-    "in": 154,
-    "screen_paired_adj_p": 0.01,
-    "screen_unpaired_adj_p": 0.0166,
-    "dropped": 8
-   },
-   {
-    "in": 146,
-    "screen_paired_adj_p": 0.0133,
-    "screen_unpaired_adj_p": 0.0399,
-    "dropped": 7
-   },
-   {
-    "in": 139,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.1894,
-    "dropped": 7
-   },
-   {
-    "in": 132,
-    "screen_paired_adj_p": 0.0133,
-    "screen_unpaired_adj_p": 0.0764,
-    "dropped": 7
-   },
-   {
-    "in": 125,
-    "screen_paired_adj_p": 0.0133,
-    "screen_unpaired_adj_p": 0.1429,
-    "dropped": 6
-   },
-   {
-    "in": 119,
-    "screen_paired_adj_p": 0.01,
-    "screen_unpaired_adj_p": 0.1262,
-    "dropped": 6
-   },
-   {
-    "in": 113,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.2027,
-    "dropped": 6
-   },
-   {
-    "in": 107,
-    "screen_paired_adj_p": 0.01,
-    "screen_unpaired_adj_p": 0.1096,
-    "dropped": 5
-   },
-   {
-    "in": 102,
-    "screen_paired_adj_p": 0.0133,
-    "screen_unpaired_adj_p": 0.0332,
-    "dropped": 5
-   },
-   {
-    "in": 97,
-    "screen_paired_adj_p": 0.0166,
-    "screen_unpaired_adj_p": 0.0166,
-    "dropped": 5
-   },
-   {
-    "in": 92,
-    "screen_paired_adj_p": 0.0066,
-    "screen_unpaired_adj_p": 0.3123,
-    "dropped": 5
-   },
-   {
-    "in": 87,
-    "screen_paired_adj_p": 0.0133,
-    "screen_unpaired_adj_p": 0.0532,
-    "dropped": 4
-   },
-   {
-    "in": 83,
-    "screen_paired_adj_p": 0.01,
-    "screen_unpaired_adj_p": 0.3189,
-    "dropped": 4
-   },
-   {
-    "in": 79,
-    "screen_paired_adj_p": 0.0066,
-    "screen_unpaired_adj_p": 0.4419,
-    "dropped": 4
-   },
-   {
-    "in": 75,
-    "screen_paired_adj_p": 0.0133,
-    "screen_unpaired_adj_p": 0.6877,
-    "dropped": 4
-   },
-   {
-    "in": 71,
-    "screen_paired_adj_p": 0.0066,
-    "screen_unpaired_adj_p": 0.1628,
-    "dropped": 4
-   },
-   {
-    "in": 67,
-    "screen_paired_adj_p": 0.0066,
-    "screen_unpaired_adj_p": 0.1694,
-    "dropped": 3
-   },
-   {
-    "in": 64,
-    "screen_paired_adj_p": 0.0066,
-    "screen_unpaired_adj_p": 0.4086,
-    "dropped": 3
-   },
-   {
-    "in": 61,
-    "screen_paired_adj_p": 0.0066,
-    "screen_unpaired_adj_p": 0.103,
-    "dropped": 3
-   },
-   {
-    "in": 58,
-    "screen_paired_adj_p": 0.0066,
-    "screen_unpaired_adj_p": 0.1429,
-    "dropped": 3
-   },
-   {
-    "in": 55,
-    "screen_paired_adj_p": 0.01,
-    "screen_unpaired_adj_p": 0.2392,
-    "dropped": 3
-   },
-   {
-    "in": 52,
-    "screen_paired_adj_p": 0.0066,
-    "screen_unpaired_adj_p": 0.3256,
-    "dropped": 3
+    "stopped": "floor"
    }
   ]
  },
@@ -424,64 +225,65 @@
   "paired": {
    "verdict": "DISQUALIFIED",
    "borderline": false,
-   "headline": "worst cell A*_pair = 0.939 in lexicality/_all (49 pairs), family-adjusted p = 0.0008 over 87 cells",
-   "n_perm": 3600,
+   "headline": "worst cell A*_pair = 0.773 in lexicality/_all (405 pairs), family-adjusted p = 0.0021 over 221 cells",
+   "n_perm": 8900,
    "seed": 20260724,
    "stratum": "cat"
   },
   "unpaired": {
-   "verdict": "PASS",
+   "verdict": "DISQUALIFIED",
    "borderline": false,
-   "headline": "worst cell A* = 0.591 in shape/_all (n=98), family-adjusted p = 0.7671 over 6 cells",
+   "headline": "worst cell A* = 0.597 in words/_all (n=810), family-adjusted p = 0.01 over 6 cells",
    "n_perm": 600
   },
   "held_out": {
    "verdict": "DISQUALIFIED",
    "borderline": false,
-   "headline": "worst held-out probe char_ngram: A*_pair 0.898, adjusted p 0.0004998 over 8 probes",
+   "headline": "worst held-out probe char_ngram: A*_pair 0.760, adjusted p 0.0004998 over 8 probes",
    "separating": [
     "negation",
+    "hedge",
     "caps",
     "char_ngram"
    ],
    "probes": {
     "negation": {
-     "astar_pair": 0.673,
+     "astar_pair": 0.649,
      "adj_p": 0.0005,
      "direction": "right scores higher"
     },
     "hedge": {
-     "astar_pair": 0.551,
-     "adj_p": 0.248,
+     "astar_pair": 0.556,
+     "adj_p": 0.0005,
      "direction": "right scores higher"
     },
     "function": {
-     "astar_pair": 0.582,
-     "adj_p": 0.645,
+     "astar_pair": 0.53,
+     "adj_p": 0.749,
      "direction": "wrong scores higher"
     },
     "punct": {
-     "astar_pair": 0.52,
-     "adj_p": 0.997,
+     "astar_pair": 0.519,
+     "adj_p": 0.738,
      "direction": "wrong scores higher"
     },
     "digits": {
-     "astar_pair": 0.5,
-     "adj_p": 1.0,
-     "direction": "none"
+     "astar_pair": 0.506,
+     "adj_p": 0.847,
+     "direction": "wrong scores higher"
     },
     "caps": {
-     "astar_pair": 0.622,
-     "adj_p": 0.008,
+     "astar_pair": 0.568,
+     "adj_p": 0.0005,
      "direction": "wrong scores higher"
     },
     "word_len": {
-     "astar_pair": 0.561,
-     "adj_p": 0.963,
+     "astar_pair": 0.502,
+     "adj_p": 1.0,
      "direction": "right scores higher"
     },
     "char_ngram": {
-     "astar_pair": 0.898,
+     "astar_pair": 0.76,
      "adj_p": 0.0005,
      "direction": "wrong scores higher"
     }
@@ -498,12 +300,12 @@
    ]
   },
   "negation_cue": {
-   "pairs": 49,
-   "pairs_differing": 17,
-   "right_more_negated": 17,
-   "wrong_more_negated": 0,
-   "share_right_more_negated_of_differing": 1.0,
-   "sign_test_p_two_sided": 1.53e-05,
+   "pairs": 405,
+   "pairs_differing": 179,
+   "right_more_negated": 150,
+   "wrong_more_negated": 29,
+   "share_right_more_negated_of_differing": 0.838,
+   "sign_test_p_two_sided": 7.12e-21,
    "cue_present": true
   },
   "negation_cue_source": {
@@ -518,7 +320,7 @@
  },
  "gates": {
   "in_family_paired": false,
-  "in_family_unpaired": true,
+  "in_family_unpaired": false,
   "held_out_probes": false,
   "negation_cue_absent": false
  },
@@ -527,7 +329,7 @@
   "paired_version": "0.1",
   "nulltest_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
   "nulltest_paired_sha256": "2fbbebca77abd8b494272801fa3f957e1f910d7a10148a7c6ccc10116e4f37d3",
-  "certify_sha256": "bd6b6ce92951fd5fc3b8784507e2978c26226c2787e384e4794af3d49155aca2",
+  "certify_sha256": "e788b5ba4e2cbad14509c1c8a66fbdfdf59df02658426cfe3a4ed6f6941cec19",
   "heldout_sha256": "1a44470fe3d27e04f0eae2e87a3b59c3afefffba2cf2b8f5674dc9ec589f2e1c"
  },
  "caveat": "The kept pairs were selected against the in-family probes, so those gates are circular; the held-out probes and the negation sign test were never used to select. A pass means none of these probe families recovers right-vs-wrong on the kept pairs; it is not a claim that no surface reader can (no model-based reader is run), and the filter shifts category coverage (see by_category_*). Unsigned prototype: signing and `honest check` replay are Phase 5.",

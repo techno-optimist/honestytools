@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Held-out certification probes for the certified suite, plus an explicit negation-cue check.
+"""Held-out certification probes for the FLOOR benchmark, plus an explicit negation-cue check.
 
 WHY. certify.py filters pairs against nulltest's own probes (lexicality, words, length, shape),
 so certifying with those same probes is circular: the survivors were chosen because those probes
