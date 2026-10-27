@@ -4,6 +4,13 @@ Numbers quoted here come from the committed certificates (`nulltest_grid.json`,
 `nulltest_parity.json`, `nulltest_audit_results.json`), which carry the sha256 of the tool that
 produced them. What is listed under *not done* is as much a part of the record as what shipped.
 
+## Unreleased
+
+`nulltest.py` and `nulltest_paired.py` are byte-identical to 0.7.3.
+
+- `verifier/aperture_witness.py` is re-mirrored from site commit 96aadb3 (sha256 `0e634b28…`). `--pin B64=role` now requires the canonical base64 encoding. Before this, Python 3.10 accepted surplus `=` padding, so the role separator stayed attached to the key and the pin never matched. `SOURCE.sha256` is updated to the new hash.
+- The CI unit-test job installs `cryptography` and `sympy`, so the receipt-verifier tests and the witness selftest run instead of skipping.
+
 ## 0.7.3 — 2026-10-27 — the receipt log is anchored
 
 `nulltest.py` and `nulltest_paired.py` are byte-identical to 0.7.2.

@@ -918,10 +918,13 @@ def _load(path):
 
 
 def _is_ed25519_pub_b64(s):
+    # Require the canonical encoding: Python <3.11 b64decode(validate=True) tolerates surplus '='
+    # padding, which would let _split_pin keep the role separator as part of the key.
     try:
-        return len(base64.b64decode(s, validate=True)) == 32
+        raw = base64.b64decode(s, validate=True)
     except Exception:
         return False
+    return len(raw) == 32 and base64.b64encode(raw).decode("ascii") == s
 
 
 def _split_pin(spec):
