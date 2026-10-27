@@ -32,6 +32,10 @@ by TruthfulQA category)
 - Calibration on the real 476 texts with labels coin-flipped inside each pair (null true by
   construction): 5 of 100 rejections at alpha 0.05, 200 permutations each.
 
+**Known CI red, not caused by this change**: the `pip install .` job has failed on main since
+PR #9, because `python -m nulltest` exits 1 on a DISQUALIFIED verdict by design and the step runs
+under `bash -e`. The fix is a workflow edit, which needs a token with `workflow` scope.
+
 **Not done**: no JS port of paired mode, so the browser checker cannot run it; no power grid for
 paired mode yet.
 
