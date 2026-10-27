@@ -1,0 +1,182 @@
+{
+ "kept": {
+  "family": "held-out (never used by the filter)",
+  "backend": "heldout_np",
+  "probes": {
+   "negation": {
+    "astar": 0.504,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.738,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "hedge": {
+    "astar": 0.606,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "function": {
+    "astar": 0.546,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.11,
+    "adj_p": 0.573,
+    "separates": false
+   },
+   "punct": {
+    "astar": 0.604,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "digits": {
+    "astar": 0.53,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.244,
+    "adj_p": 0.872,
+    "separates": false
+   },
+   "caps": {
+    "astar": 0.608,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "word_len": {
+    "astar": 0.556,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.18,
+    "adj_p": 0.767,
+    "separates": false
+   },
+   "char_ngram": {
+    "astar": 0.655,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.246,
+    "adj_p": 0.875,
+    "separates": false
+   }
+  },
+  "n_items": 2052,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "worst": "caps",
+  "separating": [
+   "hedge",
+   "punct",
+   "caps"
+  ],
+  "verdict": "DISQUALIFIED",
+  "borderline": false,
+  "headline": "worst held-out probe caps: A* 0.608, adjusted p 0.0004998 over 8 probes",
+  "strata": [
+   "Data2txt",
+   "QA",
+   "Summary"
+  ],
+  "null": "labels permuted within stratum, char_ngram refit",
+  "negation_check": {
+   "items": 2052,
+   "mean_negation_label1": 0.6747,
+   "mean_negation_label0": 0.7355,
+   "items_with_negation": 902,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 0.231,
+   "cue_present": false
+  }
+ },
+ "source": {
+  "family": "held-out (never used by the filter)",
+  "backend": "heldout_np",
+  "probes": {
+   "negation": {
+    "astar": 0.522,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.868,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "hedge": {
+    "astar": 0.613,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "function": {
+    "astar": 0.531,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.717,
+    "adj_p": 1.0,
+    "separates": false
+   },
+   "punct": {
+    "astar": 0.647,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "digits": {
+    "astar": 0.528,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.439,
+    "adj_p": 0.984,
+    "separates": false
+   },
+   "caps": {
+    "astar": 0.625,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "word_len": {
+    "astar": 0.564,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.213,
+    "adj_p": 0.802,
+    "separates": false
+   },
+   "char_ngram": {
+    "astar": 0.679,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.367,
+    "adj_p": 0.957,
+    "separates": false
+   }
+  },
+  "n_items": 4000,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "worst": "punct",
+  "separating": [
+   "hedge",
+   "punct",
+   "caps"
+  ],
+  "verdict": "DISQUALIFIED",
+  "borderline": false,
+  "headline": "worst held-out probe punct: A* 0.647, adjusted p 0.0004998 over 8 probes",
+  "strata": [
+   "Data2txt",
+   "QA",
+   "Summary"
+  ],
+  "null": "labels permuted within stratum, char_ngram refit",
+  "negation_check": {
+   "items": 4000,
+   "mean_negation_label1": 0.7939,
+   "mean_negation_label0": 0.7042,
+   "items_with_negation": 1831,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 0.765,
+   "cue_present": false
+  }
+ }
+}

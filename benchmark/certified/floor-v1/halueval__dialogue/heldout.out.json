@@ -1,0 +1,179 @@
+{
+ "kept": {
+  "family": "held-out (never used by the filter)",
+  "backend": "heldout_np",
+  "probes": {
+   "negation": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.003,
+    "adj_p": 0.018,
+    "separates": true,
+    "astar_pair": 0.524
+   },
+   "hedge": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.147,
+    "adj_p": 0.689,
+    "separates": false,
+    "astar_pair": 0.507
+   },
+   "function": {
+    "direction": "right scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.574
+   },
+   "punct": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.656
+   },
+   "digits": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.602,
+    "adj_p": 1.0,
+    "separates": false,
+    "astar_pair": 0.502
+   },
+   "caps": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.68
+   },
+   "word_len": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.602
+   },
+   "char_ngram": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.823
+   }
+  },
+  "n_pairs": 1027,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "worst": "char_ngram",
+  "separating": [
+   "negation",
+   "function",
+   "punct",
+   "caps",
+   "word_len",
+   "char_ngram"
+  ],
+  "verdict": "DISQUALIFIED",
+  "borderline": false,
+  "headline": "worst held-out probe char_ngram: A* 0.823, adjusted p 0.0004998 over 8 probes",
+  "stratum": "_all",
+  "negation_check": {
+   "pairs": 1027,
+   "pairs_differing": 229,
+   "right_more_negated": 90,
+   "wrong_more_negated": 139,
+   "share_right_more_negated_of_differing": 0.393,
+   "sign_test_p_two_sided": 0.00146,
+   "cue_present": true
+  }
+ },
+ "source": {
+  "family": "held-out (never used by the filter)",
+  "backend": "heldout_np",
+  "probes": {
+   "negation": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.537
+   },
+   "hedge": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.01,
+    "adj_p": 0.067,
+    "separates": false,
+    "astar_pair": 0.509
+   },
+   "function": {
+    "direction": "right scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.584
+   },
+   "punct": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.723
+   },
+   "digits": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.519
+   },
+   "caps": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.725
+   },
+   "word_len": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.619
+   },
+   "char_ngram": {
+    "direction": "wrong scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true,
+    "astar_pair": 0.842
+   }
+  },
+  "n_pairs": 2000,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "worst": "char_ngram",
+  "separating": [
+   "negation",
+   "function",
+   "punct",
+   "digits",
+   "caps",
+   "word_len",
+   "char_ngram"
+  ],
+  "verdict": "DISQUALIFIED",
+  "borderline": false,
+  "headline": "worst held-out probe char_ngram: A* 0.842, adjusted p 0.0004998 over 8 probes",
+  "stratum": "_all",
+  "negation_check": {
+   "pairs": 2000,
+   "pairs_differing": 507,
+   "right_more_negated": 179,
+   "wrong_more_negated": 328,
+   "share_right_more_negated_of_differing": 0.353,
+   "sign_test_p_two_sided": 3.59e-11,
+   "cue_present": true
+  }
+ }
+}

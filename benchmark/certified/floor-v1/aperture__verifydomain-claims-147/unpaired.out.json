@@ -1,0 +1,137 @@
+{
+ "tool": "nulltest",
+ "version": "1.4",
+ "probes": [
+  "lexicality",
+  "words",
+  "length",
+  "shape",
+  "alpha_first",
+  "alpha_last"
+ ],
+ "n": 147,
+ "n_fake": 36,
+ "n_real": 111,
+ "strata": [
+  "_all"
+ ],
+ "min_cell": 12,
+ "n_perm": 600,
+ "n_perm_requested": 600,
+ "alpha": 0.05,
+ "family_size": 6,
+ "correction": "westfall_young_min_p",
+ "null": "labels shuffled within stratum (stratified permutation), every probe refit",
+ "label_rate_by_stratum": {
+  "_all": {
+   "n": 147,
+   "label1_rate": 0.245
+  }
+ },
+ "nulls": {
+  "lexicality": {
+   "per_stratum": {
+    "_all": {
+     "n": 147,
+     "astar": 0.967,
+     "threshold": 0.654,
+     "raw_p": 0.0017,
+     "adj_p": 0.0067,
+     "separates": true,
+     "underpowered": false
+    }
+   }
+  },
+  "words": {
+   "per_stratum": {
+    "_all": {
+     "n": 147,
+     "astar": 0.965,
+     "threshold": 0.651,
+     "raw_p": 0.0017,
+     "adj_p": 0.0067,
+     "separates": true,
+     "underpowered": false
+    }
+   }
+  },
+  "length": {
+   "per_stratum": {
+    "_all": {
+     "n": 147,
+     "astar": 0.64,
+     "threshold": 0.604,
+     "raw_p": 0.0133,
+     "adj_p": 0.0582,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  },
+  "shape": {
+   "per_stratum": {
+    "_all": {
+     "n": 147,
+     "astar": 0.778,
+     "threshold": 0.646,
+     "raw_p": 0.0017,
+     "adj_p": 0.0067,
+     "separates": true,
+     "underpowered": false
+    }
+   }
+  },
+  "alpha_first": {
+   "per_stratum": {
+    "_all": {
+     "n": 147,
+     "astar": 0.668,
+     "threshold": 0.605,
+     "raw_p": 0.0083,
+     "adj_p": 0.0399,
+     "separates": true,
+     "underpowered": false
+    }
+   }
+  },
+  "alpha_last": {
+   "per_stratum": {
+    "_all": {
+     "n": 147,
+     "astar": 0.575,
+     "threshold": 0.605,
+     "raw_p": 0.1697,
+     "adj_p": 0.6339,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  }
+ },
+ "underpowered_cells": [],
+ "worst_cell": {
+  "astar": 0.967,
+  "adj_p": 0.0067,
+  "raw_p": 0.0017,
+  "null": "lexicality",
+  "stratum": "_all",
+  "n": 147,
+  "threshold": 0.654,
+  "underpowered": false
+ },
+ "n_separating_cells": 4,
+ "verdict": "DISQUALIFIED",
+ "borderline": false,
+ "headline": "worst cell A* = 0.967 in lexicality/_all (n=147), family-adjusted p = 0.0067 over 6 cells",
+ "p_floor": 0.001664,
+ "saturated": false,
+ "power": {
+  "n": 147,
+  "measured_mde": null,
+  "mde_basis": "one planted spelling/length artifact (a character appended to a fraction of the label-1 items) in a single stratum, 4 seeds; a wider family, a smaller cell or an artifact of another shape lowers power below this",
+  "comparable_across_batteries": false,
+  "note_on_comparison": "A* depends on n. Do not rank this battery against one of a different size: cities.csv is DISQUALIFIED at n=1496 and PASSES 5 of 5 subsamples at n=354.",
+  "reading": "DISQUALIFIED at n=147, below the smallest size we have measured (156). Low power costs us DETECTIONS, not false alarms, so a verdict that fired at this size stands: the artifact was large enough to see anyway."
+ },
+ "scope": "SCOPE: this measures how much of the label signal is recoverable from SURFACE FORM alone by six model-free probes, two-sided, refit inside every permutation (labels shuffled within stratum) and family-wise corrected across all cells (Westfall-Young min-p). A PASS does NOT certify the benchmark is good: it cannot see circularity (labels drawn from the same store the system under test retrieves from), contamination, or mislabelling. It scores no model."
+}

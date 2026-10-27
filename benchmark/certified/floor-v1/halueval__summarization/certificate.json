@@ -1,0 +1,272 @@
+{
+ "format": "floor/certificate/v1",
+ "benchmark": "FLOOR",
+ "dataset": "halueval__summarization-sample2000",
+ "issued": "2026-10-27T00:43:13-0600",
+ "status": "NOT_CERTIFIABLE",
+ "status_reasons": [
+  "filter_reached_floor_with_cues"
+ ],
+ "status_rule": {
+  "statuses": [
+   "CERTIFIED",
+   "NOT_CERTIFIED",
+   "NOT_CERTIFIABLE"
+  ],
+  "floor_pairs": 1000,
+  "min_kept_share": 0.5,
+  "min_kept_pairs": 320,
+  "min_kept_pairs_basis": {
+   "test": "exact two-sided sign test",
+   "alpha": 0.05,
+   "bonferroni_k": 8,
+   "alt_rate": 0.6,
+   "power": 0.8
+  },
+  "stopped_at_floor": true
+ },
+ "source": {
+  "file": "halueval__summarization.json",
+  "sha256": "4fc67604091488f596d2a2d2f32020344e90a60b60a60955afc4b99354bb0be8",
+  "n_pairs": 2000
+ },
+ "split": {
+  "file": "certified.json",
+  "sha256": "3213bf11d2560947078a1972ed7aa6554a9fe08076d912c4dec579b77cf725d1",
+  "n_pairs": 1027,
+  "retained_share": 0.513,
+  "by_category_source": {
+   "_all": 2000
+  },
+  "by_category_kept": {
+   "_all": 1027
+  }
+ },
+ "filter": {
+  "method": "pair-level adversarial filtering (AFLite-style)",
+  "probes": [
+   "lexicality",
+   "words",
+   "length",
+   "shape"
+  ],
+  "seeds": [
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "step": 0.05,
+  "screen_perm": 200,
+  "screen_seed": 7,
+  "screen_stop": 0.2,
+  "floor_pairs": 1000,
+  "rounds": [
+   {
+    "in": 2000,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.0066,
+    "dropped": 100
+   },
+   {
+    "in": 1900,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.0066,
+    "dropped": 95
+   },
+   {
+    "in": 1805,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.0066,
+    "dropped": 90
+   },
+   {
+    "in": 1715,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.0066,
+    "dropped": 86
+   },
+   {
+    "in": 1629,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.0066,
+    "dropped": 81
+   },
+   {
+    "in": 1548,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.01,
+    "dropped": 77
+   },
+   {
+    "in": 1471,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.01,
+    "dropped": 74
+   },
+   {
+    "in": 1397,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.01,
+    "dropped": 70
+   },
+   {
+    "in": 1327,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.01,
+    "dropped": 66
+   },
+   {
+    "in": 1261,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.01,
+    "dropped": 63
+   },
+   {
+    "in": 1198,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.01,
+    "dropped": 60
+   },
+   {
+    "in": 1138,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.01,
+    "dropped": 57
+   },
+   {
+    "in": 1081,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.01,
+    "dropped": 54
+   },
+   {
+    "in": 1027,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.01,
+    "stopped": "floor"
+   }
+  ]
+ },
+ "tests": {
+  "paired": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst cell A*_pair = 0.979 in lexicality/_all (1027 pairs), family-adjusted p = 0.005 over 6 cells",
+   "n_perm": 600,
+   "seed": 20260724,
+   "stratum": "cat"
+  },
+  "unpaired": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst cell A* = 0.851 in lexicality/_all (n=2054), family-adjusted p = 0.005 over 6 cells",
+   "n_perm": 600
+  },
+  "held_out": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst held-out probe char_ngram: A* 0.944, adjusted p 0.0004998 over 8 probes",
+   "separating": [
+    "function",
+    "digits",
+    "caps",
+    "word_len",
+    "char_ngram"
+   ],
+   "probes": {
+    "negation": {
+     "astar_pair": 0.51,
+     "adj_p": 0.888,
+     "direction": "right scores higher"
+    },
+    "hedge": {
+     "astar_pair": 0.517,
+     "adj_p": 0.313,
+     "direction": "wrong scores higher"
+    },
+    "function": {
+     "astar_pair": 0.725,
+     "adj_p": 0.0005,
+     "direction": "wrong scores higher"
+    },
+    "punct": {
+     "astar_pair": 0.534,
+     "adj_p": 0.144,
+     "direction": "right scores higher"
+    },
+    "digits": {
+     "astar_pair": 0.566,
+     "adj_p": 0.0005,
+     "direction": "right scores higher"
+    },
+    "caps": {
+     "astar_pair": 0.606,
+     "adj_p": 0.0005,
+     "direction": "right scores higher"
+    },
+    "word_len": {
+     "astar_pair": 0.579,
+     "adj_p": 0.0005,
+     "direction": "wrong scores higher"
+    },
+    "char_ngram": {
+     "astar_pair": 0.944,
+     "adj_p": 0.0005,
+     "direction": "wrong scores higher"
+    }
+   },
+   "n_perm": 2000,
+   "seed": 20261026,
+   "stratum": "_all",
+   "source_headline": "worst held-out probe char_ngram: A* 0.965, adjusted p 0.0004998 over 8 probes",
+   "source_separating": [
+    "hedge",
+    "function",
+    "punct",
+    "digits",
+    "word_len",
+    "char_ngram"
+   ]
+  },
+  "negation_cue": {
+   "pairs": 1027,
+   "pairs_differing": 331,
+   "right_more_negated": 176,
+   "wrong_more_negated": 155,
+   "share_right_more_negated_of_differing": 0.532,
+   "sign_test_p_two_sided": 0.272,
+   "cue_present": false
+  },
+  "negation_cue_source": {
+   "pairs": 2000,
+   "pairs_differing": 643,
+   "right_more_negated": 308,
+   "wrong_more_negated": 335,
+   "share_right_more_negated_of_differing": 0.479,
+   "sign_test_p_two_sided": 0.305,
+   "cue_present": false
+  }
+ },
+ "gates": {
+  "in_family_paired": false,
+  "in_family_unpaired": false,
+  "held_out_probes": false,
+  "negation_cue_absent": true
+ },
+ "tool": {
+  "nulltest_version": "1.4",
+  "paired_version": "0.1",
+  "nulltest_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+  "nulltest_paired_sha256": "2fbbebca77abd8b494272801fa3f957e1f910d7a10148a7c6ccc10116e4f37d3",
+  "certify_sha256": "4fb9a4417556492505b5e11b7747fe9626287a0a782c162afd434af3c958db15",
+  "heldout_sha256": "543f47d74d54dd5eb38383421dcead428b6b7dc55d4eb6e29d2884e154f5f981",
+  "heldout_backend": "heldout_np.evaluate_paired",
+  "heldout_np_sha256": "c6b0a210a2d019c119d7854535211c2f89002c7a74fe588df99256c985e77550",
+  "certify_paired_np_sha256": "4af71b81f6a2838df4ba8245e71c603446522c129783200cf2bf99b29b72317a"
+ },
+ "caveat": "The kept pairs were selected against the in-family probes, so those gates are circular; the held-out probes and the negation sign test were never used to select. A pass means none of these probe families recovers right-vs-wrong on the kept pairs; it is not a claim that no surface reader can (no model-based reader is run), and the filter shifts category coverage (see by_category_*). Unsigned prototype: signing and `honest check` replay are Phase 5.",
+ "replay": "python3 benchmark/certified/certify_paired_np.py halueval__summarization.json --out DIR --n-perm 600",
+ "mode": "paired"
+}

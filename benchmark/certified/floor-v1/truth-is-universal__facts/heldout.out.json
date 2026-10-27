@@ -1,0 +1,176 @@
+{
+ "kept": {
+  "family": "held-out (never used by the filter)",
+  "backend": "heldout_np",
+  "probes": {
+   "negation": {
+    "astar": 0.544,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "hedge": {
+    "astar": 0.509,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.166,
+    "adj_p": 0.74,
+    "separates": false
+   },
+   "function": {
+    "astar": 0.567,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.008,
+    "adj_p": 0.054,
+    "separates": false
+   },
+   "punct": {
+    "astar": 0.526,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.148,
+    "adj_p": 0.697,
+    "separates": false
+   },
+   "digits": {
+    "astar": 0.535,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.0015,
+    "adj_p": 0.0075,
+    "separates": true
+   },
+   "caps": {
+    "astar": 0.524,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.246,
+    "adj_p": 0.879,
+    "separates": false
+   },
+   "word_len": {
+    "astar": 0.53,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.23,
+    "adj_p": 0.854,
+    "separates": false
+   },
+   "char_ngram": {
+    "astar": 0.536,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.296,
+    "adj_p": 0.932,
+    "separates": false
+   }
+  },
+  "n_items": 561,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "worst": "negation",
+  "separating": [
+   "negation",
+   "digits"
+  ],
+  "verdict": "DISQUALIFIED",
+  "borderline": false,
+  "headline": "worst held-out probe negation: A* 0.544, adjusted p 0.0004998 over 8 probes",
+  "strata": [
+   "_all"
+  ],
+  "null": "labels permuted within stratum, char_ngram refit",
+  "negation_check": {
+   "items": 561,
+   "mean_negation_label1": 0.117,
+   "mean_negation_label0": 0.0215,
+   "items_with_negation": 37,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 0.0005,
+   "cue_present": true
+  }
+ },
+ "source": {
+  "family": "held-out (never used by the filter)",
+  "backend": "heldout_np",
+  "probes": {
+   "negation": {
+    "astar": 0.544,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.0005,
+    "adj_p": 0.0005,
+    "separates": true
+   },
+   "hedge": {
+    "astar": 0.509,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.166,
+    "adj_p": 0.74,
+    "separates": false
+   },
+   "function": {
+    "astar": 0.567,
+    "direction": "label-1 scores higher",
+    "raw_p": 0.008,
+    "adj_p": 0.054,
+    "separates": false
+   },
+   "punct": {
+    "astar": 0.526,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.148,
+    "adj_p": 0.697,
+    "separates": false
+   },
+   "digits": {
+    "astar": 0.535,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.0015,
+    "adj_p": 0.0075,
+    "separates": true
+   },
+   "caps": {
+    "astar": 0.524,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.246,
+    "adj_p": 0.879,
+    "separates": false
+   },
+   "word_len": {
+    "astar": 0.53,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.23,
+    "adj_p": 0.854,
+    "separates": false
+   },
+   "char_ngram": {
+    "astar": 0.536,
+    "direction": "label-0 scores higher",
+    "raw_p": 0.296,
+    "adj_p": 0.932,
+    "separates": false
+   }
+  },
+  "n_items": 561,
+  "n_perm": 2000,
+  "seed": 20261026,
+  "correction": "westfall_young_min_p over 8 probes",
+  "worst": "negation",
+  "separating": [
+   "negation",
+   "digits"
+  ],
+  "verdict": "DISQUALIFIED",
+  "borderline": false,
+  "headline": "worst held-out probe negation: A* 0.544, adjusted p 0.0004998 over 8 probes",
+  "strata": [
+   "_all"
+  ],
+  "null": "labels permuted within stratum, char_ngram refit",
+  "negation_check": {
+   "items": 561,
+   "mean_negation_label1": 0.117,
+   "mean_negation_label0": 0.0215,
+   "items_with_negation": 37,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 0.0005,
+   "cue_present": true
+  }
+ }
+}

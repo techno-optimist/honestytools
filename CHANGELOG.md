@@ -10,6 +10,19 @@ produced them. What is listed under *not done* is as much a part of the record a
 
 - `verifier/aperture_witness.py` is re-mirrored from site commit 96aadb3 (sha256 `0e634b28…`). `--pin B64=role` now requires the canonical base64 encoding. Before this, Python 3.10 accepted surplus `=` padding, so the role separator stayed attached to the key and the pin never matched. `SOURCE.sha256` is updated to the new hash.
 - The CI unit-test job installs `cryptography` and `sympy`, so the receipt-verifier tests and the witness selftest run instead of skipping.
+- **FLOOR v1 status table** (`benchmark/README.md`). FLOOR was run on every inventory dataset with a clear permissive licence; certificates are in `benchmark/certified/floor-v1/`. One dataset is CERTIFIED: `aperture/postcutoff-trials-v1`, 702 items, nothing removed. Every other dataset is NOT_CERTIFIABLE.
+- **TruthfulQA is final NOT_CERTIFIABLE for FLOOR v1.** The option B pilot (phi-4 rewrites with a deberta-large-mnli meaning check, 82 of 100 pairs) is published in `benchmark/certified/truthfulqa-binary/optb-pilot/` as a negative result, **not a certified split**. The negation cue (31 vs 3) and the char n-gram cue (0.780) survived rewriting. Negation is part of TruthfulQA's correct-answer content.
+- New benchmark-only scripts in `benchmark/certified/`:
+  - `certify_unpaired.py`: the unpaired FLOOR filter and certificate;
+  - `certify_paired_np.py`;
+  - `heldout_np.py`: numpy, and reproduces `heldout.py`'s paired permutation draws;
+  - `floor-v1/make_inputs.py`.
+  These need numpy, so `tests/test_floor_v1.py` skips its numpy tests when numpy is absent. The stable tools stay stdlib-only.
+- *Not done:*
+  - HaluEval paired sets and RagTruth were run on seeded samples (2,000 pairs; 4,000 items), not at full size.
+  - geometry-of-truth and Apollo were computed privately and not published (licences pending).
+  - anti-factual-personas was not run (not in the inventory, no licence).
+  - The 320-per-class unpaired floor is reused from the paired power analysis, not derived separately.
 
 ## 0.7.3 — 2026-10-27 — the receipt log is anchored
 
