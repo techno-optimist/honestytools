@@ -64,8 +64,11 @@ and no eulogies for tools that have a documented way back.
   false-positive rate (v1.4: 10 constructions × 500 seeds, stratified null, worst row 4.8%).
   19 of 24 audited benchmarks fail it; 5 of them are ours; three rows sit at A* 1.000 and two of
   them are ours. *(figures updated in place 2026-10-24, three times, and 2026-10-25 for the deception rows; the rest of this section is as written.)*
-- **`gate`** — binds every published numeral to a registry id and fails closed. 0 unannotated
-  numerals across 9 live pages.
+- **`gate`** — binds published numerals to a registry id. Unannotated figures are warnings by
+  default and failures only under `--strict`. *(Corrected 2026-10-27: this line said the gate
+  "fails closed" with "0 unannotated numerals across 9 live pages". The default run only warns,
+  and the open nested-figure parsing fix ([#2](https://github.com/techno-optimist/honestytools/pull/2))
+  finds unannotated figures the old parser missed, so the zero no longer holds.)*
 - **`verify`** — re-derives a signed verdict from one stdlib+crypto file with no call back to us.
   The independence primitive: trust the math, not the lab.
 - **`audit`** — scores a manifest of batteries and renders the one table; refuses to go green if any
