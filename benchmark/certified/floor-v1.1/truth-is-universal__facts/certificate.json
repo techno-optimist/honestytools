@@ -1,0 +1,258 @@
+{
+ "format": "floor/certificate/v1.1",
+ "mode": "unpaired",
+ "benchmark": "FLOOR",
+ "dataset": "truth-is-universal__facts",
+ "issued": "2026-10-27T03:48:33-0600",
+ "status": "NOT_CERTIFIABLE",
+ "status_reasons": [
+  "source_below_floor",
+  "kept_below_floor",
+  "filter_reached_floor_with_cues"
+ ],
+ "status_rule": {
+  "floor_items": 640,
+  "min_per_class": 320,
+  "min_kept_share": 0.5,
+  "min_per_class_basis": "certify.py's paired power floor (320) reused per class; conservative, no separate unpaired derivation",
+  "held_out_rule": "v1.1: fails if the pooled OR the within-stratum family separates (adj p < 0.05) or is borderline (< 0.10)",
+  "stopped_at_floor": true
+ },
+ "source": {
+  "file": "truth-is-universal__facts.json",
+  "sha256": "5aa93d9875708196e5bc1824ed5f904a9a9a7f03ff5c926ad7b22cf5192403f1",
+  "n_items": 561,
+  "classes": {
+   "label1": 282,
+   "label0": 279
+  }
+ },
+ "split": {
+  "file": "certified.json",
+  "sha256": "f0814f4201d3484f3a90eb9d78fd0a5b08887c778504beea6905064b2c8519fa",
+  "n_items": 561,
+  "classes": {
+   "label1": 282,
+   "label0": 279
+  },
+  "retained_share": 1.0
+ },
+ "filter": {
+  "method": "item-level adversarial filtering (AFLite-style), class-proportional drops (unchanged from v1)",
+  "probes": [
+   "lexicality",
+   "words",
+   "length",
+   "shape"
+  ],
+  "seeds": [
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "step": 0.05,
+  "screen_perm": 200,
+  "screen_seed": 7,
+  "screen_stop": 0.2,
+  "rounds": [
+   {
+    "in": 561,
+    "screen_adj_p": 0.0797,
+    "stopped": "floor"
+   }
+  ]
+ },
+ "tests": {
+  "unpaired": {
+   "verdict": "DISQUALIFIED",
+   "borderline": true,
+   "headline": "worst cell A* = 0.565 in length/_all (n=561), family-adjusted p = 0.0383 over 6 cells",
+   "n_perm": 600,
+   "seed": 20260724,
+   "stratum": null
+  },
+  "held_out": {
+   "pooled": {
+    "verdict": "DISQUALIFIED",
+    "borderline": false,
+    "headline": "worst held-out probe negation: A* 0.544, adjusted p 0.0004998 over 8 probes",
+    "separating": [
+     "negation",
+     "digits"
+    ],
+    "probes": {
+     "negation": {
+      "astar": 0.544,
+      "adj_p": 0.0005,
+      "direction": "label-1 scores higher"
+     },
+     "hedge": {
+      "astar": 0.509,
+      "adj_p": 0.74,
+      "direction": "label-0 scores higher"
+     },
+     "function": {
+      "astar": 0.567,
+      "adj_p": 0.054,
+      "direction": "label-1 scores higher"
+     },
+     "punct": {
+      "astar": 0.526,
+      "adj_p": 0.697,
+      "direction": "label-0 scores higher"
+     },
+     "digits": {
+      "astar": 0.535,
+      "adj_p": 0.0075,
+      "direction": "label-0 scores higher"
+     },
+     "caps": {
+      "astar": 0.524,
+      "adj_p": 0.879,
+      "direction": "label-0 scores higher"
+     },
+     "word_len": {
+      "astar": 0.53,
+      "adj_p": 0.854,
+      "direction": "label-0 scores higher"
+     },
+     "char_ngram": {
+      "astar": 0.536,
+      "adj_p": 0.932,
+      "direction": "label-0 scores higher"
+     }
+    }
+   },
+   "within_stratum": {
+    "verdict": "DISQUALIFIED",
+    "borderline": false,
+    "headline": "worst within-stratum probe negation: A* 0.544, adjusted p 0.0004998 over 8 probes",
+    "separating": [
+     "negation",
+     "digits"
+    ],
+    "probes": {
+     "negation": {
+      "astar": 0.544,
+      "adj_p": 0.0005,
+      "auroc_by_stratum": {
+       "_all": 0.544
+      }
+     },
+     "hedge": {
+      "astar": 0.509,
+      "adj_p": 0.74,
+      "auroc_by_stratum": {
+       "_all": 0.491
+      }
+     },
+     "function": {
+      "astar": 0.567,
+      "adj_p": 0.054,
+      "auroc_by_stratum": {
+       "_all": 0.567
+      }
+     },
+     "punct": {
+      "astar": 0.526,
+      "adj_p": 0.697,
+      "auroc_by_stratum": {
+       "_all": 0.474
+      }
+     },
+     "digits": {
+      "astar": 0.535,
+      "adj_p": 0.0075,
+      "auroc_by_stratum": {
+       "_all": 0.465
+      }
+     },
+     "caps": {
+      "astar": 0.524,
+      "adj_p": 0.879,
+      "auroc_by_stratum": {
+       "_all": 0.476
+      }
+     },
+     "word_len": {
+      "astar": 0.53,
+      "adj_p": 0.854,
+      "auroc_by_stratum": {
+       "_all": 0.47
+      }
+     },
+     "char_ngram": {
+      "astar": 0.536,
+      "adj_p": 0.932,
+      "auroc_by_stratum": {
+       "_all": 0.464
+      }
+     }
+    },
+    "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+    "strata_scored": [
+     "_all"
+    ],
+    "strata_skipped_one_class": []
+   },
+   "worst": {
+    "family": "pooled",
+    "probe": "negation",
+    "astar": 0.544,
+    "adj_p": 0.0005
+   },
+   "n_perm": 2000,
+   "seed": 20261026,
+   "null": "labels permuted within stratum; one set of draws shared by both families",
+   "source": {
+    "pooled_headline": "worst held-out probe negation: A* 0.544, adjusted p 0.0004998 over 8 probes",
+    "pooled_separating": [
+     "negation",
+     "digits"
+    ],
+    "within_headline": "worst within-stratum probe negation: A* 0.544, adjusted p 0.0004998 over 8 probes",
+    "within_separating": [
+     "negation",
+     "digits"
+    ]
+   }
+  },
+  "negation_cue": {
+   "items": 561,
+   "mean_negation_label1": 0.117,
+   "mean_negation_label0": 0.0215,
+   "items_with_negation": 37,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 0.0005,
+   "cue_present": true
+  },
+  "negation_cue_source": {
+   "items": 561,
+   "mean_negation_label1": 0.117,
+   "mean_negation_label0": 0.0215,
+   "items_with_negation": 37,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 0.0005,
+   "cue_present": true
+  }
+ },
+ "gates": {
+  "in_family_unpaired": false,
+  "held_out_probes": false,
+  "negation_cue_absent": false
+ },
+ "provenance": {
+  "nulltest_version": "1.4",
+  "nulltest_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+  "certify_sha256": "4fb9a4417556492505b5e11b7747fe9626287a0a782c162afd434af3c958db15",
+  "certify_unpaired_sha256": "75bf01a7b0c182a07c2d95ca7a5957e67aa7e5164cd36cb51b880a221efb014d",
+  "certify_unpaired_v11_sha256": "1ee726d13aa67d6f267aabbd4793809169fa040b1052c9683ec4e11d48de6fce",
+  "heldout_sha256": "543f47d74d54dd5eb38383421dcead428b6b7dc55d4eb6e29d2884e154f5f981",
+  "heldout_np_sha256": "c6b0a210a2d019c119d7854535211c2f89002c7a74fe588df99256c985e77550",
+  "heldout_strat_sha256": "5ca4fa39eb1eaa9d902f65667b3a15b99ba1c506b15d1dd2127907768e715687"
+ },
+ "caveat": "The kept items were selected against the in-family probes, so that gate is circular; the held-out probes and the negation test were never used to select. A pass means none of these probe families, pooled or within stratum, recovers the labels on the kept items; it is not a claim that no surface reader can (no model-based reader is run). Unsigned prototype.",
+ "replay": "python3 benchmark/certified/certify_unpaired_v11.py truth-is-universal__facts.json --out DIR --n-perm 600 --text-key entity"
+}

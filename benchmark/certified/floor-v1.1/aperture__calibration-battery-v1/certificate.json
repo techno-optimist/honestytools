@@ -1,0 +1,309 @@
+{
+ "format": "floor/certificate/v1.1",
+ "mode": "unpaired",
+ "benchmark": "FLOOR",
+ "dataset": "aperture__calibration-battery-v1",
+ "issued": "2026-10-27T03:48:02-0600",
+ "status": "NOT_CERTIFIABLE",
+ "status_reasons": [
+  "source_below_floor",
+  "kept_below_floor",
+  "filter_reached_floor_with_cues"
+ ],
+ "status_rule": {
+  "floor_items": 640,
+  "min_per_class": 320,
+  "min_kept_share": 0.5,
+  "min_per_class_basis": "certify.py's paired power floor (320) reused per class; conservative, no separate unpaired derivation",
+  "held_out_rule": "v1.1: fails if the pooled OR the within-stratum family separates (adj p < 0.05) or is borderline (< 0.10)",
+  "stopped_at_floor": true
+ },
+ "source": {
+  "file": "aperture__calibration-battery-v1.json",
+  "sha256": "4a0562847c252823f63820e6bad319e63b952128e0f9539833173aa28af809b2",
+  "n_items": 168,
+  "classes": {
+   "label1": 84,
+   "label0": 84
+  }
+ },
+ "split": {
+  "file": "certified.json",
+  "sha256": "26968a3e7ed18cd906082594f9b14f1f083f7497d4ef7860e5d5c464cedabb71",
+  "n_items": 168,
+  "classes": {
+   "label1": 84,
+   "label0": 84
+  },
+  "retained_share": 1.0
+ },
+ "filter": {
+  "method": "item-level adversarial filtering (AFLite-style), class-proportional drops (unchanged from v1)",
+  "probes": [
+   "lexicality",
+   "words",
+   "length",
+   "shape"
+  ],
+  "seeds": [
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "step": 0.05,
+  "screen_perm": 200,
+  "screen_seed": 7,
+  "screen_stop": 0.2,
+  "rounds": [
+   {
+    "in": 168,
+    "screen_adj_p": 0.0114,
+    "stopped": "floor"
+   }
+  ]
+ },
+ "tests": {
+  "unpaired": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst cell A* = 1.0 in lexicality/book (n=28), family-adjusted p = 0.0107 over 34 cells",
+   "n_perm": 1400,
+   "seed": 20260724,
+   "stratum": "category"
+  },
+  "held_out": {
+   "pooled": {
+    "verdict": "DISQUALIFIED",
+    "borderline": false,
+    "headline": "worst held-out probe char_ngram: A* 0.986, adjusted p 0.0004998 over 8 probes",
+    "separating": [
+     "function",
+     "caps",
+     "word_len",
+     "char_ngram"
+    ],
+    "probes": {
+     "negation": {
+      "astar": 0.5,
+      "adj_p": 1.0,
+      "direction": "none"
+     },
+     "hedge": {
+      "astar": 0.5,
+      "adj_p": 1.0,
+      "direction": "none"
+     },
+     "function": {
+      "astar": 0.568,
+      "adj_p": 0.0205,
+      "direction": "label-1 scores higher"
+     },
+     "punct": {
+      "astar": 0.524,
+      "adj_p": 0.442,
+      "direction": "label-0 scores higher"
+     },
+     "digits": {
+      "astar": 0.512,
+      "adj_p": 0.959,
+      "direction": "label-0 scores higher"
+     },
+     "caps": {
+      "astar": 0.665,
+      "adj_p": 0.0005,
+      "direction": "label-1 scores higher"
+     },
+     "word_len": {
+      "astar": 0.786,
+      "adj_p": 0.0005,
+      "direction": "label-1 scores higher"
+     },
+     "char_ngram": {
+      "astar": 0.986,
+      "adj_p": 0.0005,
+      "direction": "label-1 scores higher"
+     }
+    }
+   },
+   "within_stratum": {
+    "verdict": "DISQUALIFIED",
+    "borderline": false,
+    "headline": "worst within-stratum probe char_ngram: A* 0.993, adjusted p 0.0004998 over 8 probes",
+    "separating": [
+     "caps",
+     "word_len",
+     "char_ngram"
+    ],
+    "probes": {
+     "negation": {
+      "astar": 0.5,
+      "adj_p": 1.0,
+      "auroc_by_stratum": {
+       "book": 0.5,
+       "compound": 0.5,
+       "firm": 0.5,
+       "painting": 0.5,
+       "person": 0.5,
+       "place": 0.5
+      }
+     },
+     "hedge": {
+      "astar": 0.5,
+      "adj_p": 1.0,
+      "auroc_by_stratum": {
+       "book": 0.5,
+       "compound": 0.5,
+       "firm": 0.5,
+       "painting": 0.5,
+       "person": 0.5,
+       "place": 0.5
+      }
+     },
+     "function": {
+      "astar": 0.573,
+      "adj_p": 0.0845,
+      "auroc_by_stratum": {
+       "book": 0.673,
+       "compound": 0.5,
+       "firm": 0.714,
+       "painting": 0.449,
+       "person": 0.5,
+       "place": 0.5
+      }
+     },
+     "punct": {
+      "astar": 0.524,
+      "adj_p": 0.667,
+      "auroc_by_stratum": {
+       "book": 0.429,
+       "compound": 0.5,
+       "firm": 0.429,
+       "painting": 0.5,
+       "person": 0.5,
+       "place": 0.5
+      }
+     },
+     "digits": {
+      "astar": 0.512,
+      "adj_p": 0.952,
+      "auroc_by_stratum": {
+       "book": 0.429,
+       "compound": 0.5,
+       "firm": 0.5,
+       "painting": 0.5,
+       "person": 0.5,
+       "place": 0.5
+      }
+     },
+     "caps": {
+      "astar": 0.655,
+      "adj_p": 0.0005,
+      "auroc_by_stratum": {
+       "book": 0.898,
+       "compound": 0.5,
+       "firm": 1.0,
+       "painting": 0.531,
+       "person": 0.5,
+       "place": 0.5
+      }
+     },
+     "word_len": {
+      "astar": 0.81,
+      "adj_p": 0.0005,
+      "auroc_by_stratum": {
+       "book": 0.888,
+       "compound": 0.745,
+       "firm": 0.684,
+       "painting": 0.745,
+       "person": 0.796,
+       "place": 1.0
+      }
+     },
+     "char_ngram": {
+      "astar": 0.993,
+      "adj_p": 0.0005,
+      "auroc_by_stratum": {
+       "book": 1.0,
+       "compound": 1.0,
+       "firm": 1.0,
+       "painting": 0.959,
+       "person": 1.0,
+       "place": 1.0
+      }
+     }
+    },
+    "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+    "strata_scored": [
+     "book",
+     "compound",
+     "firm",
+     "painting",
+     "person",
+     "place"
+    ],
+    "strata_skipped_one_class": []
+   },
+   "worst": {
+    "family": "pooled",
+    "probe": "char_ngram",
+    "astar": 0.986,
+    "adj_p": 0.0005
+   },
+   "n_perm": 2000,
+   "seed": 20261026,
+   "null": "labels permuted within stratum; one set of draws shared by both families",
+   "source": {
+    "pooled_headline": "worst held-out probe char_ngram: A* 0.986, adjusted p 0.0004998 over 8 probes",
+    "pooled_separating": [
+     "function",
+     "caps",
+     "word_len",
+     "char_ngram"
+    ],
+    "within_headline": "worst within-stratum probe char_ngram: A* 0.993, adjusted p 0.0004998 over 8 probes",
+    "within_separating": [
+     "caps",
+     "word_len",
+     "char_ngram"
+    ]
+   }
+  },
+  "negation_cue": {
+   "items": 168,
+   "mean_negation_label1": 0.0,
+   "mean_negation_label0": 0.0,
+   "items_with_negation": 0,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 1.0,
+   "cue_present": false
+  },
+  "negation_cue_source": {
+   "items": 168,
+   "mean_negation_label1": 0.0,
+   "mean_negation_label0": 0.0,
+   "items_with_negation": 0,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 1.0,
+   "cue_present": false
+  }
+ },
+ "gates": {
+  "in_family_unpaired": false,
+  "held_out_probes": false,
+  "negation_cue_absent": true
+ },
+ "provenance": {
+  "nulltest_version": "1.4",
+  "nulltest_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+  "certify_sha256": "4fb9a4417556492505b5e11b7747fe9626287a0a782c162afd434af3c958db15",
+  "certify_unpaired_sha256": "75bf01a7b0c182a07c2d95ca7a5957e67aa7e5164cd36cb51b880a221efb014d",
+  "certify_unpaired_v11_sha256": "1ee726d13aa67d6f267aabbd4793809169fa040b1052c9683ec4e11d48de6fce",
+  "heldout_sha256": "543f47d74d54dd5eb38383421dcead428b6b7dc55d4eb6e29d2884e154f5f981",
+  "heldout_np_sha256": "c6b0a210a2d019c119d7854535211c2f89002c7a74fe588df99256c985e77550",
+  "heldout_strat_sha256": "5ca4fa39eb1eaa9d902f65667b3a15b99ba1c506b15d1dd2127907768e715687"
+ },
+ "caveat": "The kept items were selected against the in-family probes, so that gate is circular; the held-out probes and the negation test were never used to select. A pass means none of these probe families, pooled or within stratum, recovers the labels on the kept items; it is not a claim that no surface reader can (no model-based reader is run). Unsigned prototype.",
+ "replay": "python3 benchmark/certified/certify_unpaired_v11.py aperture__calibration-battery-v1.json --out DIR --n-perm 600 --text-key entity --stratum-key category"
+}

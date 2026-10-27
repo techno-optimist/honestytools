@@ -1,0 +1,448 @@
+{
+ "kept": {
+  "pooled": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "hedge": {
+     "astar": 0.502,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.492,
+     "adj_p": 0.961,
+     "separates": false
+    },
+    "function": {
+     "astar": 0.503,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.465,
+     "adj_p": 0.934,
+     "separates": false
+    },
+    "punct": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "digits": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "caps": {
+     "astar": 0.516,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.491,
+     "adj_p": 0.943,
+     "separates": false
+    },
+    "word_len": {
+     "astar": 0.59,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true
+    },
+    "char_ngram": {
+     "astar": 0.761,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true
+    }
+   },
+   "n_items": 1011,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "char_ngram",
+   "separating": [
+    "word_len",
+    "char_ngram"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst held-out probe char_ngram: A* 0.761, adjusted p 0.0004998 over 8 probes",
+   "strata": [
+    "book",
+    "film",
+    "firm",
+    "person",
+    "place"
+   ],
+   "null": "labels permuted within stratum, char_ngram refit",
+   "negation_check": {
+    "items": 1011,
+    "mean_negation_label1": 0.0,
+    "mean_negation_label0": 0.0,
+    "items_with_negation": 0,
+    "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+    "p_two_sided": 1.0,
+    "cue_present": false
+   }
+  },
+  "within": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "film": 0.5,
+      "firm": 0.5,
+      "person": 0.5,
+      "place": 0.5
+     }
+    },
+    "hedge": {
+     "astar": 0.502,
+     "raw_p": 0.244,
+     "adj_p": 0.736,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "film": 0.5,
+      "firm": 0.5,
+      "person": 0.502,
+      "place": 0.5
+     }
+    },
+    "function": {
+     "astar": 0.5,
+     "raw_p": 0.983,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "film": 0.476,
+      "firm": 0.5,
+      "person": 0.5,
+      "place": 0.5
+     }
+    },
+    "punct": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "film": 0.5,
+      "firm": 0.5,
+      "person": 0.5,
+      "place": 0.5
+     }
+    },
+    "digits": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "film": 0.5,
+      "firm": 0.5,
+      "person": 0.5,
+      "place": 0.5
+     }
+    },
+    "caps": {
+     "astar": 0.501,
+     "raw_p": 0.996,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.458,
+      "film": 0.5,
+      "firm": 0.55,
+      "person": 0.5,
+      "place": 0.499
+     }
+    },
+    "word_len": {
+     "astar": 0.605,
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true,
+     "auroc_by_stratum": {
+      "book": 0.417,
+      "film": 0.333,
+      "firm": 0.237,
+      "person": 0.393,
+      "place": 0.514
+     }
+    },
+    "char_ngram": {
+     "astar": 0.766,
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true,
+     "auroc_by_stratum": {
+      "book": 0.75,
+      "film": 0.5,
+      "firm": 0.65,
+      "person": 0.773,
+      "place": 0.727
+     }
+    }
+   },
+   "n_items": 1011,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "char_ngram",
+   "separating": [
+    "word_len",
+    "char_ngram"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst within-stratum probe char_ngram: A* 0.766, adjusted p 0.0004998 over 8 probes",
+   "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+   "strata_scored": [
+    "book",
+    "film",
+    "firm",
+    "person",
+    "place"
+   ],
+   "strata_skipped_one_class": [],
+   "null": "labels permuted within stratum (same draws as pooled), char_ngram refit"
+  }
+ },
+ "source": {
+  "pooled": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.501,
+     "direction": "label-1 scores higher",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "hedge": {
+     "astar": 0.501,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.632,
+     "adj_p": 0.994,
+     "separates": false
+    },
+    "function": {
+     "astar": 0.501,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.557,
+     "adj_p": 0.966,
+     "separates": false
+    },
+    "punct": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "digits": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "caps": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "word_len": {
+     "astar": 0.501,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.965,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "char_ngram": {
+     "astar": 0.538,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.0295,
+     "adj_p": 0.109,
+     "separates": false
+    }
+   },
+   "n_items": 1968,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "char_ngram",
+   "separating": [],
+   "verdict": "PASS",
+   "borderline": false,
+   "headline": "worst held-out probe char_ngram: A* 0.538, adjusted p 0.1094 over 8 probes",
+   "strata": [
+    "book",
+    "film",
+    "firm",
+    "person",
+    "place"
+   ],
+   "null": "labels permuted within stratum, char_ngram refit",
+   "negation_check": {
+    "items": 1968,
+    "mean_negation_label1": 0.001,
+    "mean_negation_label0": 0.0,
+    "items_with_negation": 1,
+    "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+    "p_two_sided": 1.0,
+    "cue_present": false
+   }
+  },
+  "within": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.501,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.517,
+      "film": 0.5,
+      "firm": 0.5,
+      "person": 0.5,
+      "place": 0.5
+     }
+    },
+    "hedge": {
+     "astar": 0.501,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "film": 0.519,
+      "firm": 0.5,
+      "person": 0.501,
+      "place": 0.5
+     }
+    },
+    "function": {
+     "astar": 0.501,
+     "raw_p": 0.978,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "film": 0.5,
+      "firm": 0.5,
+      "person": 0.499,
+      "place": 0.5
+     }
+    },
+    "punct": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "film": 0.5,
+      "firm": 0.5,
+      "person": 0.5,
+      "place": 0.5
+     }
+    },
+    "digits": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "film": 0.5,
+      "firm": 0.5,
+      "person": 0.5,
+      "place": 0.5
+     }
+    },
+    "caps": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "film": 0.5,
+      "firm": 0.5,
+      "person": 0.5,
+      "place": 0.5
+     }
+    },
+    "word_len": {
+     "astar": 0.502,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.506,
+      "film": 0.508,
+      "firm": 0.536,
+      "person": 0.5,
+      "place": 0.474
+     }
+    },
+    "char_ngram": {
+     "astar": 0.561,
+     "raw_p": 0.002,
+     "adj_p": 0.006,
+     "separates": true,
+     "auroc_by_stratum": {
+      "book": 0.34,
+      "film": 0.355,
+      "firm": 0.284,
+      "person": 0.555,
+      "place": 0.489
+     }
+    }
+   },
+   "n_items": 1968,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "char_ngram",
+   "separating": [
+    "char_ngram"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst within-stratum probe char_ngram: A* 0.561, adjusted p 0.005997 over 8 probes",
+   "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+   "strata_scored": [
+    "book",
+    "film",
+    "firm",
+    "person",
+    "place"
+   ],
+   "strata_skipped_one_class": [],
+   "null": "labels permuted within stratum (same draws as pooled), char_ngram refit"
+  }
+ }
+}
