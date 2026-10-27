@@ -1,7 +1,7 @@
 # verifier/: offline verifier for honesty.tools signed receipts (mirror)
 
 These files are byte-identical copies of the verifier published at https://www.honesty.tools/verifier/.
-The source is the honesty.tools site repo, commit 2813cec, `Aperture/web/static/verifier/` (plus its `demo_witnesses/`, which the witness selftest reads). They are
+The source is the honesty.tools site repo, `Aperture/web/static/verifier/` (plus its `demo_witnesses/`, which the witness selftest reads): `aperture_witness.py` from commit 96aadb3, everything else from commit 2813cec. They are
 mirrored here so the `verify` step that CHARTER.md promises ships with the public tools.
 `SOURCE.sha256` pins the bytes, and `tests/test_verifier.py` fails if a copy drifts from it.
 To update, copy the files from the site again and regenerate `SOURCE.sha256` in the same commit.
