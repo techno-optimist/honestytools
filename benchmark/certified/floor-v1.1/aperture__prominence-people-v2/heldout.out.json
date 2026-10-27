@@ -1,0 +1,372 @@
+{
+ "kept": {
+  "pooled": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "hedge": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "function": {
+     "astar": 0.513,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.618,
+     "adj_p": 0.977,
+     "separates": false
+    },
+    "punct": {
+     "astar": 0.558,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.0215,
+     "adj_p": 0.0635,
+     "separates": false
+    },
+    "digits": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "caps": {
+     "astar": 0.583,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.0065,
+     "adj_p": 0.023,
+     "separates": true
+    },
+    "word_len": {
+     "astar": 0.648,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.002,
+     "adj_p": 0.004,
+     "separates": true
+    },
+    "char_ngram": {
+     "astar": 0.602,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.114,
+     "adj_p": 0.321,
+     "separates": false
+    }
+   },
+   "n_items": 156,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "word_len",
+   "separating": [
+    "caps",
+    "word_len"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst held-out probe word_len: A* 0.648, adjusted p 0.003998 over 8 probes",
+   "strata": [
+    "_all"
+   ],
+   "null": "labels permuted within stratum, char_ngram refit",
+   "negation_check": {
+    "items": 156,
+    "mean_negation_label1": 0.0,
+    "mean_negation_label0": 0.0,
+    "items_with_negation": 0,
+    "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+    "p_two_sided": 1.0,
+    "cue_present": false
+   }
+  },
+  "within": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "_all": 0.5
+     }
+    },
+    "hedge": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "_all": 0.5
+     }
+    },
+    "function": {
+     "astar": 0.513,
+     "raw_p": 0.618,
+     "adj_p": 0.977,
+     "separates": false,
+     "auroc_by_stratum": {
+      "_all": 0.513
+     }
+    },
+    "punct": {
+     "astar": 0.558,
+     "raw_p": 0.0215,
+     "adj_p": 0.0635,
+     "separates": false,
+     "auroc_by_stratum": {
+      "_all": 0.558
+     }
+    },
+    "digits": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "_all": 0.5
+     }
+    },
+    "caps": {
+     "astar": 0.583,
+     "raw_p": 0.0065,
+     "adj_p": 0.023,
+     "separates": true,
+     "auroc_by_stratum": {
+      "_all": 0.583
+     }
+    },
+    "word_len": {
+     "astar": 0.648,
+     "raw_p": 0.002,
+     "adj_p": 0.004,
+     "separates": true,
+     "auroc_by_stratum": {
+      "_all": 0.352
+     }
+    },
+    "char_ngram": {
+     "astar": 0.602,
+     "raw_p": 0.114,
+     "adj_p": 0.321,
+     "separates": false,
+     "auroc_by_stratum": {
+      "_all": 0.602
+     }
+    }
+   },
+   "n_items": 156,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "word_len",
+   "separating": [
+    "caps",
+    "word_len"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst within-stratum probe word_len: A* 0.648, adjusted p 0.003998 over 8 probes",
+   "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+   "strata_scored": [
+    "_all"
+   ],
+   "strata_skipped_one_class": [],
+   "null": "labels permuted within stratum (same draws as pooled), char_ngram refit"
+  }
+ },
+ "source": {
+  "pooled": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "hedge": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "function": {
+     "astar": 0.513,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.618,
+     "adj_p": 0.977,
+     "separates": false
+    },
+    "punct": {
+     "astar": 0.558,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.0215,
+     "adj_p": 0.0635,
+     "separates": false
+    },
+    "digits": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "caps": {
+     "astar": 0.583,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.0065,
+     "adj_p": 0.023,
+     "separates": true
+    },
+    "word_len": {
+     "astar": 0.648,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.002,
+     "adj_p": 0.004,
+     "separates": true
+    },
+    "char_ngram": {
+     "astar": 0.602,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.114,
+     "adj_p": 0.321,
+     "separates": false
+    }
+   },
+   "n_items": 156,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "word_len",
+   "separating": [
+    "caps",
+    "word_len"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst held-out probe word_len: A* 0.648, adjusted p 0.003998 over 8 probes",
+   "strata": [
+    "_all"
+   ],
+   "null": "labels permuted within stratum, char_ngram refit",
+   "negation_check": {
+    "items": 156,
+    "mean_negation_label1": 0.0,
+    "mean_negation_label0": 0.0,
+    "items_with_negation": 0,
+    "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+    "p_two_sided": 1.0,
+    "cue_present": false
+   }
+  },
+  "within": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "_all": 0.5
+     }
+    },
+    "hedge": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "_all": 0.5
+     }
+    },
+    "function": {
+     "astar": 0.513,
+     "raw_p": 0.618,
+     "adj_p": 0.977,
+     "separates": false,
+     "auroc_by_stratum": {
+      "_all": 0.513
+     }
+    },
+    "punct": {
+     "astar": 0.558,
+     "raw_p": 0.0215,
+     "adj_p": 0.0635,
+     "separates": false,
+     "auroc_by_stratum": {
+      "_all": 0.558
+     }
+    },
+    "digits": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "_all": 0.5
+     }
+    },
+    "caps": {
+     "astar": 0.583,
+     "raw_p": 0.0065,
+     "adj_p": 0.023,
+     "separates": true,
+     "auroc_by_stratum": {
+      "_all": 0.583
+     }
+    },
+    "word_len": {
+     "astar": 0.648,
+     "raw_p": 0.002,
+     "adj_p": 0.004,
+     "separates": true,
+     "auroc_by_stratum": {
+      "_all": 0.352
+     }
+    },
+    "char_ngram": {
+     "astar": 0.602,
+     "raw_p": 0.114,
+     "adj_p": 0.321,
+     "separates": false,
+     "auroc_by_stratum": {
+      "_all": 0.602
+     }
+    }
+   },
+   "n_items": 156,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "word_len",
+   "separating": [
+    "caps",
+    "word_len"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst within-stratum probe word_len: A* 0.648, adjusted p 0.003998 over 8 probes",
+   "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+   "strata_scored": [
+    "_all"
+   ],
+   "strata_skipped_one_class": [],
+   "null": "labels permuted within stratum (same draws as pooled), char_ngram refit"
+  }
+ }
+}

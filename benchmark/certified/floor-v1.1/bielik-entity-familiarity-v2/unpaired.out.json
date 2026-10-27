@@ -1,0 +1,315 @@
+{
+ "tool": "nulltest",
+ "version": "1.4",
+ "probes": [
+  "lexicality",
+  "words",
+  "length",
+  "shape",
+  "alpha_first",
+  "alpha_last"
+ ],
+ "n": 1440,
+ "n_fake": 240,
+ "n_real": 1200,
+ "strata": [
+  "athletes",
+  "cities",
+  "musicians",
+  "writers"
+ ],
+ "min_cell": 12,
+ "n_perm": 1000,
+ "n_perm_requested": 600,
+ "alpha": 0.05,
+ "family_size": 24,
+ "correction": "westfall_young_min_p",
+ "null": "labels shuffled within stratum (stratified permutation), every probe refit",
+ "label_rate_by_stratum": {
+  "athletes": {
+   "n": 360,
+   "label1_rate": 0.167
+  },
+  "cities": {
+   "n": 360,
+   "label1_rate": 0.167
+  },
+  "musicians": {
+   "n": 360,
+   "label1_rate": 0.167
+  },
+  "writers": {
+   "n": 360,
+   "label1_rate": 0.167
+  }
+ },
+ "nulls": {
+  "lexicality": {
+   "per_stratum": {
+    "athletes": {
+     "n": 360,
+     "astar": 0.925,
+     "threshold": 0.589,
+     "raw_p": 0.001,
+     "adj_p": 0.016,
+     "separates": true,
+     "underpowered": false
+    },
+    "cities": {
+     "n": 360,
+     "astar": 0.953,
+     "threshold": 0.602,
+     "raw_p": 0.001,
+     "adj_p": 0.016,
+     "separates": true,
+     "underpowered": false
+    },
+    "musicians": {
+     "n": 360,
+     "astar": 0.924,
+     "threshold": 0.594,
+     "raw_p": 0.001,
+     "adj_p": 0.016,
+     "separates": true,
+     "underpowered": false
+    },
+    "writers": {
+     "n": 360,
+     "astar": 0.916,
+     "threshold": 0.593,
+     "raw_p": 0.001,
+     "adj_p": 0.016,
+     "separates": true,
+     "underpowered": false
+    }
+   }
+  },
+  "words": {
+   "per_stratum": {
+    "athletes": {
+     "n": 360,
+     "astar": 0.867,
+     "threshold": 0.597,
+     "raw_p": 0.001,
+     "adj_p": 0.016,
+     "separates": true,
+     "underpowered": false
+    },
+    "cities": {
+     "n": 360,
+     "astar": 0.78,
+     "threshold": 0.6,
+     "raw_p": 0.001,
+     "adj_p": 0.016,
+     "separates": true,
+     "underpowered": false
+    },
+    "musicians": {
+     "n": 360,
+     "astar": 0.851,
+     "threshold": 0.595,
+     "raw_p": 0.001,
+     "adj_p": 0.016,
+     "separates": true,
+     "underpowered": false
+    },
+    "writers": {
+     "n": 360,
+     "astar": 0.805,
+     "threshold": 0.592,
+     "raw_p": 0.001,
+     "adj_p": 0.016,
+     "separates": true,
+     "underpowered": false
+    }
+   }
+  },
+  "length": {
+   "per_stratum": {
+    "athletes": {
+     "n": 360,
+     "astar": 0.572,
+     "threshold": 0.576,
+     "raw_p": 0.0629,
+     "adj_p": 0.7403,
+     "separates": false,
+     "underpowered": false
+    },
+    "cities": {
+     "n": 360,
+     "astar": 0.564,
+     "threshold": 0.582,
+     "raw_p": 0.1279,
+     "adj_p": 0.951,
+     "separates": false,
+     "underpowered": false
+    },
+    "musicians": {
+     "n": 360,
+     "astar": 0.528,
+     "threshold": 0.579,
+     "raw_p": 0.4905,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "writers": {
+     "n": 360,
+     "astar": 0.576,
+     "threshold": 0.582,
+     "raw_p": 0.0709,
+     "adj_p": 0.7942,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  },
+  "shape": {
+   "per_stratum": {
+    "athletes": {
+     "n": 360,
+     "astar": 0.533,
+     "threshold": 0.592,
+     "raw_p": 0.4655,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "cities": {
+     "n": 360,
+     "astar": 0.742,
+     "threshold": 0.596,
+     "raw_p": 0.001,
+     "adj_p": 0.016,
+     "separates": true,
+     "underpowered": false
+    },
+    "musicians": {
+     "n": 360,
+     "astar": 0.523,
+     "threshold": 0.59,
+     "raw_p": 0.6234,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "writers": {
+     "n": 360,
+     "astar": 0.548,
+     "threshold": 0.59,
+     "raw_p": 0.2747,
+     "adj_p": 0.996,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  },
+  "alpha_first": {
+   "per_stratum": {
+    "athletes": {
+     "n": 360,
+     "astar": 0.623,
+     "threshold": 0.578,
+     "raw_p": 0.006,
+     "adj_p": 0.1229,
+     "separates": false,
+     "underpowered": false
+    },
+    "cities": {
+     "n": 360,
+     "astar": 0.519,
+     "threshold": 0.58,
+     "raw_p": 0.6523,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "musicians": {
+     "n": 360,
+     "astar": 0.622,
+     "threshold": 0.58,
+     "raw_p": 0.005,
+     "adj_p": 0.1029,
+     "separates": false,
+     "underpowered": false
+    },
+    "writers": {
+     "n": 360,
+     "astar": 0.556,
+     "threshold": 0.581,
+     "raw_p": 0.1578,
+     "adj_p": 0.982,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  },
+  "alpha_last": {
+   "per_stratum": {
+    "athletes": {
+     "n": 360,
+     "astar": 0.548,
+     "threshold": 0.578,
+     "raw_p": 0.2328,
+     "adj_p": 0.993,
+     "separates": false,
+     "underpowered": false
+    },
+    "cities": {
+     "n": 360,
+     "astar": 0.582,
+     "threshold": 0.577,
+     "raw_p": 0.041,
+     "adj_p": 0.5754,
+     "separates": false,
+     "underpowered": false
+    },
+    "musicians": {
+     "n": 360,
+     "astar": 0.561,
+     "threshold": 0.58,
+     "raw_p": 0.1369,
+     "adj_p": 0.959,
+     "separates": false,
+     "underpowered": false
+    },
+    "writers": {
+     "n": 360,
+     "astar": 0.589,
+     "threshold": 0.578,
+     "raw_p": 0.019,
+     "adj_p": 0.3357,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  }
+ },
+ "underpowered_cells": [],
+ "n_perm_note": "600 permutations requested; 24 cells need at least 1000 to resolve alpha=0.05 under min-p, so 1000 were run.",
+ "worst_cell": {
+  "astar": 0.953,
+  "adj_p": 0.016,
+  "raw_p": 0.001,
+  "null": "lexicality",
+  "stratum": "cities",
+  "n": 360,
+  "threshold": 0.602,
+  "underpowered": false
+ },
+ "n_separating_cells": 9,
+ "verdict": "DISQUALIFIED",
+ "borderline": false,
+ "headline": "worst cell A* = 0.953 in lexicality/cities (n=360), family-adjusted p = 0.016 over 24 cells",
+ "p_floor": 0.000999,
+ "saturated": false,
+ "power": {
+  "n": 1440,
+  "measured_mde": 0.3,
+  "mde_basis": "one planted spelling/length artifact (a character appended to a fraction of the label-1 items) in a single stratum, 4 seeds; a wider family, a smaller cell or an artifact of another shape lowers power below this",
+  "comparable_across_batteries": false,
+  "note_on_comparison": "A* depends on n. Do not rank this battery against one of a different size: cities.csv is DISQUALIFIED at n=1496 and PASSES 5 of 5 subsamples at n=354.",
+  "reading": "DISQUALIFIED at n=1440, which is above the measured detection threshold (~30% coverage) \u2014 the artifact is large enough to see at this size."
+ },
+ "scope": "SCOPE: this measures how much of the label signal is recoverable from SURFACE FORM alone by six model-free probes, two-sided, refit inside every permutation (labels shuffled within stratum) and family-wise corrected across all cells (Westfall-Young min-p). A PASS does NOT certify the benchmark is good: it cannot see circularity (labels drawn from the same store the system under test retrieves from), contamination, or mislabelling. It scores no model."
+}

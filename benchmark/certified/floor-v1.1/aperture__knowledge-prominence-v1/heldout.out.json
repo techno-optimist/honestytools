@@ -1,0 +1,440 @@
+{
+ "kept": {
+  "pooled": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "hedge": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "function": {
+     "astar": 0.507,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.627,
+     "adj_p": 0.994,
+     "separates": false
+    },
+    "punct": {
+     "astar": 0.51,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.56,
+     "adj_p": 0.989,
+     "separates": false
+    },
+    "digits": {
+     "astar": 0.509,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.235,
+     "adj_p": 0.781,
+     "separates": false
+    },
+    "caps": {
+     "astar": 0.55,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.017,
+     "adj_p": 0.0785,
+     "separates": false
+    },
+    "word_len": {
+     "astar": 0.52,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.528,
+     "adj_p": 0.982,
+     "separates": false
+    },
+    "char_ngram": {
+     "astar": 0.501,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.987,
+     "adj_p": 1.0,
+     "separates": false
+    }
+   },
+   "n_items": 324,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "caps",
+   "separating": [],
+   "verdict": "PASS",
+   "borderline": true,
+   "headline": "worst held-out probe caps: A* 0.550, adjusted p 0.07846 over 8 probes",
+   "strata": [
+    "book",
+    "firm",
+    "painting",
+    "person",
+    "place"
+   ],
+   "null": "labels permuted within stratum, char_ngram refit",
+   "negation_check": {
+    "items": 324,
+    "mean_negation_label1": 0.0,
+    "mean_negation_label0": 0.0,
+    "items_with_negation": 0,
+    "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+    "p_two_sided": 1.0,
+    "cue_present": false
+   }
+  },
+  "within": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "firm": 0.5,
+      "painting": 0.5,
+      "person": 0.5,
+      "place": 0.5
+     }
+    },
+    "hedge": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "firm": 0.5,
+      "painting": 0.5,
+      "person": 0.5,
+      "place": 0.5
+     }
+    },
+    "function": {
+     "astar": 0.528,
+     "raw_p": 0.359,
+     "adj_p": 0.884,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "firm": 0.453,
+      "painting": 0.66,
+      "person": 0.5,
+      "place": 0.537
+     }
+    },
+    "punct": {
+     "astar": 0.533,
+     "raw_p": 0.346,
+     "adj_p": 0.871,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.524,
+      "firm": 0.476,
+      "painting": 0.39,
+      "person": 0.512,
+      "place": 0.55
+     }
+    },
+    "digits": {
+     "astar": 0.509,
+     "raw_p": 0.235,
+     "adj_p": 0.757,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "firm": 0.547,
+      "painting": 0.5,
+      "person": 0.5,
+      "place": 0.5
+     }
+    },
+    "caps": {
+     "astar": 0.555,
+     "raw_p": 0.166,
+     "adj_p": 0.554,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.547,
+      "firm": 0.492,
+      "painting": 0.525,
+      "person": 0.536,
+      "place": 0.628
+     }
+    },
+    "word_len": {
+     "astar": 0.562,
+     "raw_p": 0.357,
+     "adj_p": 0.882,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.454,
+      "firm": 0.561,
+      "painting": 0.28,
+      "person": 0.453,
+      "place": 0.445
+     }
+    },
+    "char_ngram": {
+     "astar": 0.571,
+     "raw_p": 0.449,
+     "adj_p": 0.942,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.555,
+      "firm": 0.604,
+      "painting": 0.46,
+      "person": 0.433,
+      "place": 0.429
+     }
+    }
+   },
+   "n_items": 324,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "caps",
+   "separating": [],
+   "verdict": "PASS",
+   "borderline": false,
+   "headline": "worst within-stratum probe caps: A* 0.555, adjusted p 0.5542 over 8 probes",
+   "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+   "strata_scored": [
+    "book",
+    "firm",
+    "painting",
+    "person",
+    "place"
+   ],
+   "strata_skipped_one_class": [],
+   "null": "labels permuted within stratum (same draws as pooled), char_ngram refit"
+  }
+ },
+ "source": {
+  "pooled": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "hedge": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "function": {
+     "astar": 0.507,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.627,
+     "adj_p": 0.994,
+     "separates": false
+    },
+    "punct": {
+     "astar": 0.51,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.56,
+     "adj_p": 0.989,
+     "separates": false
+    },
+    "digits": {
+     "astar": 0.509,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.235,
+     "adj_p": 0.781,
+     "separates": false
+    },
+    "caps": {
+     "astar": 0.55,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.017,
+     "adj_p": 0.0785,
+     "separates": false
+    },
+    "word_len": {
+     "astar": 0.52,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.528,
+     "adj_p": 0.982,
+     "separates": false
+    },
+    "char_ngram": {
+     "astar": 0.501,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.987,
+     "adj_p": 1.0,
+     "separates": false
+    }
+   },
+   "n_items": 324,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "caps",
+   "separating": [],
+   "verdict": "PASS",
+   "borderline": true,
+   "headline": "worst held-out probe caps: A* 0.550, adjusted p 0.07846 over 8 probes",
+   "strata": [
+    "book",
+    "firm",
+    "painting",
+    "person",
+    "place"
+   ],
+   "null": "labels permuted within stratum, char_ngram refit",
+   "negation_check": {
+    "items": 324,
+    "mean_negation_label1": 0.0,
+    "mean_negation_label0": 0.0,
+    "items_with_negation": 0,
+    "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+    "p_two_sided": 1.0,
+    "cue_present": false
+   }
+  },
+  "within": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "firm": 0.5,
+      "painting": 0.5,
+      "person": 0.5,
+      "place": 0.5
+     }
+    },
+    "hedge": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "firm": 0.5,
+      "painting": 0.5,
+      "person": 0.5,
+      "place": 0.5
+     }
+    },
+    "function": {
+     "astar": 0.528,
+     "raw_p": 0.359,
+     "adj_p": 0.884,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "firm": 0.453,
+      "painting": 0.66,
+      "person": 0.5,
+      "place": 0.537
+     }
+    },
+    "punct": {
+     "astar": 0.533,
+     "raw_p": 0.346,
+     "adj_p": 0.871,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.524,
+      "firm": 0.476,
+      "painting": 0.39,
+      "person": 0.512,
+      "place": 0.55
+     }
+    },
+    "digits": {
+     "astar": 0.509,
+     "raw_p": 0.235,
+     "adj_p": 0.757,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.5,
+      "firm": 0.547,
+      "painting": 0.5,
+      "person": 0.5,
+      "place": 0.5
+     }
+    },
+    "caps": {
+     "astar": 0.555,
+     "raw_p": 0.166,
+     "adj_p": 0.554,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.547,
+      "firm": 0.492,
+      "painting": 0.525,
+      "person": 0.536,
+      "place": 0.628
+     }
+    },
+    "word_len": {
+     "astar": 0.562,
+     "raw_p": 0.357,
+     "adj_p": 0.882,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.454,
+      "firm": 0.561,
+      "painting": 0.28,
+      "person": 0.453,
+      "place": 0.445
+     }
+    },
+    "char_ngram": {
+     "astar": 0.571,
+     "raw_p": 0.449,
+     "adj_p": 0.942,
+     "separates": false,
+     "auroc_by_stratum": {
+      "book": 0.555,
+      "firm": 0.604,
+      "painting": 0.46,
+      "person": 0.433,
+      "place": 0.429
+     }
+    }
+   },
+   "n_items": 324,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "caps",
+   "separating": [],
+   "verdict": "PASS",
+   "borderline": false,
+   "headline": "worst within-stratum probe caps: A* 0.555, adjusted p 0.5542 over 8 probes",
+   "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+   "strata_scored": [
+    "book",
+    "firm",
+    "painting",
+    "person",
+    "place"
+   ],
+   "strata_skipped_one_class": [],
+   "null": "labels permuted within stratum (same draws as pooled), char_ngram refit"
+  }
+ }
+}

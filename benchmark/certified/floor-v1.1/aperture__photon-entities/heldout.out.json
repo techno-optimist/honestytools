@@ -1,0 +1,450 @@
+{
+ "kept": {
+  "pooled": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "hedge": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "function": {
+     "astar": 0.605,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.132,
+     "adj_p": 0.577,
+     "separates": false
+    },
+    "punct": {
+     "astar": 0.549,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.584,
+     "adj_p": 0.997,
+     "separates": false
+    },
+    "digits": {
+     "astar": 0.64,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.586,
+     "adj_p": 0.997,
+     "separates": false
+    },
+    "caps": {
+     "astar": 0.548,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.18,
+     "adj_p": 0.69,
+     "separates": false
+    },
+    "word_len": {
+     "astar": 0.697,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.001,
+     "adj_p": 0.002,
+     "separates": true
+    },
+    "char_ngram": {
+     "astar": 0.865,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true
+    }
+   },
+   "n_items": 103,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "char_ngram",
+   "separating": [
+    "word_len",
+    "char_ngram"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst held-out probe char_ngram: A* 0.865, adjusted p 0.0004998 over 8 probes",
+   "strata": [
+    "astronomy",
+    "companies",
+    "drugs",
+    "genes",
+    "math",
+    "proteins",
+    "trials"
+   ],
+   "null": "labels permuted within stratum, char_ngram refit",
+   "negation_check": {
+    "items": 103,
+    "mean_negation_label1": 0.0,
+    "mean_negation_label0": 0.0,
+    "items_with_negation": 0,
+    "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+    "p_two_sided": 1.0,
+    "cue_present": false
+   }
+  },
+  "within": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "astronomy": 0.5,
+      "companies": 0.5,
+      "drugs": 0.5,
+      "genes": 0.5
+     }
+    },
+    "hedge": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "astronomy": 0.5,
+      "companies": 0.5,
+      "drugs": 0.5,
+      "genes": 0.5
+     }
+    },
+    "function": {
+     "astar": 0.545,
+     "raw_p": 0.217,
+     "adj_p": 0.694,
+     "separates": false,
+     "auroc_by_stratum": {
+      "astronomy": 0.5,
+      "companies": 0.5,
+      "drugs": 0.5,
+      "genes": 0.333
+     }
+    },
+    "punct": {
+     "astar": 0.545,
+     "raw_p": 0.371,
+     "adj_p": 0.878,
+     "separates": false,
+     "auroc_by_stratum": {
+      "astronomy": 0.5,
+      "companies": 0.5,
+      "drugs": 0.45,
+      "genes": 0.375
+     }
+    },
+    "digits": {
+     "astar": 0.654,
+     "raw_p": 0.006,
+     "adj_p": 0.025,
+     "separates": true,
+     "auroc_by_stratum": {
+      "astronomy": 1.0,
+      "companies": 0.5,
+      "drugs": 0.45,
+      "genes": 0.53
+     }
+    },
+    "caps": {
+     "astar": 0.608,
+     "raw_p": 0.0045,
+     "adj_p": 0.0165,
+     "separates": true,
+     "auroc_by_stratum": {
+      "astronomy": 0.5,
+      "companies": 0.583,
+      "drugs": 0.5,
+      "genes": 0.167
+     }
+    },
+    "word_len": {
+     "astar": 0.803,
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true,
+     "auroc_by_stratum": {
+      "astronomy": 1.0,
+      "companies": 0.417,
+      "drugs": 0.843,
+      "genes": 0.756
+     }
+    },
+    "char_ngram": {
+     "astar": 0.786,
+     "raw_p": 0.007,
+     "adj_p": 0.0275,
+     "separates": true,
+     "auroc_by_stratum": {
+      "astronomy": 0.667,
+      "companies": 0.75,
+      "drugs": 0.714,
+      "genes": 1.0
+     }
+    }
+   },
+   "n_items": 71,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "word_len",
+   "separating": [
+    "digits",
+    "caps",
+    "word_len",
+    "char_ngram"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst within-stratum probe word_len: A* 0.803, adjusted p 0.0004998 over 8 probes",
+   "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+   "strata_scored": [
+    "astronomy",
+    "companies",
+    "drugs",
+    "genes"
+   ],
+   "strata_skipped_one_class": [
+    "math",
+    "proteins",
+    "trials"
+   ],
+   "null": "labels permuted within stratum (same draws as pooled), char_ngram refit"
+  }
+ },
+ "source": {
+  "pooled": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "hedge": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "function": {
+     "astar": 0.605,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.132,
+     "adj_p": 0.577,
+     "separates": false
+    },
+    "punct": {
+     "astar": 0.549,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.584,
+     "adj_p": 0.997,
+     "separates": false
+    },
+    "digits": {
+     "astar": 0.64,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.586,
+     "adj_p": 0.997,
+     "separates": false
+    },
+    "caps": {
+     "astar": 0.548,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.18,
+     "adj_p": 0.69,
+     "separates": false
+    },
+    "word_len": {
+     "astar": 0.697,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.001,
+     "adj_p": 0.002,
+     "separates": true
+    },
+    "char_ngram": {
+     "astar": 0.865,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true
+    }
+   },
+   "n_items": 103,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "char_ngram",
+   "separating": [
+    "word_len",
+    "char_ngram"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst held-out probe char_ngram: A* 0.865, adjusted p 0.0004998 over 8 probes",
+   "strata": [
+    "astronomy",
+    "companies",
+    "drugs",
+    "genes",
+    "math",
+    "proteins",
+    "trials"
+   ],
+   "null": "labels permuted within stratum, char_ngram refit",
+   "negation_check": {
+    "items": 103,
+    "mean_negation_label1": 0.0,
+    "mean_negation_label0": 0.0,
+    "items_with_negation": 0,
+    "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+    "p_two_sided": 1.0,
+    "cue_present": false
+   }
+  },
+  "within": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "astronomy": 0.5,
+      "companies": 0.5,
+      "drugs": 0.5,
+      "genes": 0.5
+     }
+    },
+    "hedge": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "astronomy": 0.5,
+      "companies": 0.5,
+      "drugs": 0.5,
+      "genes": 0.5
+     }
+    },
+    "function": {
+     "astar": 0.545,
+     "raw_p": 0.217,
+     "adj_p": 0.694,
+     "separates": false,
+     "auroc_by_stratum": {
+      "astronomy": 0.5,
+      "companies": 0.5,
+      "drugs": 0.5,
+      "genes": 0.333
+     }
+    },
+    "punct": {
+     "astar": 0.545,
+     "raw_p": 0.371,
+     "adj_p": 0.878,
+     "separates": false,
+     "auroc_by_stratum": {
+      "astronomy": 0.5,
+      "companies": 0.5,
+      "drugs": 0.45,
+      "genes": 0.375
+     }
+    },
+    "digits": {
+     "astar": 0.654,
+     "raw_p": 0.006,
+     "adj_p": 0.025,
+     "separates": true,
+     "auroc_by_stratum": {
+      "astronomy": 1.0,
+      "companies": 0.5,
+      "drugs": 0.45,
+      "genes": 0.53
+     }
+    },
+    "caps": {
+     "astar": 0.608,
+     "raw_p": 0.0045,
+     "adj_p": 0.0165,
+     "separates": true,
+     "auroc_by_stratum": {
+      "astronomy": 0.5,
+      "companies": 0.583,
+      "drugs": 0.5,
+      "genes": 0.167
+     }
+    },
+    "word_len": {
+     "astar": 0.803,
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true,
+     "auroc_by_stratum": {
+      "astronomy": 1.0,
+      "companies": 0.417,
+      "drugs": 0.843,
+      "genes": 0.756
+     }
+    },
+    "char_ngram": {
+     "astar": 0.786,
+     "raw_p": 0.007,
+     "adj_p": 0.0275,
+     "separates": true,
+     "auroc_by_stratum": {
+      "astronomy": 0.667,
+      "companies": 0.75,
+      "drugs": 0.714,
+      "genes": 1.0
+     }
+    }
+   },
+   "n_items": 71,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "word_len",
+   "separating": [
+    "digits",
+    "caps",
+    "word_len",
+    "char_ngram"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst within-stratum probe word_len: A* 0.803, adjusted p 0.0004998 over 8 probes",
+   "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+   "strata_scored": [
+    "astronomy",
+    "companies",
+    "drugs",
+    "genes"
+   ],
+   "strata_skipped_one_class": [
+    "math",
+    "proteins",
+    "trials"
+   ],
+   "null": "labels permuted within stratum (same draws as pooled), char_ngram refit"
+  }
+ }
+}
