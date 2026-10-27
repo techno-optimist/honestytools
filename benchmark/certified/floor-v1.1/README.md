@@ -21,4 +21,31 @@ Pass `--stratum-key category` for the same sets as v1 (grounding-coordinate, pho
 
 ## Results: v1 → v1.1
 
-STATUS_TABLE
+| dataset | strata scored | v1 → v1.1 status | v1.1 failing gates | pooled worst (= v1) | within-stratum worst | changed |
+|---|---|---|---|---|---|---|
+| aperture/postcutoff-trials-v1 | 1 | CERTIFIED → **CERTIFIED** | none | function: A* 0.550, adjusted p 0.1334 | function: A* 0.550, adjusted p 0.1334 | no |
+| aperture/calibration-battery-v1 | 6 | NOT_CERTIFIABLE → **NOT_CERTIFIABLE** | in_family_unpaired, held_out_probes | char_ngram: A* 0.986, adjusted p 0.0004998 | char_ngram: A* 0.993, adjusted p 0.0004998 | no |
+| aperture/grounding-coordinate | 6 | NOT_CERTIFIABLE → **NOT_CERTIFIABLE** | in_family_unpaired, held_out_probes | word_len: A* 0.628, adjusted p 0.0004998 | char_ngram: A* 0.726, adjusted p 0.004998 | no |
+| aperture/knowledge-prominence-v1 | 5 | NOT_CERTIFIABLE → **NOT_CERTIFIABLE** | held_out_probes | caps: A* 0.550, adjusted p 0.07846 | caps: A* 0.555, adjusted p 0.5542 | no |
+| aperture/knowledge-prominence-v2 | 5 | NOT_CERTIFIABLE → **NOT_CERTIFIABLE** | none | caps: A* 0.549, adjusted p 0.1729 | function: A* 0.538, adjusted p 0.5982 | no |
+| aperture/knowledge-prominence-v3 | 5 | NOT_CERTIFIABLE → **NOT_CERTIFIABLE** | in_family_unpaired, held_out_probes | char_ngram: A* 0.761, adjusted p 0.0004998 | char_ngram: A* 0.766, adjusted p 0.0004998 | no |
+| aperture/photon-entities | 4 | NOT_CERTIFIABLE → **NOT_CERTIFIABLE** | in_family_unpaired, held_out_probes | char_ngram: A* 0.865, adjusted p 0.0004998 | word_len: A* 0.803, adjusted p 0.0004998 | no |
+| aperture/prominence-people-v1 | 1 | NOT_CERTIFIABLE → **NOT_CERTIFIABLE** | in_family_unpaired | caps: A* 0.554, adjusted p 0.1989 | caps: A* 0.554, adjusted p 0.1989 | no |
+| aperture/prominence-people-v2 | 1 | NOT_CERTIFIABLE → **NOT_CERTIFIABLE** | held_out_probes | word_len: A* 0.648, adjusted p 0.003998 | word_len: A* 0.648, adjusted p 0.003998 | no |
+| aperture/verifydomain-claims-147 | 1 | NOT_CERTIFIABLE → **NOT_CERTIFIABLE** | in_family_unpaired, held_out_probes | char_ngram: A* 0.941, adjusted p 0.0004998 | char_ngram: A* 0.941, adjusted p 0.0004998 | no |
+| bielik-entity-familiarity-v2 | 4 | NOT_CERTIFIABLE → **NOT_CERTIFIABLE** | in_family_unpaired, held_out_probes | char_ngram: A* 0.846, adjusted p 0.0004998 | char_ngram: A* 0.854, adjusted p 0.0004998 | no |
+| hallucinated-references/gpt-4 | 1 | NOT_CERTIFIABLE → **NOT_CERTIFIABLE** | in_family_unpaired, held_out_probes | char_ngram: A* 0.765, adjusted p 0.0004998 | char_ngram: A* 0.765, adjusted p 0.0004998 | no |
+| halueval/general | 1 | NOT_CERTIFIABLE → **NOT_CERTIFIABLE** | in_family_unpaired, held_out_probes, negation_cue_absent | char_ngram: A* 0.617, adjusted p 0.0004998 | char_ngram: A* 0.617, adjusted p 0.0004998 | no |
+| ragtruth/responses | 3 | NOT_CERTIFIABLE → **NOT_CERTIFIABLE** | in_family_unpaired, held_out_probes | caps: A* 0.608, adjusted p 0.0004998 | punct: A* 0.613, adjusted p 0.0004998 | no |
+| truth-is-universal/facts | 1 | NOT_CERTIFIABLE → **NOT_CERTIFIABLE** | in_family_unpaired, held_out_probes, negation_cue_absent | negation: A* 0.544, adjusted p 0.0004998 | negation: A* 0.544, adjusted p 0.0004998 | no |
+
+**No verdict changed.** On all 15 sets the v1.1 status, the three gates and the status reasons equal v1's. `aperture/postcutoff-trials-v1` is still the only CERTIFIED set (one stratum, so its within-stratum family equals the pooled one). knowledge-prominence-v2 still passes every gate and is still below the floor.
+
+What within-stratum scoring adds (probes that separate within stratum but not pooled):
+
+- aperture/grounding-coordinate: char_ngram (within A* 0.726, adjusted p 0.004998);
+- aperture/photon-entities: digits, caps;
+- ragtruth/responses: function, digits;
+- aperture/calibration-battery-v1 goes the other way: function separates pooled but not within stratum.
+
+RAGTruth, the case that motivated v1.1: on the kept split (2,052 items, same sha256 as v1) the within-stratum char n-gram is A* 0.541, adjusted p 0.331, so it does **not** separate after Westfall-Young (pooled: A* 0.655, adjusted p 0.875). The paper's within-task n-gram separation was measured on the 4,000-item source split; it does not carry over to the kept split at this correction level. RAGTruth fails the held-out gate either way, on hedge, punct and caps (both families) plus function and digits (within only); the worst within-stratum probe is punct, A* 0.613, adjusted p 0.0004998.
