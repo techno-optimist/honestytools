@@ -219,10 +219,23 @@ jobs:
           honest list
           honest null "$GITHUB_WORKSPACE/batteries/photon-entities.json" > out.json
           python3 -c "import json; d = json.load(open('out.json')); assert d['verdict'] == 'DISQUALIFIED', d"
-          python3 -m nulltest "$GITHUB_WORKSPACE/batteries/photon-entities.json" --n-perm 100 --json > nt.json
-          python3 -c "import json; d = json.load(open('nt.json')); assert d['version'] == '1.4', d"
+          # nulltest exits 1 on a non-PASS verdict by design; this battery is meant to be DISQUALIFIED
+          rc=0; python3 -m nulltest "$GITHUB_WORKSPACE/batteries/photon-entities.json" --n-perm 100 --json > nt.json || rc=$?
+          test "$rc" -eq 1 || { echo "::error::python -m nulltest exited $rc, expected 1 (DISQUALIFIED)"; exit 1; }
+          python3 -c "import json; d = json.load(open('nt.json')); assert d['verdict'] == 'DISQUALIFIED', d; assert d['version'] == '1.4', d"
+          # paired mode is installed too, and fires on a 40-pair toy file with a blatant length leak
+          python3 -c "import json; json.dump([{'right': 'a b c d e f g h', 'wrong': 'x'}] * 40, open('pairs.json', 'w'))"
+          rc=0; python3 -m nulltest_paired pairs.json --explode right=0,wrong=1 --pair-key _row --n-perm 100 --json > np.json || rc=$?
+          python3 -c "import json; d = json.load(open('np.json')); assert d['verdict'] == 'DISQUALIFIED', d"
+          test "$rc" -eq 1
           # no grid ships in the wheel yet, so `honest fpr null` must decline to quote a rate
           if honest fpr null; then echo '::error::fpr quoted a rate with no certificate installed'; exit 1; fi
+      # Merge gate: every STABLE tool in the installed build must pass its own break-test.
+      # Experimental tools may fail theirs without failing this step (honest.py decides that).
+      - name: installed `honest selftest` must pass
+        run: |
+          cd "$RUNNER_TEMP"
+          honest selftest || { echo "::error::honest selftest failed on the installed build"; exit 1; }
 
   action:
     name: the GitHub Action a benchmark author would use
