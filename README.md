@@ -40,7 +40,7 @@ python3 -m unittest discover -s tests                        # 63 tests, a few s
 | know the number a detector has to beat | `python3 surface_baseline.py FILE`: held-out accuracy of the six probes together, against the majority rate; see [the number to beat](#the-number-to-beat) |
 | put your benchmark in that table | one manifest entry; see [CONTRIBUTING](CONTRIBUTING.md) or open an [issue](https://github.com/techno-optimist/honestytools/issues/new/choose) |
 | know what the tool cannot see | the measured [false-positive](#what-the-tool-says-about-itself) and power tables, and the [limits](#known-limits--read-these-before-quoting-a-verdict) |
-| one entry point for the toolbox | `honest null FILE`, `honest baseline FILE`, `honest match FILE --out F`, `honest check RECEIPT FILE`, `honest audit`, `honest fpr null` |
+| one entry point for the toolbox | `honest null FILE`, `honest baseline FILE`, `honest match FILE --out F`, `honest check RECEIPT FILE`, `honest audit`, `honest fpr null`, `honest paired FILE --pair-key F` (experimental) |
 
 ## Who this is for
 

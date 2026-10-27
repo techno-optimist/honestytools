@@ -4,6 +4,35 @@ Numbers quoted here come from the committed certificates (`nulltest_grid.json`,
 `nulltest_parity.json`, `nulltest_audit_results.json`), which carry the sha256 of the tool that
 produced them. What is listed under *not done* is as much a part of the record as what shipped.
 
+## 0.7.0 — 2026-10-26 — the stable/experimental wall, tested; paired mode registered experimental
+
+`nulltest.py` and `nulltest_paired.py` are byte-identical to 0.6.0, so their sha256 values, every
+committed certificate, and every paired receipt's `paired_tool_sha256` are unchanged. These fixes
+come from the tool-25 rotation review of `honest.py` and `contract.py`.
+
+**Contract**
+- `tests/test_contract.py` (16 tests) enforces the wall that `contract.py` describes:
+  - an experimental tool's PASS becomes `EXPERIMENTAL_NO_STABLE_VERDICT`, and the raw verdict is kept;
+  - a tool cannot claim its own tier;
+  - a stable PASS with no measured FPR is not green;
+  - bad tiers and unimplemented methods are refused;
+  - the set of stable tools must equal a reviewed allowlist (`{"null"}`);
+  - every stable tool must pass its selftest and report an FPR.
+
+**Paired mode is now a registered `experimental` tool**
+- `honest paired` goes through `contract.run`. It prints the contract Verdict JSON:
+  - `tier: experimental`;
+  - `verdict: EXPERIMENTAL_NO_STABLE_VERDICT`, with the real result in `evidence.raw_verdict`;
+  - sha256 values for the battery, nulltest and paired code.
+- It appears in `honest list` and runs in `honest selftest`. Selftest has two cases: a planted within-pair length cue must come back DISQUALIFIED, and shared-topic pairs must not.
+- Exit code: 0 on a raw DISQUALIFIED, 1 otherwise. An experimental PASS is never a green.
+- **Behaviour change**: `honest paired` used to print the bare tool's text or JSON report. That report is now under `evidence.report`. `python3 nulltest_paired.py` itself is unchanged.
+- `honest fpr paired` declines (exit 1). The 5/100 label-scrambled calibration quoted under 0.6.0 ran on an earlier build, when paired code sat inside `nulltest.py`, so it is not quoted as this code's rate.
+
+**`honest fpr null` now reports intervals.** It adds `worst_ci95` (the grid's 95% interval for the worst row: 0.048, [0.031, 0.071]), `max_ci95_upper` over all rows (0.071), and every grid row with its interval. Before, it printed only the point rate.
+
+**Not done**: the CI step that runs `honest selftest` as a merge gate, and the pip-job fix. Both are workflow edits, and neither the git token nor the GitHub connector available here can write `.github/workflows/`. The `pip install .` job therefore stays red for the reason given under 0.6.0.
+
 ## 0.6.0 — 2026-10-26 — nulltest paired mode
 
 `nulltest.py` 1.4 is byte-identical: its sha256 does not change, so every committed certificate
