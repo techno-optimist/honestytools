@@ -5,6 +5,7 @@
 
     honest list                     what is in the box, and at which tier
     honest null <battery> [flags]   run the model-free surface floor; same flags as nulltest.py
+    honest paired <battery> --pair-key F [flags]   paired surface floor (within-pair sign flip)
                                     (--text-key --label-key --stratum-key --explode --split
                                      --positive-label --n-perm --jobs --explain)
     honest check <receipt> <file>   replay a published verdict against the bytes in front of you
@@ -227,6 +228,9 @@ def main(argv=None):
             print("usage: honest check <receipt.json> <battery>")
             return 2
         return _load("nulltest", "nulltest.py").check_receipt(argv[2], argv[3])
+    if cmd == "paired":
+        # paired surface floor: within-pair sign-flip null (nulltest_paired.py)
+        return _load("nulltest_paired", "nulltest_paired.py").main(["nulltest_paired"] + argv[2:]) or 0
     if cmd == "match":
         # repair: keep a surface-matched subset, verified on held-out halves (surface_match.py)
         return _load("surface_match", "surface_match.py").main(["surface_match"] + argv[2:]) or 0
