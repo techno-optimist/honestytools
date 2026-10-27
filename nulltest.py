@@ -1571,6 +1571,9 @@ def main(argv):
                          "Changes the wall clock only; the permutations are drawn before scoring.")
     ap.add_argument("--seeds", type=int, default=25, help="selftest: seeds per grid row")
     ap.add_argument("--alpha", type=float, default=0.05)
+    ap.add_argument("--pair-key", default=None, metavar="FIELD",
+                    help="PAIRED MODE: items sharing FIELD form a matched pair (one label-0, one "
+                         "label-1); the null flips labels within pairs. See nulltest_paired.py")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--calibrate", action="store_true",
@@ -1645,6 +1648,34 @@ def main(argv):
         # a 60k-item run takes a quarter of an hour; say so while it runs (stderr, not the report)
         def progress(done, total):
             print("\r  permutation %d of %d" % (done, total), end="", file=sys.stderr, flush=True)
+    if a.pair_key:
+        here = os.path.dirname(os.path.abspath(__file__))
+        if here not in sys.path:
+            sys.path.insert(0, here)
+        import nulltest_paired as P
+        if explode and a.pair_key == "_row":
+            pass
+        elif not any(a.pair_key in it for it in items):
+            sys.exit("no item carries the pair field %r (under --explode, use --pair-key _row)" % a.pair_key)
+        rep = P.evaluate_paired(items, tkeys, lk, a.pair_key, sk, n_perm=a.n_perm, alpha=a.alpha, jobs=a.jobs)
+        rep["battery"] = os.path.basename(a.battery)
+        with open(a.battery, "rb") as fh:
+            rep["battery_sha256"] = hashlib.sha256(fh.read()).hexdigest()
+        rep["tool_sha256"] = _tool_sha256()
+        rep["keys"] = {"text": tk, "label": lk, "stratum": sk, "pair": a.pair_key}
+        if a.json:
+            print(json.dumps(rep, indent=1))
+        else:
+            print("\nnulltest PAIRED — %s: %d pairs (%d dropped, not 1-vs-1)"
+                  % (rep["battery"], rep.get("n_pairs", 0), rep.get("pairs_dropped_not_1v1", 0)))
+            for name, e in rep["nulls"].items():
+                for st, c in e["per_stratum"].items():
+                    print("  %-11s %-22s pairs=%-4d A*pair %.3f  raw p %.4f  adj p %.4f%s"
+                          % (name, st, c["n_pairs"], c["astar_pair"], c["raw_p"], c["adj_p"],
+                             "  SEPARATES" if c["separates"] else ""))
+            print("\n  %s\n  VERDICT: %s%s" % (rep["headline"], rep["verdict"],
+                  "  (BORDERLINE)" if rep.get("borderline") else ""))
+        return 0 if rep["verdict"] == "PASS" else 1
     rep = evaluate(items, tkeys, lk, sk, n_perm=a.n_perm, alpha=a.alpha, jobs=a.jobs, progress=progress)
     if progress:
         print("\r" + " " * 40 + "\r", end="", file=sys.stderr, flush=True)

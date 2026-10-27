@@ -1,0 +1,278 @@
+{
+ "_about": "Phase 1 inventory: every public dataset with a /audit row (nulltest_audit_results.json v1.4 + site crosscheck_results.json). Licenses checked 2026-10-26 via GitHub license API / HF cards; 'unclear' means we may audit but should not redistribute a cleaned split without asking.",
+ "rows": [
+  {
+   "name": "aperture/verifydomain-claims-147",
+   "label_kind": "true_vs_false_statement",
+   "url": "https://www.honesty.tools/verifier/batteries/verifydomain-claims-147.json",
+   "license": "ours (honestytools repo LICENSE, Apache-2.0)",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.967,
+   "worst_adj_p": 0.0067,
+   "n": 147,
+   "paired_structure": false
+  },
+  {
+   "name": "aperture/grounding-coordinate",
+   "label_kind": "real_vs_fabricated_entity",
+   "url": "https://www.honesty.tools/verifier/batteries/grounding-coordinate.json",
+   "license": "ours (honestytools repo LICENSE, Apache-2.0)",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.855,
+   "worst_adj_p": 0.0366,
+   "n": 162,
+   "paired_structure": false
+  },
+  {
+   "name": "aperture/photon-entities",
+   "label_kind": "real_vs_fabricated_entity",
+   "url": "https://www.honesty.tools/verifier/batteries/photon-entities.json",
+   "license": "ours (honestytools repo LICENSE, Apache-2.0)",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 1.0,
+   "worst_adj_p": 0.0133,
+   "n": 103,
+   "paired_structure": false
+  },
+  {
+   "name": "aperture/prominence-people-v2",
+   "label_kind": "known_vs_unknown_real_entity",
+   "url": "https://www.honesty.tools/verifier/batteries/prominence-people-v2.json",
+   "license": "ours (honestytools repo LICENSE, Apache-2.0)",
+   "audit_verdict_v1_4": "PASS",
+   "worst_astar": 0.538,
+   "worst_adj_p": 0.4992,
+   "n": 156,
+   "paired_structure": false
+  },
+  {
+   "name": "aperture/prominence-people-v1",
+   "label_kind": "known_vs_unknown_real_entity",
+   "url": "https://www.honesty.tools/verifier/batteries/prominence-people-v1.json",
+   "license": "ours (honestytools repo LICENSE, Apache-2.0)",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.661,
+   "worst_adj_p": 0.01,
+   "n": 168,
+   "paired_structure": false
+  },
+  {
+   "name": "aperture/postcutoff-trials-v1",
+   "label_kind": "known_vs_unknown_real_entity",
+   "url": "https://www.honesty.tools/verifier/batteries/postcutoff-trials-v1.json",
+   "license": "ours (honestytools repo LICENSE, Apache-2.0)",
+   "audit_verdict_v1_4": "PASS",
+   "worst_astar": 0.529,
+   "worst_adj_p": 0.7171,
+   "n": 702,
+   "paired_structure": false
+  },
+  {
+   "name": "bielik-entity-familiarity-v2",
+   "label_kind": "real_vs_fabricated_entity",
+   "url": "https://raw.githubusercontent.com/agentGreg/bielik-entity-familiarity/main/data/entities.csv",
+   "license": "MIT (GitHub API)",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.953,
+   "worst_adj_p": 0.016,
+   "n": 1440,
+   "paired_structure": false
+  },
+  {
+   "name": "hallucinated-references/gpt-4",
+   "label_kind": "real_vs_fabricated_entity",
+   "url": "https://raw.githubusercontent.com/microsoft/hallucinated-references/main/data/gpt-4_results.csv",
+   "license": "MIT (GitHub API)",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.836,
+   "worst_adj_p": 0.005,
+   "n": 1000,
+   "paired_structure": false
+  },
+  {
+   "name": "geometry-of-truth/cities",
+   "label_kind": "true_vs_false_statement",
+   "url": "https://raw.githubusercontent.com/saprmarks/geometry-of-truth/main/datasets/cities.csv",
+   "license": "no license file found (GitHub API 404) - redistribution unclear",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.765,
+   "worst_adj_p": 0.0083,
+   "n": 1496,
+   "paired_structure": false
+  },
+  {
+   "name": "geometry-of-truth/sp_en_trans",
+   "label_kind": "true_vs_false_statement",
+   "url": "https://raw.githubusercontent.com/saprmarks/geometry-of-truth/main/datasets/sp_en_trans.csv",
+   "license": "no license file found (GitHub API 404) - redistribution unclear",
+   "audit_verdict_v1_4": "PASS",
+   "worst_astar": 0.542,
+   "worst_adj_p": 0.599,
+   "n": 354,
+   "paired_structure": false
+  },
+  {
+   "name": "truth-is-universal/facts",
+   "label_kind": "true_vs_false_statement",
+   "url": "https://raw.githubusercontent.com/sciai-lab/Truth_is_Universal/main/datasets/facts.csv",
+   "license": "MIT (GitHub API)",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.565,
+   "worst_adj_p": 0.0383,
+   "n": 561,
+   "paired_structure": false
+  },
+  {
+   "name": "truthfulqa/answers",
+   "label_kind": "right_vs_wrong_answer",
+   "url": "https://raw.githubusercontent.com/sylinrl/TruthfulQA/main/TruthfulQA.csv",
+   "license": "Apache-2.0 (GitHub API)",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.857,
+   "worst_adj_p": 0.0171,
+   "n": 6028,
+   "paired_structure": true
+  },
+  {
+   "name": "halueval/qa",
+   "label_kind": "right_vs_wrong_answer",
+   "url": "https://raw.githubusercontent.com/RUCAIBox/HaluEval/main/data/qa_data.json",
+   "license": "MIT (GitHub API)",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.979,
+   "worst_adj_p": 0.0033,
+   "n": 20000,
+   "paired_structure": true
+  },
+  {
+   "name": "halueval/dialogue",
+   "label_kind": "right_vs_wrong_answer",
+   "url": "https://raw.githubusercontent.com/RUCAIBox/HaluEval/main/data/dialogue_data.json",
+   "license": "MIT (GitHub API)",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.849,
+   "worst_adj_p": 0.0033,
+   "n": 20000,
+   "paired_structure": true
+  },
+  {
+   "name": "aperture/knowledge-prominence-v1",
+   "label_kind": "known_vs_unknown_real_entity",
+   "url": "https://www.honesty.tools/verifier/batteries/knowledge-prominence-v1.json",
+   "license": "ours (honestytools repo LICENSE, Apache-2.0)",
+   "audit_verdict_v1_4": "PASS",
+   "worst_astar": 0.655,
+   "worst_adj_p": 0.4012,
+   "n": 324,
+   "paired_structure": false
+  },
+  {
+   "name": "aperture/knowledge-prominence-v2",
+   "label_kind": "known_vs_unknown_real_entity",
+   "url": "https://www.honesty.tools/verifier/batteries/knowledge-prominence-v2.json",
+   "license": "ours (honestytools repo LICENSE, Apache-2.0)",
+   "audit_verdict_v1_4": "PASS",
+   "worst_astar": 0.689,
+   "worst_adj_p": 0.3582,
+   "n": 296,
+   "paired_structure": false
+  },
+  {
+   "name": "aperture/calibration-battery-v1",
+   "label_kind": "real_vs_fabricated_entity",
+   "url": "https://www.honesty.tools/verifier/batteries/calibration-battery-v1.json",
+   "license": "ours (honestytools repo LICENSE, Apache-2.0)",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 1.0,
+   "worst_adj_p": 0.0107,
+   "n": 168,
+   "paired_structure": false
+  },
+  {
+   "name": "halueval/summarization",
+   "label_kind": "right_vs_wrong_answer",
+   "url": "https://raw.githubusercontent.com/RUCAIBox/HaluEval/main/data/summarization_data.json",
+   "license": "MIT (GitHub API)",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.923,
+   "worst_adj_p": 0.0033,
+   "n": 20000,
+   "paired_structure": true
+  },
+  {
+   "name": "halueval/general",
+   "label_kind": "hallucinated_vs_faithful_response",
+   "url": "https://raw.githubusercontent.com/RUCAIBox/HaluEval/main/data/general_data.json",
+   "license": "MIT (GitHub API)",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.69,
+   "worst_adj_p": 0.005,
+   "n": 4507,
+   "paired_structure": false
+  },
+  {
+   "name": "ragtruth/responses",
+   "label_kind": "hallucinated_vs_faithful_response",
+   "url": "https://raw.githubusercontent.com/ParticleMedia/RAGTruth/main/dataset/response.jsonl",
+   "license": "MIT (GitHub API)",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.788,
+   "worst_adj_p": 0.0112,
+   "n": 8000,
+   "paired_structure": false
+  },
+  {
+   "name": "apollo/roleplaying",
+   "label_kind": "honest_vs_deceptive_response",
+   "url": "https://raw.githubusercontent.com/ApolloResearch/deception-detection/main/data/rollouts/roleplaying__plain__llama-70b-3.3.json",
+   "license": "no license file found (GitHub API 404) - redistribution unclear",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.746,
+   "worst_adj_p": 0.0083,
+   "n": 287,
+   "paired_structure": false
+  },
+  {
+   "name": "apollo/insider-trading-report",
+   "label_kind": "honest_vs_deceptive_response",
+   "url": "https://raw.githubusercontent.com/ApolloResearch/deception-detection/main/data/insider_trading/llama-70b-3.3-generations.json",
+   "license": "no license file found (GitHub API 404) - redistribution unclear",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.999,
+   "worst_adj_p": 0.0033,
+   "n": 1005,
+   "paired_structure": false
+  },
+  {
+   "name": "apollo/insider-trading-doubledown",
+   "label_kind": "honest_vs_deceptive_response",
+   "url": "https://raw.githubusercontent.com/ApolloResearch/deception-detection/main/data/insider_trading/llama-70b-3.3-generations.json",
+   "license": "no license file found (GitHub API 404) - redistribution unclear",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 0.982,
+   "worst_adj_p": 0.005,
+   "n": 655,
+   "paired_structure": false
+  },
+  {
+   "name": "apollo/sandbagging",
+   "label_kind": "honest_vs_deceptive_response",
+   "url": "https://raw.githubusercontent.com/ApolloResearch/deception-detection/main/data/rollouts/sandbagging_v2__wmdp_mmlu__llama-70b-3.3.json",
+   "license": "no license file found (GitHub API 404) - redistribution unclear",
+   "audit_verdict_v1_4": "DISQUALIFIED",
+   "worst_astar": 1.0,
+   "worst_adj_p": 0.0083,
+   "n": 932,
+   "paired_structure": false
+  },
+  {
+   "name": "judging-by-the-cover/truthfulqa-binary-790 and -476",
+   "label_kind": "right_vs_wrong_answer",
+   "url": "https://huggingface.co/datasets/foadnamjoo/audit-prune",
+   "license": "Apache-2.0 (per FRONTIER.md, HF card)",
+   "audit_verdict_v1_4": "790 DISQUALIFIED; 476 PASS (borderline)",
+   "source": "crosscheck_results.json",
+   "paired_structure": true
+  }
+ ]
+}

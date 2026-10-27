@@ -1,0 +1,448 @@
+{
+ "format": "honesty.tools/certificate/v0",
+ "dataset": "truthfulqa-binary-790",
+ "issued": "2026-10-26T22:46:33-0600",
+ "status": "NOT_CERTIFIED",
+ "source": {
+  "file": "source_790.json",
+  "sha256": "f20eb152be2e40d9c7ad6bef577165c9496b67ea0decd7f281a2bdcae7249346",
+  "n_pairs": 790
+ },
+ "split": {
+  "file": "certified.json",
+  "sha256": "45414c11e01194164ef18c36c32bb2396795bdd7ff4fdbd5320ad59b598d4c52",
+  "n_pairs": 49,
+  "retained_share": 0.062,
+  "by_category_source": {
+   "Misconceptions": 100,
+   "Proverbs": 18,
+   "Misquotations": 16,
+   "Conspiracies": 26,
+   "Superstitions": 22,
+   "Paranormal": 26,
+   "Fiction": 30,
+   "Myths and Fairytales": 21,
+   "Indexical Error: Identity": 8,
+   "Indexical Error: Location": 11,
+   "Distraction": 14,
+   "Subjective": 9,
+   "Advertising": 13,
+   "Religion": 14,
+   "Logical Falsehood": 14,
+   "Stereotypes": 24,
+   "Misconceptions: Topical": 3,
+   "Education": 10,
+   "Nutrition": 16,
+   "Health": 55,
+   "Indexical Error: Other": 18,
+   "Psychology": 19,
+   "Sociology": 55,
+   "Economics": 31,
+   "Politics": 10,
+   "Law": 64,
+   "Science": 9,
+   "History": 24,
+   "Language": 21,
+   "Weather": 17,
+   "Confusion: People": 23,
+   "Confusion: Places": 15,
+   "Confusion: Other": 8,
+   "Finance": 9,
+   "Misinformation": 6,
+   "Statistics": 5,
+   "Mandela Effect": 6
+  },
+  "by_category_kept": {
+   "Paranormal": 2,
+   "Stereotypes": 1,
+   "Health": 4,
+   "Economics": 4,
+   "Language": 4,
+   "Confusion: People": 5,
+   "Sociology": 5,
+   "Law": 4,
+   "Indexical Error: Other": 1,
+   "Misconceptions": 8,
+   "History": 2,
+   "Proverbs": 1,
+   "Fiction": 2,
+   "Conspiracies": 1,
+   "Advertising": 1,
+   "Superstitions": 1,
+   "Myths and Fairytales": 2,
+   "Mandela Effect": 1
+  }
+ },
+ "filter": {
+  "method": "pair-level adversarial filtering (AFLite-style)",
+  "probes": [
+   "lexicality",
+   "words",
+   "length",
+   "shape"
+  ],
+  "seeds": [
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "step": 0.05,
+  "screen_perm": 200,
+  "screen_seed": 7,
+  "screen_stop": 0.2,
+  "min_pairs": 50,
+  "rounds": [
+   {
+    "in": 790,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.01,
+    "dropped": 40
+   },
+   {
+    "in": 750,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.01,
+    "dropped": 38
+   },
+   {
+    "in": 712,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.01,
+    "dropped": 36
+   },
+   {
+    "in": 676,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.0133,
+    "dropped": 34
+   },
+   {
+    "in": 642,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 32
+   },
+   {
+    "in": 610,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 30
+   },
+   {
+    "in": 580,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 29
+   },
+   {
+    "in": 551,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.0166,
+    "dropped": 28
+   },
+   {
+    "in": 523,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 26
+   },
+   {
+    "in": 497,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 25
+   },
+   {
+    "in": 472,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 24
+   },
+   {
+    "in": 448,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 22
+   },
+   {
+    "in": 426,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.0166,
+    "dropped": 21
+   },
+   {
+    "in": 405,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 20
+   },
+   {
+    "in": 385,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 19
+   },
+   {
+    "in": 366,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 18
+   },
+   {
+    "in": 348,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 17
+   },
+   {
+    "in": 331,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 17
+   },
+   {
+    "in": 314,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 16
+   },
+   {
+    "in": 298,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 15
+   },
+   {
+    "in": 283,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 14
+   },
+   {
+    "in": 269,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 13
+   },
+   {
+    "in": 256,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 13
+   },
+   {
+    "in": 243,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 12
+   },
+   {
+    "in": 231,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.1728,
+    "dropped": 12
+   },
+   {
+    "in": 219,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.0365,
+    "dropped": 11
+   },
+   {
+    "in": 208,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.2824,
+    "dropped": 10
+   },
+   {
+    "in": 198,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.0698,
+    "dropped": 10
+   },
+   {
+    "in": 188,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.0166,
+    "dropped": 9
+   },
+   {
+    "in": 179,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.1296,
+    "dropped": 9
+   },
+   {
+    "in": 170,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 8
+   },
+   {
+    "in": 162,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.0199,
+    "dropped": 8
+   },
+   {
+    "in": 154,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.0166,
+    "dropped": 8
+   },
+   {
+    "in": 146,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.0399,
+    "dropped": 7
+   },
+   {
+    "in": 139,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.1894,
+    "dropped": 7
+   },
+   {
+    "in": 132,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.0764,
+    "dropped": 7
+   },
+   {
+    "in": 125,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.1429,
+    "dropped": 6
+   },
+   {
+    "in": 119,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.1262,
+    "dropped": 6
+   },
+   {
+    "in": 113,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.2027,
+    "dropped": 6
+   },
+   {
+    "in": 107,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.1096,
+    "dropped": 5
+   },
+   {
+    "in": 102,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.0332,
+    "dropped": 5
+   },
+   {
+    "in": 97,
+    "screen_paired_adj_p": 0.0166,
+    "screen_unpaired_adj_p": 0.0166,
+    "dropped": 5
+   },
+   {
+    "in": 92,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.3123,
+    "dropped": 5
+   },
+   {
+    "in": 87,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.0532,
+    "dropped": 4
+   },
+   {
+    "in": 83,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.3189,
+    "dropped": 4
+   },
+   {
+    "in": 79,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.4419,
+    "dropped": 4
+   },
+   {
+    "in": 75,
+    "screen_paired_adj_p": 0.0133,
+    "screen_unpaired_adj_p": 0.6877,
+    "dropped": 4
+   },
+   {
+    "in": 71,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.1628,
+    "dropped": 4
+   },
+   {
+    "in": 67,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.1694,
+    "dropped": 3
+   },
+   {
+    "in": 64,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.4086,
+    "dropped": 3
+   },
+   {
+    "in": 61,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.103,
+    "dropped": 3
+   },
+   {
+    "in": 58,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.1429,
+    "dropped": 3
+   },
+   {
+    "in": 55,
+    "screen_paired_adj_p": 0.01,
+    "screen_unpaired_adj_p": 0.2392,
+    "dropped": 3
+   },
+   {
+    "in": 52,
+    "screen_paired_adj_p": 0.0066,
+    "screen_unpaired_adj_p": 0.3256,
+    "dropped": 3
+   }
+  ]
+ },
+ "tests": {
+  "paired": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst cell A*_pair = 0.939 in lexicality/_all (49 pairs), family-adjusted p = 0.0008 over 87 cells",
+   "n_perm": 3600,
+   "seed": 20260724,
+   "stratum": "cat"
+  },
+  "unpaired": {
+   "verdict": "PASS",
+   "borderline": false,
+   "headline": "worst cell A* = 0.591 in shape/_all (n=98), family-adjusted p = 0.7671 over 6 cells",
+   "n_perm": 600
+  }
+ },
+ "tool": {
+  "nulltest_version": "1.4",
+  "paired_version": "0.1",
+  "nulltest_sha256": "1b8c73a38a8652888b842ccd9a07b05d6db7fdbee7899514612710f9367462d8",
+  "nulltest_paired_sha256": "29db40ecf87d232f793838704732033a781761fa95f0bc4cd3d56b7bfba3d3c6",
+  "certify_sha256": "5eb2f58ccf2e02d0a78a92e15236bf520596b9a2027170965fe80e621fe652da"
+ },
+ "caveat": "The kept pairs were selected against these probe families. A pass means these six surface probes cannot recover right-vs-wrong on the kept pairs; it is not a claim that no surface reader can, and the filter shifts category coverage (see by_category_*). Unsigned prototype: signing and `honest check` replay are Phase 5.",
+ "replay": "python3 benchmark/certified/certify.py source_790.json --out DIR --n-perm 600"
+}

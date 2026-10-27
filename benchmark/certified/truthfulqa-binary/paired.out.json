@@ -1,0 +1,875 @@
+{
+ "tool": "nulltest",
+ "version": "1.4",
+ "mode": "paired",
+ "paired_version": "0.1",
+ "probes": [
+  "lexicality",
+  "words",
+  "length",
+  "shape",
+  "alpha_first",
+  "alpha_last"
+ ],
+ "n_items": 98,
+ "n_pairs": 49,
+ "pairs_dropped_not_1v1": 0,
+ "items_without_pair_key": 0,
+ "pair_key": "_row",
+ "strata": [
+  "_all",
+  "Advertising",
+  "Confusion: People",
+  "Conspiracies",
+  "Economics",
+  "Fiction",
+  "Health",
+  "History",
+  "Indexical Error: Other",
+  "Language",
+  "Law",
+  "Mandela Effect",
+  "Misconceptions",
+  "Myths and Fairytales",
+  "Paranormal",
+  "Proverbs",
+  "Sociology",
+  "Stereotypes",
+  "Superstitions"
+ ],
+ "alpha": 0.05,
+ "family_size": 87,
+ "correction": "westfall_young_min_p",
+ "null": "labels swapped within each pair with probability 1/2 (sign flip), every probe refit",
+ "statistic": "A*_pair = max(w, 1-w), w = share of pairs where label-1 outscores label-0 (ties 1/2)",
+ "folds": "grouped by pair (both members held out together)",
+ "nulls": {
+  "lexicality": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 49,
+     "astar_pair": 0.939,
+     "threshold": 0.673,
+     "raw_p": 0.0003,
+     "adj_p": 0.0008,
+     "separates": true,
+     "underpowered": false
+    },
+    "Advertising": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Confusion: People": {
+     "n_pairs": 5,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.2505,
+     "adj_p": 0.9631,
+     "separates": false,
+     "underpowered": true
+    },
+    "Conspiracies": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Economics": {
+     "n_pairs": 4,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.2444,
+     "adj_p": 0.9511,
+     "separates": false,
+     "underpowered": true
+    },
+    "Fiction": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.486,
+     "adj_p": 0.9997,
+     "separates": false,
+     "underpowered": true
+    },
+    "Health": {
+     "n_pairs": 4,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.1444,
+     "adj_p": 0.7928,
+     "separates": false,
+     "underpowered": true
+    },
+    "History": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5026,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Other": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Language": {
+     "n_pairs": 4,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.1763,
+     "adj_p": 0.872,
+     "separates": false,
+     "underpowered": true
+    },
+    "Law": {
+     "n_pairs": 4,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.128,
+     "adj_p": 0.7326,
+     "separates": false,
+     "underpowered": true
+    },
+    "Mandela Effect": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misconceptions": {
+     "n_pairs": 8,
+     "astar_pair": 0.75,
+     "threshold": 0.875,
+     "raw_p": 0.316,
+     "adj_p": 0.9944,
+     "separates": false,
+     "underpowered": true
+    },
+    "Myths and Fairytales": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.524,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Paranormal": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.4907,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Proverbs": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Sociology": {
+     "n_pairs": 5,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.168,
+     "adj_p": 0.8492,
+     "separates": false,
+     "underpowered": true
+    },
+    "Stereotypes": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Superstitions": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    }
+   }
+  },
+  "words": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 49,
+     "astar_pair": 0.857,
+     "threshold": 0.663,
+     "raw_p": 0.0003,
+     "adj_p": 0.0008,
+     "separates": true,
+     "underpowered": false
+    },
+    "Advertising": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Confusion: People": {
+     "n_pairs": 5,
+     "astar_pair": 0.9,
+     "threshold": 0.9,
+     "raw_p": 0.504,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Economics": {
+     "n_pairs": 4,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.2352,
+     "adj_p": 0.9436,
+     "separates": false,
+     "underpowered": true
+    },
+    "Fiction": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Health": {
+     "n_pairs": 4,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.1625,
+     "adj_p": 0.8334,
+     "separates": false,
+     "underpowered": true
+    },
+    "History": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Other": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Language": {
+     "n_pairs": 4,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.1783,
+     "adj_p": 0.8831,
+     "separates": false,
+     "underpowered": true
+    },
+    "Law": {
+     "n_pairs": 4,
+     "astar_pair": 0.625,
+     "threshold": 0.875,
+     "raw_p": 0.9917,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Mandela Effect": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misconceptions": {
+     "n_pairs": 8,
+     "astar_pair": 0.625,
+     "threshold": 0.75,
+     "raw_p": 0.6937,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Myths and Fairytales": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5843,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Paranormal": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.4815,
+     "adj_p": 0.9986,
+     "separates": false,
+     "underpowered": true
+    },
+    "Proverbs": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Sociology": {
+     "n_pairs": 5,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.0683,
+     "adj_p": 0.3555,
+     "separates": false,
+     "underpowered": true
+    },
+    "Stereotypes": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Superstitions": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    }
+   }
+  },
+  "length": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 49,
+     "astar_pair": 0.531,
+     "threshold": 0.612,
+     "raw_p": 0.6465,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "Advertising": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Confusion: People": {
+     "n_pairs": 5,
+     "astar_pair": 0.7,
+     "threshold": 0.9,
+     "raw_p": 0.6407,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Conspiracies": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Economics": {
+     "n_pairs": 4,
+     "astar_pair": 0.625,
+     "threshold": 0.625,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Fiction": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5046,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Health": {
+     "n_pairs": 4,
+     "astar_pair": 0.875,
+     "threshold": 0.875,
+     "raw_p": 0.2549,
+     "adj_p": 0.985,
+     "separates": false,
+     "underpowered": true
+    },
+    "History": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Language": {
+     "n_pairs": 4,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.1233,
+     "adj_p": 0.6512,
+     "separates": false,
+     "underpowered": true
+    },
+    "Law": {
+     "n_pairs": 4,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Mandela Effect": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misconceptions": {
+     "n_pairs": 8,
+     "astar_pair": 0.625,
+     "threshold": 0.875,
+     "raw_p": 0.7109,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Myths and Fairytales": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Paranormal": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Proverbs": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Sociology": {
+     "n_pairs": 5,
+     "astar_pair": 0.7,
+     "threshold": 0.7,
+     "raw_p": 0.5035,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Superstitions": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    }
+   }
+  },
+  "shape": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 49,
+     "astar_pair": 0.531,
+     "threshold": 0.531,
+     "raw_p": 0.2549,
+     "adj_p": 0.985,
+     "separates": false,
+     "underpowered": false
+    },
+    "History": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misconceptions": {
+     "n_pairs": 8,
+     "astar_pair": 0.625,
+     "threshold": 0.625,
+     "raw_p": 0.504,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    }
+   }
+  },
+  "alpha_first": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 49,
+     "astar_pair": 0.561,
+     "threshold": 0.602,
+     "raw_p": 0.3013,
+     "adj_p": 0.9925,
+     "separates": false,
+     "underpowered": false
+    },
+    "Confusion: People": {
+     "n_pairs": 5,
+     "astar_pair": 0.9,
+     "threshold": 0.9,
+     "raw_p": 0.118,
+     "adj_p": 0.5623,
+     "separates": false,
+     "underpowered": true
+    },
+    "Economics": {
+     "n_pairs": 4,
+     "astar_pair": 0.625,
+     "threshold": 0.625,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Health": {
+     "n_pairs": 4,
+     "astar_pair": 0.5,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Other": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Language": {
+     "n_pairs": 4,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 0.4835,
+     "adj_p": 0.9992,
+     "separates": false,
+     "underpowered": true
+    },
+    "Law": {
+     "n_pairs": 4,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 0.4907,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Mandela Effect": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misconceptions": {
+     "n_pairs": 8,
+     "astar_pair": 0.5,
+     "threshold": 0.625,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Myths and Fairytales": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Paranormal": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Proverbs": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Sociology": {
+     "n_pairs": 5,
+     "astar_pair": 0.7,
+     "threshold": 0.9,
+     "raw_p": 0.6307,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Stereotypes": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Superstitions": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    }
+   }
+  },
+  "alpha_last": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 49,
+     "astar_pair": 0.541,
+     "threshold": 0.602,
+     "raw_p": 0.5707,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "Advertising": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Confusion: People": {
+     "n_pairs": 5,
+     "astar_pair": 0.9,
+     "threshold": 0.9,
+     "raw_p": 0.118,
+     "adj_p": 0.5623,
+     "separates": false,
+     "underpowered": true
+    },
+    "Fiction": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Health": {
+     "n_pairs": 4,
+     "astar_pair": 0.625,
+     "threshold": 0.875,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "History": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.4946,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Other": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Language": {
+     "n_pairs": 4,
+     "astar_pair": 0.875,
+     "threshold": 0.875,
+     "raw_p": 0.2366,
+     "adj_p": 0.9489,
+     "separates": false,
+     "underpowered": true
+    },
+    "Law": {
+     "n_pairs": 4,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 0.5007,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Mandela Effect": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misconceptions": {
+     "n_pairs": 8,
+     "astar_pair": 0.688,
+     "threshold": 0.812,
+     "raw_p": 0.3782,
+     "adj_p": 0.9969,
+     "separates": false,
+     "underpowered": true
+    },
+    "Myths and Fairytales": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Paranormal": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Proverbs": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Superstitions": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    }
+   }
+  }
+ },
+ "n_perm_requested": 600,
+ "n_perm": 3600,
+ "worst_cell": {
+  "n_pairs": 49,
+  "astar_pair": 0.939,
+  "threshold": 0.673,
+  "raw_p": 0.0003,
+  "adj_p": 0.0008,
+  "separates": true,
+  "underpowered": false,
+  "null": "lexicality",
+  "stratum": "_all"
+ },
+ "n_separating_cells": 2,
+ "verdict": "DISQUALIFIED",
+ "borderline": false,
+ "p_floor": 0.000278,
+ "saturated": false,
+ "headline": "worst cell A*_pair = 0.939 in lexicality/_all (49 pairs), family-adjusted p = 0.0008 over 87 cells",
+ "scope": "SCOPE: this measures how much of the label signal is recoverable from SURFACE FORM alone by six model-free probes, two-sided, refit inside every permutation (labels shuffled within stratum) and family-wise corrected across all cells (Westfall-Young min-p). A PASS does NOT certify the benchmark is good: it cannot see circularity (labels drawn from the same store the system under test retrieves from), contamination, or mislabelling. It scores no model."
+}
