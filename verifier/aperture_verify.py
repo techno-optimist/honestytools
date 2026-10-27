@@ -193,6 +193,13 @@ def main(argv: list[str]) -> int:
             for k, role in PINNED_KEYS.items():
                 print("  %s  %s" % (k, role))
             print("Cross-check: %s/api/cert/pubkey" % SITE)
+            try:
+                import transparency_log as _tl
+                print("Receipt-LOG checkpoint key (separate from the registry key; see %s/verifier/log/KEYHOLDER.md):" % SITE)
+                for k, role in _tl.PINNED_LOG_VKEYS.items():
+                    print("  %s  %s" % (k, role))
+            except ImportError:
+                pass
             return 0
         if cmd == "selftest":
             return _selftest()

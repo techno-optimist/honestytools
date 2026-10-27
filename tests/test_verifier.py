@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """verifier/ mirror: the bytes match SOURCE.sha256; the RFC 6962 log primitives work (stdlib only);
 with `cryptography` installed, the two real fixtures verify offline, a one-byte edit fails, an
-unpinned key fails, and the shipped selftests pass."""
+unpinned key fails, the shipped selftests pass, and the signed genesis checkpoint and its Rekor
+anchor verify under the key published in keys/."""
 import copy, hashlib, importlib, json, os, subprocess, sys, unittest
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -113,6 +114,45 @@ class Receipts(unittest.TestCase):
     def test_witness_selftest(self):
         r = _run("aperture_witness.py", "selftest")
         self.assertEqual(r.returncode, 0, r.stdout[-800:])
+
+
+@unittest.skipUnless(HAVE_CRYPTO, "needs `cryptography` (pip install cryptography)")
+class Anchor(unittest.TestCase):
+    """The genesis checkpoint verifies under the pinned receipt-log key, its leaves rebuild the root,
+    the Rekor v2 entry anchors it, and the key in keys/ is the one the verifier pins."""
+    def setUp(self):
+        self.t = _imp("transparency_log")
+        self.note = open(os.path.join(VDIR, "log", "checkpoint")).read()
+        self.entry = json.load(open(os.path.join(VDIR, "log", "rekor-entry-0.json")))
+
+    def test_keys_dir_matches_pin(self):
+        vk = open(os.path.join(ROOT, "keys", "receipt-log.vkey")).read().strip()
+        self.assertEqual(list(self.t.PINNED_LOG_VKEYS), [vk])
+        pub = json.load(open(os.path.join(ROOT, "keys", "receipt-log.pub.json")))
+        self.assertEqual(pub["vkey"], vk)
+        _, _, raw = self.t.parse_vkey(vk)
+        self.assertEqual(hashlib.sha256(raw).hexdigest(), pub["fingerprint_sha256_raw"])
+
+    def test_checkpoint_and_leaves(self):
+        cp = self.t.verify_checkpoint(self.note)
+        self.assertEqual((cp["tree_size"], cp["root"]),
+                         (22, "890d25bd770f265415256a5fda48013a25ff78fc543711e2785376ad05c8ae71"))
+        r = _run("transparency_log.py", "verify-checkpoint", "log/checkpoint", "log/leaves.jsonl")
+        self.assertEqual(r.returncode, 0, r.stdout[-400:] + r.stderr[-400:])
+
+    def test_rekor_anchor(self):
+        rep = self.t.verify_rekor_anchor(self.note, self.entry)
+        self.assertEqual(rep["rekor"]["log_index"], 171316570)
+
+    def test_tampered_checkpoint_fails(self):
+        bad = self.note.replace("\n22\n", "\n23\n", 1)
+        self.assertNotEqual(bad, self.note)
+        with self.assertRaises(Exception):
+            self.t.verify_checkpoint(bad)
+        e = copy.deepcopy(self.entry)
+        e["logIndex"] = str(int(e["logIndex"]) + 1)
+        with self.assertRaises(Exception):
+            self.t.verify_rekor_anchor(self.note, e)
 
 
 if __name__ == "__main__":

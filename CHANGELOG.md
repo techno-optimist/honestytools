@@ -6,10 +6,23 @@ produced them. What is listed under *not done* is as much a part of the record a
 
 ## Unreleased
 
-`nulltest.py` and `nulltest_paired.py` are byte-identical to 0.7.2.
+`nulltest.py` and `nulltest_paired.py` are byte-identical to 0.7.3.
 
 - `verifier/aperture_witness.py` is re-mirrored from site commit 96aadb3 (sha256 `0e634b28…`). `--pin B64=role` now requires the canonical base64 encoding. Before this, Python 3.10 accepted surplus `=` padding, so the role separator stayed attached to the key and the pin never matched. `SOURCE.sha256` is updated to the new hash.
 - The CI unit-test job installs `cryptography` and `sympy`, so the receipt-verifier tests and the witness selftest run instead of skipping.
+
+## 0.7.3 — 2026-10-27 — the receipt log is anchored
+
+`nulltest.py` and `nulltest_paired.py` are byte-identical to 0.7.2.
+
+- New receipt-log signing key, held by Kevin Russell. It was generated on the DGX and stays there. The public key, fingerprint `d1f9d938…a76342` and the keyholder statement are in `keys/`.
+- The genesis checkpoint (C2SP format, 22 leaves, root `890d25bd…`) is anchored in Sigstore Rekor v2 `log2025-1` at index 171316570. Details are in `ANCHORING.md`.
+- `verifier/` is re-mirrored from site commit f1f2b50 and adds the following:
+  - `transparency_log.py verify-checkpoint`, `verify-anchor` and `keys`;
+  - `verifier/log/`;
+  - `SOURCE.sha256` now pins 17 files.
+- `tests/test_verifier.py` adds 4 anchor tests. A tampered checkpoint or a wrong log index fails.
+- *Not done:* no RFC 3161 timestamp, no witness enrolment, and no re-anchoring schedule. Database-only read receipts are not in the genesis tree.
 
 ## 0.7.2 — 2026-10-26 — FLOOR: certificates can say "not certifiable"
 
