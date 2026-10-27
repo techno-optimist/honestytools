@@ -116,7 +116,10 @@ def gate(res):
 
 
 def worst(res):
-    """the probe with the smallest adjusted p over both families (ties: larger A*)"""
-    c = [(res[f]["probes"][p]["adj_p"], -res[f]["probes"][p]["astar"], f, p) for f in ("pooled", "within") for p in PROBES]
-    ap, na, f, p = min(c)
+    """the probe with the smallest adjusted p over both families. Ties (common at the permutation
+    floor) go to the pooled family, so the v1 worst probe is kept unless the within family is
+    strictly stronger; within a family, ties go to the larger A* as in v1."""
+    c = [(res[f]["probes"][p]["adj_p"], f != "pooled", -res[f]["probes"][p]["astar"], f, p)
+         for f in ("pooled", "within") for p in PROBES]
+    ap, _, na, f, p = min(c)
     return {"family": f, "probe": p, "astar": -na, "adj_p": ap}
