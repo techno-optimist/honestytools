@@ -291,9 +291,12 @@ still be contaminated, circular or mislabelled.
   measured 8.4% at 200 permutations (an uncommitted v1.3 run), a discreteness effect at the
   permutation floor. Since v1.4 the tool raises the count itself to `ceil(2(K+1)/alpha)` and says
   so in the report; `--n-perm` is a floor, not a ceiling.
-- **Only two classes, and no pairing.** A multi-class corpus must be filtered to two labels first.
-  Question-answer rows exploded with `--explode` are scored as a pool of answers, not as pairs
-  within a question; a paired, per-question comparison is not offered.
+- **Only two classes, and `nulltest.py` itself does not pair.** A multi-class corpus must be
+  filtered to two labels first. In `nulltest.py`, question-answer rows exploded with `--explode`
+  are scored as a pool of answers, not as pairs within a question. For a per-question comparison
+  use the experimental paired floor, `honest paired FILE --pair-key F` (`nulltest_paired.py`,
+  within-pair sign flip, folds by pair); it is versioned separately and is not part of the
+  JS-parity core.
 - **Non-Latin text.** The probes run on any Unicode text, but the alphabet probes drop out as
   degenerate when initials are not letters, and `words` splits on whitespace, so unspaced scripts
   give it one token per sentence. The report lists which cells were dropped as degenerate; it
