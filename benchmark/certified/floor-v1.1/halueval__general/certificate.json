@@ -1,0 +1,325 @@
+{
+ "format": "floor/certificate/v1.1",
+ "mode": "unpaired",
+ "benchmark": "FLOOR",
+ "dataset": "halueval__general",
+ "issued": "2026-10-27T04:01:32-0600",
+ "status": "NOT_CERTIFIABLE",
+ "status_reasons": [
+  "filter_reached_floor_with_cues"
+ ],
+ "status_rule": {
+  "floor_items": 2254,
+  "min_per_class": 320,
+  "min_kept_share": 0.5,
+  "min_per_class_basis": "certify.py's paired power floor (320) reused per class; conservative, no separate unpaired derivation",
+  "held_out_rule": "v1.1: fails if the pooled OR the within-stratum family separates (adj p < 0.05) or is borderline (< 0.10)",
+  "stopped_at_floor": true
+ },
+ "source": {
+  "file": "halueval__general.json",
+  "sha256": "9d164c00a23411adfe3dcdb1c15e6ea274819c0966b364e3c7db320088476dcd",
+  "n_items": 4507,
+  "classes": {
+   "label1": 815,
+   "label0": 3692
+  }
+ },
+ "split": {
+  "file": "certified.json",
+  "sha256": "754a2d79c66ab38689e4e79904cf26ddf4d686c3146ae23b1e74f2bfdd40a356",
+  "n_items": 2314,
+  "classes": {
+   "label1": 419,
+   "label0": 1895
+  },
+  "retained_share": 0.513
+ },
+ "filter": {
+  "method": "item-level adversarial filtering (AFLite-style), class-proportional drops (unchanged from v1)",
+  "probes": [
+   "lexicality",
+   "words",
+   "length",
+   "shape"
+  ],
+  "seeds": [
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "step": 0.05,
+  "screen_perm": 200,
+  "screen_seed": 7,
+  "screen_stop": 0.2,
+  "rounds": [
+   {
+    "in": 4507,
+    "screen_adj_p": 0.0066,
+    "dropped": 225
+   },
+   {
+    "in": 4282,
+    "screen_adj_p": 0.01,
+    "dropped": 214
+   },
+   {
+    "in": 4068,
+    "screen_adj_p": 0.01,
+    "dropped": 203
+   },
+   {
+    "in": 3865,
+    "screen_adj_p": 0.01,
+    "dropped": 193
+   },
+   {
+    "in": 3672,
+    "screen_adj_p": 0.01,
+    "dropped": 184
+   },
+   {
+    "in": 3488,
+    "screen_adj_p": 0.01,
+    "dropped": 174
+   },
+   {
+    "in": 3314,
+    "screen_adj_p": 0.01,
+    "dropped": 166
+   },
+   {
+    "in": 3148,
+    "screen_adj_p": 0.01,
+    "dropped": 157
+   },
+   {
+    "in": 2991,
+    "screen_adj_p": 0.01,
+    "dropped": 150
+   },
+   {
+    "in": 2841,
+    "screen_adj_p": 0.01,
+    "dropped": 142
+   },
+   {
+    "in": 2699,
+    "screen_adj_p": 0.01,
+    "dropped": 135
+   },
+   {
+    "in": 2564,
+    "screen_adj_p": 0.0133,
+    "dropped": 128
+   },
+   {
+    "in": 2436,
+    "screen_adj_p": 0.0133,
+    "dropped": 122
+   },
+   {
+    "in": 2314,
+    "screen_adj_p": 0.0133,
+    "stopped": "floor"
+   }
+  ]
+ },
+ "tests": {
+  "unpaired": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst cell A* = 0.681 in words/_all (n=2314), family-adjusted p = 0.0067 over 6 cells",
+   "n_perm": 600,
+   "seed": 20260724,
+   "stratum": null
+  },
+  "held_out": {
+   "pooled": {
+    "verdict": "DISQUALIFIED",
+    "borderline": false,
+    "headline": "worst held-out probe char_ngram: A* 0.617, adjusted p 0.0004998 over 8 probes",
+    "separating": [
+     "negation",
+     "char_ngram"
+    ],
+    "probes": {
+     "negation": {
+      "astar": 0.578,
+      "adj_p": 0.0005,
+      "direction": "label-1 scores higher"
+     },
+     "hedge": {
+      "astar": 0.524,
+      "adj_p": 0.322,
+      "direction": "label-1 scores higher"
+     },
+     "function": {
+      "astar": 0.534,
+      "adj_p": 0.233,
+      "direction": "label-1 scores higher"
+     },
+     "punct": {
+      "astar": 0.521,
+      "adj_p": 0.722,
+      "direction": "label-0 scores higher"
+     },
+     "digits": {
+      "astar": 0.507,
+      "adj_p": 0.997,
+      "direction": "label-1 scores higher"
+     },
+     "caps": {
+      "astar": 0.502,
+      "adj_p": 1.0,
+      "direction": "label-0 scores higher"
+     },
+     "word_len": {
+      "astar": 0.521,
+      "adj_p": 0.734,
+      "direction": "label-0 scores higher"
+     },
+     "char_ngram": {
+      "astar": 0.617,
+      "adj_p": 0.0005,
+      "direction": "label-1 scores higher"
+     }
+    }
+   },
+   "within_stratum": {
+    "verdict": "DISQUALIFIED",
+    "borderline": false,
+    "headline": "worst within-stratum probe char_ngram: A* 0.617, adjusted p 0.0004998 over 8 probes",
+    "separating": [
+     "negation",
+     "char_ngram"
+    ],
+    "probes": {
+     "negation": {
+      "astar": 0.578,
+      "adj_p": 0.0005,
+      "auroc_by_stratum": {
+       "_all": 0.578
+      }
+     },
+     "hedge": {
+      "astar": 0.524,
+      "adj_p": 0.322,
+      "auroc_by_stratum": {
+       "_all": 0.524
+      }
+     },
+     "function": {
+      "astar": 0.534,
+      "adj_p": 0.233,
+      "auroc_by_stratum": {
+       "_all": 0.534
+      }
+     },
+     "punct": {
+      "astar": 0.521,
+      "adj_p": 0.722,
+      "auroc_by_stratum": {
+       "_all": 0.479
+      }
+     },
+     "digits": {
+      "astar": 0.507,
+      "adj_p": 0.997,
+      "auroc_by_stratum": {
+       "_all": 0.507
+      }
+     },
+     "caps": {
+      "astar": 0.502,
+      "adj_p": 1.0,
+      "auroc_by_stratum": {
+       "_all": 0.498
+      }
+     },
+     "word_len": {
+      "astar": 0.521,
+      "adj_p": 0.734,
+      "auroc_by_stratum": {
+       "_all": 0.479
+      }
+     },
+     "char_ngram": {
+      "astar": 0.617,
+      "adj_p": 0.0005,
+      "auroc_by_stratum": {
+       "_all": 0.617
+      }
+     }
+    },
+    "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+    "strata_scored": [
+     "_all"
+    ],
+    "strata_skipped_one_class": []
+   },
+   "worst": {
+    "family": "pooled",
+    "probe": "char_ngram",
+    "astar": 0.617,
+    "adj_p": 0.0005
+   },
+   "n_perm": 2000,
+   "seed": 20261026,
+   "null": "labels permuted within stratum; one set of draws shared by both families",
+   "source": {
+    "pooled_headline": "worst held-out probe char_ngram: A* 0.672, adjusted p 0.0004998 over 8 probes",
+    "pooled_separating": [
+     "negation",
+     "digits",
+     "word_len",
+     "char_ngram"
+    ],
+    "within_headline": "worst within-stratum probe char_ngram: A* 0.672, adjusted p 0.0004998 over 8 probes",
+    "within_separating": [
+     "negation",
+     "digits",
+     "word_len",
+     "char_ngram"
+    ]
+   }
+  },
+  "negation_cue": {
+   "items": 2314,
+   "mean_negation_label1": 0.6325,
+   "mean_negation_label0": 0.3984,
+   "items_with_negation": 684,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 0.0005,
+   "cue_present": true
+  },
+  "negation_cue_source": {
+   "items": 4507,
+   "mean_negation_label1": 0.7055,
+   "mean_negation_label0": 0.4978,
+   "items_with_negation": 1626,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 0.0005,
+   "cue_present": true
+  }
+ },
+ "gates": {
+  "in_family_unpaired": false,
+  "held_out_probes": false,
+  "negation_cue_absent": false
+ },
+ "provenance": {
+  "nulltest_version": "1.4",
+  "nulltest_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+  "certify_sha256": "4fb9a4417556492505b5e11b7747fe9626287a0a782c162afd434af3c958db15",
+  "certify_unpaired_sha256": "75bf01a7b0c182a07c2d95ca7a5957e67aa7e5164cd36cb51b880a221efb014d",
+  "certify_unpaired_v11_sha256": "1ee726d13aa67d6f267aabbd4793809169fa040b1052c9683ec4e11d48de6fce",
+  "heldout_sha256": "543f47d74d54dd5eb38383421dcead428b6b7dc55d4eb6e29d2884e154f5f981",
+  "heldout_np_sha256": "c6b0a210a2d019c119d7854535211c2f89002c7a74fe588df99256c985e77550",
+  "heldout_strat_sha256": "5ca4fa39eb1eaa9d902f65667b3a15b99ba1c506b15d1dd2127907768e715687"
+ },
+ "caveat": "The kept items were selected against the in-family probes, so that gate is circular; the held-out probes and the negation test were never used to select. A pass means none of these probe families, pooled or within stratum, recovers the labels on the kept items; it is not a claim that no surface reader can (no model-based reader is run). Unsigned prototype.",
+ "replay": "python3 benchmark/certified/certify_unpaired_v11.py halueval__general.json --out DIR --n-perm 600 --text-key entity"
+}

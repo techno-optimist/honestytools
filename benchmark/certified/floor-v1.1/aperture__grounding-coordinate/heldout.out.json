@@ -1,0 +1,470 @@
+{
+ "kept": {
+  "pooled": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "hedge": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "function": {
+     "astar": 0.516,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.272,
+     "adj_p": 0.768,
+     "separates": false
+    },
+    "punct": {
+     "astar": 0.508,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.65,
+     "adj_p": 0.993,
+     "separates": false
+    },
+    "digits": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "caps": {
+     "astar": 0.522,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.262,
+     "adj_p": 0.755,
+     "separates": false
+    },
+    "word_len": {
+     "astar": 0.628,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true
+    },
+    "char_ngram": {
+     "astar": 0.547,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.491,
+     "adj_p": 0.96,
+     "separates": false
+    }
+   },
+   "n_items": 162,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "word_len",
+   "separating": [
+    "word_len"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst held-out probe word_len: A* 0.628, adjusted p 0.0004998 over 8 probes",
+   "strata": [
+    "drugs_compounds",
+    "eponymous_signs",
+    "eponymous_theorems",
+    "firms",
+    "obscure_people",
+    "two_author_papers"
+   ],
+   "null": "labels permuted within stratum, char_ngram refit",
+   "negation_check": {
+    "items": 162,
+    "mean_negation_label1": 0.0,
+    "mean_negation_label0": 0.0,
+    "items_with_negation": 0,
+    "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+    "p_two_sided": 1.0,
+    "cue_present": false
+   }
+  },
+  "within": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.5,
+      "eponymous_signs": 0.5,
+      "eponymous_theorems": 0.5,
+      "firms": 0.5,
+      "obscure_people": 0.5,
+      "two_author_papers": 0.5
+     }
+    },
+    "hedge": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.5,
+      "eponymous_signs": 0.5,
+      "eponymous_theorems": 0.5,
+      "firms": 0.5,
+      "obscure_people": 0.5,
+      "two_author_papers": 0.5
+     }
+    },
+    "function": {
+     "astar": 0.536,
+     "raw_p": 0.201,
+     "adj_p": 0.641,
+     "separates": false,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.5,
+      "eponymous_signs": 0.5,
+      "eponymous_theorems": 0.5,
+      "firms": 0.5,
+      "obscure_people": 0.5,
+      "two_author_papers": 0.291
+     }
+    },
+    "punct": {
+     "astar": 0.513,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.5,
+      "eponymous_signs": 0.536,
+      "eponymous_theorems": 0.5,
+      "firms": 0.512,
+      "obscure_people": 0.5,
+      "two_author_papers": 0.531
+     }
+    },
+    "digits": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.5,
+      "eponymous_signs": 0.5,
+      "eponymous_theorems": 0.5,
+      "firms": 0.5,
+      "obscure_people": 0.5,
+      "two_author_papers": 0.5
+     }
+    },
+    "caps": {
+     "astar": 0.55,
+     "raw_p": 0.592,
+     "adj_p": 0.986,
+     "separates": false,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.5,
+      "eponymous_signs": 0.571,
+      "eponymous_theorems": 0.5,
+      "firms": 0.574,
+      "obscure_people": 0.5,
+      "two_author_papers": 0.658
+     }
+    },
+    "word_len": {
+     "astar": 0.678,
+     "raw_p": 0.0015,
+     "adj_p": 0.005,
+     "separates": true,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.645,
+      "eponymous_signs": 0.635,
+      "eponymous_theorems": 0.702,
+      "firms": 0.607,
+      "obscure_people": 0.679,
+      "two_author_papers": 0.783
+     }
+    },
+    "char_ngram": {
+     "astar": 0.726,
+     "raw_p": 0.0015,
+     "adj_p": 0.005,
+     "separates": true,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.158,
+      "eponymous_signs": 0.648,
+      "eponymous_theorems": 0.148,
+      "firms": 0.421,
+      "obscure_people": 0.714,
+      "two_author_papers": 0.689
+     }
+    }
+   },
+   "n_items": 162,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "char_ngram",
+   "separating": [
+    "word_len",
+    "char_ngram"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst within-stratum probe char_ngram: A* 0.726, adjusted p 0.004998 over 8 probes",
+   "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+   "strata_scored": [
+    "drugs_compounds",
+    "eponymous_signs",
+    "eponymous_theorems",
+    "firms",
+    "obscure_people",
+    "two_author_papers"
+   ],
+   "strata_skipped_one_class": [],
+   "null": "labels permuted within stratum (same draws as pooled), char_ngram refit"
+  }
+ },
+ "source": {
+  "pooled": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "hedge": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "function": {
+     "astar": 0.516,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.272,
+     "adj_p": 0.768,
+     "separates": false
+    },
+    "punct": {
+     "astar": 0.508,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.65,
+     "adj_p": 0.993,
+     "separates": false
+    },
+    "digits": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "caps": {
+     "astar": 0.522,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.262,
+     "adj_p": 0.755,
+     "separates": false
+    },
+    "word_len": {
+     "astar": 0.628,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true
+    },
+    "char_ngram": {
+     "astar": 0.547,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.491,
+     "adj_p": 0.96,
+     "separates": false
+    }
+   },
+   "n_items": 162,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "word_len",
+   "separating": [
+    "word_len"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst held-out probe word_len: A* 0.628, adjusted p 0.0004998 over 8 probes",
+   "strata": [
+    "drugs_compounds",
+    "eponymous_signs",
+    "eponymous_theorems",
+    "firms",
+    "obscure_people",
+    "two_author_papers"
+   ],
+   "null": "labels permuted within stratum, char_ngram refit",
+   "negation_check": {
+    "items": 162,
+    "mean_negation_label1": 0.0,
+    "mean_negation_label0": 0.0,
+    "items_with_negation": 0,
+    "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+    "p_two_sided": 1.0,
+    "cue_present": false
+   }
+  },
+  "within": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.5,
+      "eponymous_signs": 0.5,
+      "eponymous_theorems": 0.5,
+      "firms": 0.5,
+      "obscure_people": 0.5,
+      "two_author_papers": 0.5
+     }
+    },
+    "hedge": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.5,
+      "eponymous_signs": 0.5,
+      "eponymous_theorems": 0.5,
+      "firms": 0.5,
+      "obscure_people": 0.5,
+      "two_author_papers": 0.5
+     }
+    },
+    "function": {
+     "astar": 0.536,
+     "raw_p": 0.201,
+     "adj_p": 0.641,
+     "separates": false,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.5,
+      "eponymous_signs": 0.5,
+      "eponymous_theorems": 0.5,
+      "firms": 0.5,
+      "obscure_people": 0.5,
+      "two_author_papers": 0.291
+     }
+    },
+    "punct": {
+     "astar": 0.513,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.5,
+      "eponymous_signs": 0.536,
+      "eponymous_theorems": 0.5,
+      "firms": 0.512,
+      "obscure_people": 0.5,
+      "two_author_papers": 0.531
+     }
+    },
+    "digits": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.5,
+      "eponymous_signs": 0.5,
+      "eponymous_theorems": 0.5,
+      "firms": 0.5,
+      "obscure_people": 0.5,
+      "two_author_papers": 0.5
+     }
+    },
+    "caps": {
+     "astar": 0.55,
+     "raw_p": 0.592,
+     "adj_p": 0.986,
+     "separates": false,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.5,
+      "eponymous_signs": 0.571,
+      "eponymous_theorems": 0.5,
+      "firms": 0.574,
+      "obscure_people": 0.5,
+      "two_author_papers": 0.658
+     }
+    },
+    "word_len": {
+     "astar": 0.678,
+     "raw_p": 0.0015,
+     "adj_p": 0.005,
+     "separates": true,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.645,
+      "eponymous_signs": 0.635,
+      "eponymous_theorems": 0.702,
+      "firms": 0.607,
+      "obscure_people": 0.679,
+      "two_author_papers": 0.783
+     }
+    },
+    "char_ngram": {
+     "astar": 0.726,
+     "raw_p": 0.0015,
+     "adj_p": 0.005,
+     "separates": true,
+     "auroc_by_stratum": {
+      "drugs_compounds": 0.158,
+      "eponymous_signs": 0.648,
+      "eponymous_theorems": 0.148,
+      "firms": 0.421,
+      "obscure_people": 0.714,
+      "two_author_papers": 0.689
+     }
+    }
+   },
+   "n_items": 162,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "char_ngram",
+   "separating": [
+    "word_len",
+    "char_ngram"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst within-stratum probe char_ngram: A* 0.726, adjusted p 0.004998 over 8 probes",
+   "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+   "strata_scored": [
+    "drugs_compounds",
+    "eponymous_signs",
+    "eponymous_theorems",
+    "firms",
+    "obscure_people",
+    "two_author_papers"
+   ],
+   "strata_skipped_one_class": [],
+   "null": "labels permuted within stratum (same draws as pooled), char_ngram refit"
+  }
+ }
+}

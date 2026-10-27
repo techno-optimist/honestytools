@@ -1,0 +1,1626 @@
+{
+ "tool": "nulltest",
+ "version": "1.4",
+ "mode": "paired",
+ "paired_version": "0.1",
+ "probes": [
+  "lexicality",
+  "words",
+  "length",
+  "shape",
+  "alpha_first",
+  "alpha_last"
+ ],
+ "n_items": 164,
+ "n_pairs": 82,
+ "pairs_dropped_not_1v1": 0,
+ "items_without_pair_key": 0,
+ "pair_key": "_row",
+ "strata": [
+  "_all",
+  "Advertising",
+  "Confusion: People",
+  "Confusion: Places",
+  "Conspiracies",
+  "Distraction",
+  "Economics",
+  "Fiction",
+  "Finance",
+  "Health",
+  "History",
+  "Indexical Error: Identity",
+  "Indexical Error: Other",
+  "Language",
+  "Law",
+  "Logical Falsehood",
+  "Mandela Effect",
+  "Misconceptions",
+  "Misinformation",
+  "Misquotations",
+  "Myths and Fairytales",
+  "Nutrition",
+  "Paranormal",
+  "Politics",
+  "Religion",
+  "Science",
+  "Sociology",
+  "Statistics",
+  "Stereotypes",
+  "Subjective",
+  "Superstitions",
+  "Weather"
+ ],
+ "alpha": 0.05,
+ "family_size": 169,
+ "correction": "westfall_young_min_p",
+ "null": "labels swapped within each pair with probability 1/2 (sign flip), every probe refit",
+ "statistic": "A*_pair = max(w, 1-w), w = share of pairs where label-1 outscores label-0 (ties 1/2)",
+ "folds": "grouped by pair (both members held out together)",
+ "nulls": {
+  "lexicality": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 82,
+     "astar_pair": 0.707,
+     "threshold": 0.634,
+     "raw_p": 0.0035,
+     "adj_p": 0.0165,
+     "separates": true,
+     "underpowered": false
+    },
+    "Advertising": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Confusion: People": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 1.0,
+     "raw_p": 0.9971,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Confusion: Places": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Conspiracies": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Distraction": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5048,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Economics": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Fiction": {
+     "n_pairs": 4,
+     "astar_pair": 0.75,
+     "threshold": 1.0,
+     "raw_p": 0.6296,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Finance": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Health": {
+     "n_pairs": 5,
+     "astar_pair": 0.8,
+     "threshold": 1.0,
+     "raw_p": 0.382,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "History": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Identity": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Other": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Language": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Law": {
+     "n_pairs": 7,
+     "astar_pair": 1.0,
+     "threshold": 0.857,
+     "raw_p": 0.0209,
+     "adj_p": 0.1907,
+     "separates": false,
+     "underpowered": true
+    },
+    "Logical Falsehood": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Mandela Effect": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misconceptions": {
+     "n_pairs": 12,
+     "astar_pair": 0.833,
+     "threshold": 0.833,
+     "raw_p": 0.0695,
+     "adj_p": 0.6551,
+     "separates": false,
+     "underpowered": false
+    },
+    "Misinformation": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misquotations": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Myths and Fairytales": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Nutrition": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.4888,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Paranormal": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Politics": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Religion": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Science": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Sociology": {
+     "n_pairs": 5,
+     "astar_pair": 0.8,
+     "threshold": 1.0,
+     "raw_p": 0.3677,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Statistics": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Stereotypes": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Subjective": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Superstitions": {
+     "n_pairs": 3,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.2603,
+     "adj_p": 0.9996,
+     "separates": false,
+     "underpowered": true
+    },
+    "Weather": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.9125,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    }
+   }
+  },
+  "words": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 82,
+     "astar_pair": 0.701,
+     "threshold": 0.622,
+     "raw_p": 0.0013,
+     "adj_p": 0.0066,
+     "separates": true,
+     "underpowered": false
+    },
+    "Advertising": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Confusion: Places": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Conspiracies": {
+     "n_pairs": 3,
+     "astar_pair": 0.833,
+     "threshold": 0.833,
+     "raw_p": 0.4799,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Economics": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Fiction": {
+     "n_pairs": 4,
+     "astar_pair": 0.625,
+     "threshold": 1.0,
+     "raw_p": 0.8156,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Finance": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Health": {
+     "n_pairs": 5,
+     "astar_pair": 0.6,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "History": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 0.667,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Identity": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Other": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Language": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Law": {
+     "n_pairs": 7,
+     "astar_pair": 0.857,
+     "threshold": 0.857,
+     "raw_p": 0.1532,
+     "adj_p": 0.9338,
+     "separates": false,
+     "underpowered": true
+    },
+    "Logical Falsehood": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Mandela Effect": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misconceptions": {
+     "n_pairs": 12,
+     "astar_pair": 0.792,
+     "threshold": 0.792,
+     "raw_p": 0.0619,
+     "adj_p": 0.4563,
+     "separates": false,
+     "underpowered": false
+    },
+    "Misinformation": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misquotations": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Myths and Fairytales": {
+     "n_pairs": 3,
+     "astar_pair": 0.833,
+     "threshold": 0.833,
+     "raw_p": 0.5539,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Nutrition": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.4674,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Paranormal": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Politics": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Religion": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.4976,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Science": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Sociology": {
+     "n_pairs": 5,
+     "astar_pair": 0.8,
+     "threshold": 1.0,
+     "raw_p": 0.3701,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Statistics": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Stereotypes": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 1.0,
+     "raw_p": 0.9996,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Subjective": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Superstitions": {
+     "n_pairs": 3,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.2503,
+     "adj_p": 0.9982,
+     "separates": false,
+     "underpowered": true
+    },
+    "Weather": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.7508,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    }
+   }
+  },
+  "length": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 82,
+     "astar_pair": 0.707,
+     "threshold": 0.61,
+     "raw_p": 0.0001,
+     "adj_p": 0.0006,
+     "separates": true,
+     "underpowered": false
+    },
+    "Advertising": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5046,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Confusion: People": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 1.0,
+     "raw_p": 0.6209,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Confusion: Places": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Conspiracies": {
+     "n_pairs": 3,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.2566,
+     "adj_p": 0.9996,
+     "separates": false,
+     "underpowered": true
+    },
+    "Distraction": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5085,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Economics": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Fiction": {
+     "n_pairs": 4,
+     "astar_pair": 0.75,
+     "threshold": 1.0,
+     "raw_p": 0.6302,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Finance": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Health": {
+     "n_pairs": 5,
+     "astar_pair": 0.6,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "History": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 1.0,
+     "raw_p": 0.6068,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Identity": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Other": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Language": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5001,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Law": {
+     "n_pairs": 7,
+     "astar_pair": 0.714,
+     "threshold": 0.857,
+     "raw_p": 0.4599,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Logical Falsehood": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.4924,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Mandela Effect": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misconceptions": {
+     "n_pairs": 12,
+     "astar_pair": 0.833,
+     "threshold": 0.75,
+     "raw_p": 0.0387,
+     "adj_p": 0.3123,
+     "separates": false,
+     "underpowered": false
+    },
+    "Misinformation": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misquotations": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5017,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Myths and Fairytales": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 0.667,
+     "raw_p": 0.4971,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Nutrition": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5096,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Paranormal": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.4924,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Politics": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Religion": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5007,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Science": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Sociology": {
+     "n_pairs": 5,
+     "astar_pair": 0.5,
+     "threshold": 0.9,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Statistics": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Stereotypes": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Subjective": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Superstitions": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Weather": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5029,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    }
+   }
+  },
+  "shape": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 82,
+     "astar_pair": 0.573,
+     "threshold": 0.61,
+     "raw_p": 0.2189,
+     "adj_p": 0.976,
+     "separates": false,
+     "underpowered": false
+    },
+    "Advertising": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Conspiracies": {
+     "n_pairs": 3,
+     "astar_pair": 0.833,
+     "threshold": 0.833,
+     "raw_p": 0.3836,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Fiction": {
+     "n_pairs": 4,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 0.4823,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Finance": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Health": {
+     "n_pairs": 5,
+     "astar_pair": 0.6,
+     "threshold": 0.8,
+     "raw_p": 0.9271,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "History": {
+     "n_pairs": 3,
+     "astar_pair": 0.833,
+     "threshold": 0.833,
+     "raw_p": 0.4998,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Identity": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Other": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Language": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Law": {
+     "n_pairs": 7,
+     "astar_pair": 0.786,
+     "threshold": 0.786,
+     "raw_p": 0.2413,
+     "adj_p": 0.9893,
+     "separates": false,
+     "underpowered": true
+    },
+    "Logical Falsehood": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Mandela Effect": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misconceptions": {
+     "n_pairs": 12,
+     "astar_pair": 0.583,
+     "threshold": 0.75,
+     "raw_p": 0.5317,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "Misquotations": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Myths and Fairytales": {
+     "n_pairs": 3,
+     "astar_pair": 0.833,
+     "threshold": 0.833,
+     "raw_p": 0.3946,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Nutrition": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Paranormal": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Politics": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Religion": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.4911,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Sociology": {
+     "n_pairs": 5,
+     "astar_pair": 0.5,
+     "threshold": 0.9,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Stereotypes": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Subjective": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Superstitions": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 0.667,
+     "raw_p": 0.5062,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Weather": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5018,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    }
+   }
+  },
+  "alpha_first": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 82,
+     "astar_pair": 0.567,
+     "threshold": 0.579,
+     "raw_p": 0.1198,
+     "adj_p": 0.8241,
+     "separates": false,
+     "underpowered": false
+    },
+    "Advertising": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Confusion: People": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Confusion: Places": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.4992,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Conspiracies": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 0.667,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Economics": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Fiction": {
+     "n_pairs": 4,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 0.4979,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Finance": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Health": {
+     "n_pairs": 5,
+     "astar_pair": 0.7,
+     "threshold": 0.9,
+     "raw_p": 0.632,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "History": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 0.667,
+     "raw_p": 0.5012,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Identity": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Language": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Law": {
+     "n_pairs": 7,
+     "astar_pair": 0.786,
+     "threshold": 0.786,
+     "raw_p": 0.2228,
+     "adj_p": 0.9832,
+     "separates": false,
+     "underpowered": true
+    },
+    "Logical Falsehood": {
+     "n_pairs": 2,
+     "astar_pair": 0.5,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Mandela Effect": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misconceptions": {
+     "n_pairs": 12,
+     "astar_pair": 0.708,
+     "threshold": 0.708,
+     "raw_p": 0.1165,
+     "adj_p": 0.8139,
+     "separates": false,
+     "underpowered": false
+    },
+    "Misquotations": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Myths and Fairytales": {
+     "n_pairs": 3,
+     "astar_pair": 0.833,
+     "threshold": 0.833,
+     "raw_p": 0.5093,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Nutrition": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Paranormal": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Sociology": {
+     "n_pairs": 5,
+     "astar_pair": 0.7,
+     "threshold": 0.9,
+     "raw_p": 0.628,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Statistics": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Stereotypes": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 0.667,
+     "raw_p": 0.4993,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Subjective": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Superstitions": {
+     "n_pairs": 3,
+     "astar_pair": 0.5,
+     "threshold": 0.833,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Weather": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5029,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    }
+   }
+  },
+  "alpha_last": {
+   "per_stratum": {
+    "_all": {
+     "n_pairs": 82,
+     "astar_pair": 0.512,
+     "threshold": 0.585,
+     "raw_p": 0.8777,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "Confusion: People": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Confusion: Places": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.4992,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Distraction": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5085,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Economics": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Fiction": {
+     "n_pairs": 4,
+     "astar_pair": 0.625,
+     "threshold": 0.875,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Finance": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Health": {
+     "n_pairs": 5,
+     "astar_pair": 0.6,
+     "threshold": 0.8,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "History": {
+     "n_pairs": 3,
+     "astar_pair": 0.667,
+     "threshold": 0.667,
+     "raw_p": 0.501,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Identity": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Indexical Error: Other": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Language": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5001,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Law": {
+     "n_pairs": 7,
+     "astar_pair": 0.5,
+     "threshold": 0.643,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Mandela Effect": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Misconceptions": {
+     "n_pairs": 12,
+     "astar_pair": 0.625,
+     "threshold": 0.708,
+     "raw_p": 0.447,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "Misquotations": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Nutrition": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5096,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Paranormal": {
+     "n_pairs": 2,
+     "astar_pair": 0.75,
+     "threshold": 0.75,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Politics": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Religion": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5007,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Stereotypes": {
+     "n_pairs": 3,
+     "astar_pair": 0.833,
+     "threshold": 0.833,
+     "raw_p": 0.4936,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Subjective": {
+     "n_pairs": 1,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Superstitions": {
+     "n_pairs": 3,
+     "astar_pair": 0.5,
+     "threshold": 0.833,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    },
+    "Weather": {
+     "n_pairs": 2,
+     "astar_pair": 1.0,
+     "threshold": 1.0,
+     "raw_p": 0.5029,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": true
+    }
+   }
+  }
+ },
+ "n_perm_requested": 600,
+ "n_perm": 6800,
+ "worst_cell": {
+  "n_pairs": 82,
+  "astar_pair": 0.707,
+  "threshold": 0.61,
+  "raw_p": 0.0001,
+  "adj_p": 0.0006,
+  "separates": true,
+  "underpowered": false,
+  "null": "length",
+  "stratum": "_all"
+ },
+ "n_separating_cells": 3,
+ "verdict": "DISQUALIFIED",
+ "borderline": false,
+ "p_floor": 0.000147,
+ "saturated": false,
+ "headline": "worst cell A*_pair = 0.707 in length/_all (82 pairs), family-adjusted p = 0.0006 over 169 cells",
+ "scope": "SCOPE: this measures how much of the label signal is recoverable from SURFACE FORM alone by six model-free probes, two-sided, refit inside every permutation (labels shuffled within stratum) and family-wise corrected across all cells (Westfall-Young min-p). A PASS does NOT certify the benchmark is good: it cannot see circularity (labels drawn from the same store the system under test retrieves from), contamination, or mislabelling. It scores no model."
+}

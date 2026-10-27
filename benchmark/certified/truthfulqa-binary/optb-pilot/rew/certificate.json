@@ -1,0 +1,226 @@
+{
+ "format": "floor/certificate/v1",
+ "benchmark": "FLOOR",
+ "dataset": "tqa-optb-pilot-rewritten",
+ "issued": "2026-10-27T00:01:49-0600",
+ "status": "NOT_CERTIFIABLE",
+ "status_reasons": [
+  "source_below_floor",
+  "kept_below_floor"
+ ],
+ "status_rule": {
+  "statuses": [
+   "CERTIFIED",
+   "NOT_CERTIFIED",
+   "NOT_CERTIFIABLE"
+  ],
+  "floor_pairs": 320,
+  "min_kept_share": 0.5,
+  "min_kept_pairs": 320,
+  "min_kept_pairs_basis": {
+   "test": "exact two-sided sign test",
+   "alpha": 0.05,
+   "bonferroni_k": 8,
+   "alt_rate": 0.6,
+   "power": 0.8
+  },
+  "stopped_at_floor": false
+ },
+ "source": {
+  "file": "pilot_original.json",
+  "sha256": "defe092668ad57562668f622114bcd9a1a286d1709c9c6b6d64eabc514511c2f",
+  "n_pairs": 100
+ },
+ "split": {
+  "file": "certified.json",
+  "sha256": "7e1747e6ecfa70f729bf1f26ff5aa3e46a7278876beae3821bcac41197fcc50c",
+  "n_pairs": 82,
+  "retained_share": 0.82,
+  "by_category_source": {
+   "Misquotations": 2,
+   "Conspiracies": 3,
+   "Superstitions": 3,
+   "Paranormal": 3,
+   "Fiction": 4,
+   "Myths and Fairytales": 3,
+   "Indexical Error: Identity": 1,
+   "Indexical Error: Location": 1,
+   "Distraction": 2,
+   "Subjective": 1,
+   "Advertising": 2,
+   "Religion": 2,
+   "Logical Falsehood": 2,
+   "Stereotypes": 3,
+   "Health": 7,
+   "Misconceptions": 13,
+   "Nutrition": 2,
+   "Sociology": 7,
+   "Economics": 4,
+   "Politics": 1,
+   "Science": 1,
+   "Law": 8,
+   "Language": 3,
+   "Confusion: People": 3,
+   "Confusion: Places": 2,
+   "Confusion: Other": 1,
+   "Finance": 1,
+   "Education": 1,
+   "Weather": 2,
+   "Indexical Error: Other": 2,
+   "Psychology": 2,
+   "Misinformation": 1,
+   "Statistics": 1,
+   "History": 3,
+   "Proverbs": 2,
+   "Mandela Effect": 1
+  },
+  "by_category_kept": {
+   "Misquotations": 2,
+   "Conspiracies": 3,
+   "Superstitions": 3,
+   "Paranormal": 2,
+   "Fiction": 4,
+   "Myths and Fairytales": 3,
+   "Indexical Error: Identity": 1,
+   "Distraction": 2,
+   "Subjective": 1,
+   "Advertising": 2,
+   "Religion": 2,
+   "Logical Falsehood": 2,
+   "Stereotypes": 3,
+   "Health": 5,
+   "Misconceptions": 12,
+   "Nutrition": 2,
+   "Economics": 2,
+   "Politics": 1,
+   "Science": 1,
+   "Law": 7,
+   "Language": 2,
+   "Confusion: People": 3,
+   "Confusion: Places": 2,
+   "Sociology": 5,
+   "Finance": 1,
+   "Weather": 2,
+   "Indexical Error: Other": 1,
+   "Misinformation": 1,
+   "Statistics": 1,
+   "History": 3,
+   "Mandela Effect": 1
+  }
+ },
+ "filter": {
+  "method": "none (--no-filter: subset certified as given)",
+  "input": "pilot_rewritten.json",
+  "input_sha256": "7e1747e6ecfa70f729bf1f26ff5aa3e46a7278876beae3821bcac41197fcc50c"
+ },
+ "tests": {
+  "paired": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst cell A*_pair = 0.701 in words/_all (82 pairs), family-adjusted p = 0.0017 over 155 cells",
+   "n_perm": 6300,
+   "seed": 20260724,
+   "stratum": "cat"
+  },
+  "unpaired": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst cell A* = 0.757 in lexicality/_all (n=164), family-adjusted p = 0.01 over 6 cells",
+   "n_perm": 600
+  },
+  "held_out": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst held-out probe char_ngram: A*_pair 0.780, adjusted p 0.0004998 over 8 probes",
+   "separating": [
+    "negation",
+    "char_ngram"
+   ],
+   "probes": {
+    "negation": {
+     "astar_pair": 0.671,
+     "adj_p": 0.0005,
+     "direction": "right scores higher"
+    },
+    "hedge": {
+     "astar_pair": 0.561,
+     "adj_p": 0.082,
+     "direction": "right scores higher"
+    },
+    "function": {
+     "astar_pair": 0.604,
+     "adj_p": 0.208,
+     "direction": "wrong scores higher"
+    },
+    "punct": {
+     "astar_pair": 0.512,
+     "adj_p": 0.999,
+     "direction": "right scores higher"
+    },
+    "digits": {
+     "astar_pair": 0.506,
+     "adj_p": 1.0,
+     "direction": "right scores higher"
+    },
+    "caps": {
+     "astar_pair": 0.512,
+     "adj_p": 1.0,
+     "direction": "wrong scores higher"
+    },
+    "word_len": {
+     "astar_pair": 0.628,
+     "adj_p": 0.103,
+     "direction": "right scores higher"
+    },
+    "char_ngram": {
+     "astar_pair": 0.78,
+     "adj_p": 0.0005,
+     "direction": "wrong scores higher"
+    }
+   },
+   "n_perm": 2000,
+   "seed": 20261026,
+   "stratum": "_all",
+   "source_headline": "worst held-out probe negation: A*_pair 0.675, adjusted p 0.0004998 over 8 probes",
+   "source_separating": [
+    "negation",
+    "hedge",
+    "char_ngram"
+   ]
+  },
+  "negation_cue": {
+   "pairs": 82,
+   "pairs_differing": 34,
+   "right_more_negated": 31,
+   "wrong_more_negated": 3,
+   "share_right_more_negated_of_differing": 0.912,
+   "sign_test_p_two_sided": 7.66e-07,
+   "cue_present": true
+  },
+  "negation_cue_source": {
+   "pairs": 100,
+   "pairs_differing": 49,
+   "right_more_negated": 42,
+   "wrong_more_negated": 7,
+   "share_right_more_negated_of_differing": 0.857,
+   "sign_test_p_two_sided": 3.62e-07,
+   "cue_present": true
+  }
+ },
+ "gates": {
+  "in_family_paired": false,
+  "in_family_unpaired": false,
+  "held_out_probes": false,
+  "negation_cue_absent": false
+ },
+ "tool": {
+  "nulltest_version": "1.4",
+  "paired_version": "0.1",
+  "nulltest_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+  "nulltest_paired_sha256": "2fbbebca77abd8b494272801fa3f957e1f910d7a10148a7c6ccc10116e4f37d3",
+  "certify_sha256": "4fb9a4417556492505b5e11b7747fe9626287a0a782c162afd434af3c958db15",
+  "heldout_sha256": "543f47d74d54dd5eb38383421dcead428b6b7dc55d4eb6e29d2884e154f5f981"
+ },
+ "caveat": "The kept pairs were selected against the in-family probes, so those gates are circular; the held-out probes and the negation sign test were never used to select. A pass means none of these probe families recovers right-vs-wrong on the kept pairs; it is not a claim that no surface reader can (no model-based reader is run), and the filter shifts category coverage (see by_category_*). Unsigned prototype: signing and `honest check` replay are Phase 5.",
+ "replay": "python3 benchmark/certified/certify.py pilot_rewritten.json --out DIR --n-perm 600 --no-filter --source pilot_original.json"
+}

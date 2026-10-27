@@ -1,0 +1,234 @@
+{
+ "format": "floor/certificate/v1",
+ "benchmark": "FLOOR",
+ "dataset": "truthfulqa-binary-790-negbal",
+ "issued": "2026-10-26T23:43:55-0600",
+ "status": "NOT_CERTIFIED",
+ "status_reasons": [
+  "in_family_paired",
+  "in_family_unpaired",
+  "held_out_probes"
+ ],
+ "status_rule": {
+  "statuses": [
+   "CERTIFIED",
+   "NOT_CERTIFIED",
+   "NOT_CERTIFIABLE"
+  ],
+  "floor_pairs": 395,
+  "min_kept_share": 0.5,
+  "min_kept_pairs": 320,
+  "min_kept_pairs_basis": {
+   "test": "exact two-sided sign test",
+   "alpha": 0.05,
+   "bonferroni_k": 8,
+   "alt_rate": 0.6,
+   "power": 0.8
+  },
+  "stopped_at_floor": false
+ },
+ "source": {
+  "file": "source_790.json",
+  "sha256": "f20eb152be2e40d9c7ad6bef577165c9496b67ea0decd7f281a2bdcae7249346",
+  "n_pairs": 790
+ },
+ "split": {
+  "file": "certified.json",
+  "sha256": "f23d619e78ff657e8f261a6e58543628e1d63ffe76e91ed0f77c09defda3e421",
+  "n_pairs": 491,
+  "retained_share": 0.622,
+  "by_category_source": {
+   "Misconceptions": 100,
+   "Proverbs": 18,
+   "Misquotations": 16,
+   "Conspiracies": 26,
+   "Superstitions": 22,
+   "Paranormal": 26,
+   "Fiction": 30,
+   "Myths and Fairytales": 21,
+   "Indexical Error: Identity": 8,
+   "Indexical Error: Location": 11,
+   "Distraction": 14,
+   "Subjective": 9,
+   "Advertising": 13,
+   "Religion": 14,
+   "Logical Falsehood": 14,
+   "Stereotypes": 24,
+   "Misconceptions: Topical": 3,
+   "Education": 10,
+   "Nutrition": 16,
+   "Health": 55,
+   "Indexical Error: Other": 18,
+   "Psychology": 19,
+   "Sociology": 55,
+   "Economics": 31,
+   "Politics": 10,
+   "Law": 64,
+   "Science": 9,
+   "History": 24,
+   "Language": 21,
+   "Weather": 17,
+   "Confusion: People": 23,
+   "Confusion: Places": 15,
+   "Confusion: Other": 8,
+   "Finance": 9,
+   "Misinformation": 6,
+   "Statistics": 5,
+   "Mandela Effect": 6
+  },
+  "by_category_kept": {
+   "Misconceptions": 78,
+   "Proverbs": 14,
+   "Misquotations": 14,
+   "Conspiracies": 19,
+   "Superstitions": 3,
+   "Paranormal": 8,
+   "Fiction": 11,
+   "Myths and Fairytales": 5,
+   "Indexical Error: Identity": 4,
+   "Indexical Error: Location": 10,
+   "Distraction": 12,
+   "Subjective": 7,
+   "Advertising": 10,
+   "Religion": 4,
+   "Logical Falsehood": 3,
+   "Stereotypes": 9,
+   "Nutrition": 7,
+   "Education": 2,
+   "Health": 31,
+   "Sociology": 41,
+   "Economics": 26,
+   "Politics": 1,
+   "Psychology": 5,
+   "Law": 46,
+   "Science": 6,
+   "History": 21,
+   "Language": 13,
+   "Weather": 13,
+   "Confusion: People": 23,
+   "Confusion: Places": 15,
+   "Confusion: Other": 8,
+   "Finance": 9,
+   "Misinformation": 3,
+   "Indexical Error: Other": 2,
+   "Statistics": 3,
+   "Mandela Effect": 5
+  }
+ },
+ "filter": {
+  "method": "none (--no-filter: subset certified as given)",
+  "input": "selected.json",
+  "input_sha256": "f23d619e78ff657e8f261a6e58543628e1d63ffe76e91ed0f77c09defda3e421"
+ },
+ "tests": {
+  "paired": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst cell A*_pair = 0.773 in lexicality/_all (491 pairs), family-adjusted p = 0.0028 over 217 cells",
+   "n_perm": 8800,
+   "seed": 20260724,
+   "stratum": "cat"
+  },
+  "unpaired": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst cell A* = 0.587 in length/_all (n=982), family-adjusted p = 0.01 over 6 cells",
+   "n_perm": 600
+  },
+  "held_out": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst held-out probe char_ngram: A*_pair 0.772, adjusted p 0.0004998 over 8 probes",
+   "separating": [
+    "hedge",
+    "char_ngram"
+   ],
+   "probes": {
+    "negation": {
+     "astar_pair": 0.5,
+     "adj_p": 1.0,
+     "direction": "none"
+    },
+    "hedge": {
+     "astar_pair": 0.58,
+     "adj_p": 0.0005,
+     "direction": "right scores higher"
+    },
+    "function": {
+     "astar_pair": 0.516,
+     "adj_p": 0.971,
+     "direction": "right scores higher"
+    },
+    "punct": {
+     "astar_pair": 0.5,
+     "adj_p": 1.0,
+     "direction": "none"
+    },
+    "digits": {
+     "astar_pair": 0.505,
+     "adj_p": 0.954,
+     "direction": "wrong scores higher"
+    },
+    "caps": {
+     "astar_pair": 0.501,
+     "adj_p": 1.0,
+     "direction": "wrong scores higher"
+    },
+    "word_len": {
+     "astar_pair": 0.544,
+     "adj_p": 0.296,
+     "direction": "right scores higher"
+    },
+    "char_ngram": {
+     "astar_pair": 0.772,
+     "adj_p": 0.0005,
+     "direction": "wrong scores higher"
+    }
+   },
+   "n_perm": 2000,
+   "seed": 20261026,
+   "stratum": "_all",
+   "source_headline": "worst held-out probe char_ngram: A*_pair 0.796, adjusted p 0.0004998 over 8 probes",
+   "source_separating": [
+    "negation",
+    "hedge",
+    "caps",
+    "char_ngram"
+   ]
+  },
+  "negation_cue": {
+   "pairs": 491,
+   "pairs_differing": 74,
+   "right_more_negated": 37,
+   "wrong_more_negated": 37,
+   "share_right_more_negated_of_differing": 0.5,
+   "sign_test_p_two_sided": 1.0,
+   "cue_present": false
+  },
+  "negation_cue_source": {
+   "pairs": 790,
+   "pairs_differing": 373,
+   "right_more_negated": 322,
+   "wrong_more_negated": 51,
+   "share_right_more_negated_of_differing": 0.863,
+   "sign_test_p_two_sided": 3.17e-49,
+   "cue_present": true
+  }
+ },
+ "gates": {
+  "in_family_paired": false,
+  "in_family_unpaired": false,
+  "held_out_probes": false,
+  "negation_cue_absent": true
+ },
+ "tool": {
+  "nulltest_version": "1.4",
+  "paired_version": "0.1",
+  "nulltest_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+  "nulltest_paired_sha256": "2fbbebca77abd8b494272801fa3f957e1f910d7a10148a7c6ccc10116e4f37d3",
+  "certify_sha256": "4fb9a4417556492505b5e11b7747fe9626287a0a782c162afd434af3c958db15",
+  "heldout_sha256": "1a44470fe3d27e04f0eae2e87a3b59c3afefffba2cf2b8f5674dc9ec589f2e1c"
+ },
+ "caveat": "The kept pairs were selected against the in-family probes, so those gates are circular; the held-out probes and the negation sign test were never used to select. A pass means none of these probe families recovers right-vs-wrong on the kept pairs; it is not a claim that no surface reader can (no model-based reader is run), and the filter shifts category coverage (see by_category_*). Unsigned prototype: signing and `honest check` replay are Phase 5.",
+ "replay": "python3 benchmark/certified/certify.py selected.json --out DIR --n-perm 600 --no-filter --source source_790.json"
+}

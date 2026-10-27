@@ -1,0 +1,586 @@
+{
+ "items": [
+  {
+   "entity": "Albert Einstein",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Andy Burnham",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Anne Hathaway",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Ansel Adams",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "E. E. Aiken",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "André Mattoni",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Audrey Hepburn",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Gladys Sylvani",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Britney Spears",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Patrick Brayer",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "David Ren",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Joan Barnett",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Charles III",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Charlie Chaplin",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Anthony Eustrel",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Clint Eastwood",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Nicole Rocklin",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Ernie Phypers",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Dolly Parton",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Isaac Colfe",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Dennis Arundell",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Fidel Castro",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Eliseo Diego",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Charles Erwin Booth",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Freddie Mercury",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Geena Davis",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Gene Hackman",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Janine Rainforth",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Jerry Warren",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "François Champoux",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Goldie Hawn",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Harrison Ford",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Henry VIII",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Georg Bachmann",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Hulk Hogan",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Jack Chertok",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Jane Fonda",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Lucile Fairbanks",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Jennifer Lopez",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "John Lennon",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "John Travolta",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Wanda Shelley",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Kate Hudson",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Keanu Reeves",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Allen Kearns",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Kylie Minogue",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Coral Gunning",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Ellabelle Davis",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Mahatma Gandhi",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Tubu Kevichüsa",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Constance Leetham",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Rachel Stephens",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Meryl Streep",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Michael Hutchence",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Michael Jordan",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Ullie Akerstrom",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Nicolas Cage",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Jill Perryman",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Amy Louisa Rye",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Zella Armstrong",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Cyril Maude",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Robin Williams",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "DB Burkeman",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Ronald Reagan",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Sacha Baron Cohen",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Sandra Bullock",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Jan Niklas",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Blye Pagon Faust",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Christopher Carosa",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Theodore Roosevelt",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Jimmy Blaine",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Tupac Shakur",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Josh Kornbluth",
+   "label": 1,
+   "category": "person"
+  },
+  {
+   "entity": "Val Kilmer",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Whitney Houston",
+   "label": 0,
+   "category": "person"
+  },
+  {
+   "entity": "Stuart Sherwin",
+   "label": 1,
+   "category": "person"
+  }
+ ],
+ "surface_match": {
+  "tool": "surface_match",
+  "version": "0.1",
+  "nulltest_version": "1.4",
+  "tool_sha256": "80b87c8d5cb6172b5c1241161f115b9a2268ae0c1e8f9c03e04b27be051c4676",
+  "nulltest_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+  "surface_baseline_sha256": "8b27ce5a760612348ba29a47ff4a7fe3ca0efa31f21122ba0f772dbfc2802e2d",
+  "generated": "2026-10-25",
+  "seed": 20260724,
+  "n_perm_requested": 600,
+  "text_key": "entity",
+  "label_key": "label",
+  "stratum_key": null,
+  "n_before": 168,
+  "n_kept": 76,
+  "kept_fraction": 0.452,
+  "kept_by_stratum": {
+   "_all": {
+    "n": 76,
+    "label1": 38
+   }
+  },
+  "rounds": 2,
+  "trace": [
+   {
+    "round": 1,
+    "n": 168,
+    "surface_auroc_oof": 0.705
+   },
+   {
+    "round": 2,
+    "n": 108,
+    "surface_auroc_oof": 0.689
+   },
+   {
+    "round": 3,
+    "n": 76,
+    "surface_auroc_oof": 0.626
+   }
+  ],
+  "before": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "n": 168,
+   "cells": 6,
+   "worst_cell": {
+    "astar": 0.661,
+    "adj_p": 0.01,
+    "raw_p": 0.0017,
+    "null": "alpha_last",
+    "stratum": "person",
+    "n": 168,
+    "threshold": 0.59,
+    "underpowered": false
+   },
+   "n_perm": 600,
+   "separating_cells": 1,
+   "baseline": {
+    "accuracy": 0.619,
+    "accuracy_ci95": [
+     0.5411,
+     0.6928
+    ],
+    "majority_accuracy": 0.5,
+    "balanced_accuracy": 0.619,
+    "auroc": 0.6321
+   }
+  },
+  "held_out": [
+   {
+    "learned_on_half": 1,
+    "applied_to_half": 2,
+    "rounds": 1,
+    "trace": [
+     {
+      "round": 1,
+      "n": 84,
+      "surface_auroc_oof": 0.731
+     },
+     {
+      "round": 2,
+      "n": 58,
+      "surface_auroc_oof": 0.661
+     }
+    ],
+    "n_half": 84,
+    "n_kept": 62,
+    "after": {
+     "verdict": "PASS",
+     "borderline": false,
+     "n": 62,
+     "cells": 6,
+     "worst_cell": {
+      "astar": 0.603,
+      "adj_p": 0.629,
+      "raw_p": 0.1547,
+      "null": "alpha_last",
+      "stratum": "person",
+      "n": 62,
+      "threshold": 0.646,
+      "underpowered": false
+     },
+     "n_perm": 600,
+     "separating_cells": 0,
+     "baseline": {
+      "accuracy": 0.371,
+      "accuracy_ci95": [
+       0.2516,
+       0.5031
+      ],
+      "majority_accuracy": 0.5,
+      "balanced_accuracy": 0.371,
+      "auroc": 0.36
+     }
+    }
+   },
+   {
+    "learned_on_half": 2,
+    "applied_to_half": 1,
+    "rounds": 2,
+    "trace": [
+     {
+      "round": 1,
+      "n": 84,
+      "surface_auroc_oof": 0.717
+     },
+     {
+      "round": 2,
+      "n": 52,
+      "surface_auroc_oof": 0.744
+     }
+    ],
+    "n_half": 84,
+    "n_kept": 60,
+    "after": {
+     "verdict": "PASS",
+     "borderline": false,
+     "n": 60,
+     "cells": 5,
+     "worst_cell": {
+      "astar": 0.642,
+      "adj_p": 0.2113,
+      "raw_p": 0.0466,
+      "null": "alpha_last",
+      "stratum": "person",
+      "n": 60,
+      "threshold": 0.637,
+      "underpowered": false
+     },
+     "n_perm": 600,
+     "separating_cells": 0,
+     "baseline": {
+      "accuracy": 0.4833,
+      "accuracy_ci95": [
+       0.3523,
+       0.6161
+      ],
+      "majority_accuracy": 0.5,
+      "balanced_accuracy": 0.4833,
+      "auroc": 0.4822
+     }
+    }
+   }
+  ],
+  "after_in_sample": {
+   "verdict": "PASS",
+   "borderline": false,
+   "n": 76,
+   "cells": 5,
+   "worst_cell": {
+    "astar": 0.616,
+    "adj_p": 0.371,
+    "raw_p": 0.0882,
+    "null": "length",
+    "stratum": "person",
+    "n": 76,
+    "threshold": 0.628,
+    "underpowered": false
+   },
+   "n_perm": 600,
+   "separating_cells": 0,
+   "baseline": {
+    "accuracy": 0.4737,
+    "accuracy_ci95": [
+     0.3579,
+     0.5916
+    ],
+    "majority_accuracy": 0.5,
+    "balanced_accuracy": 0.4737,
+    "auroc": 0.4017
+   }
+  },
+  "repaired": true,
+  "status": "repaired",
+  "reading": "REPAIRED: the rule learned on each half leaves the other half PASS, and the full matched set passes. Cite the matched set as surface-matched: it keeps the items whose classes look alike on the surface, and measures something narrower than the original.",
+  "input": {
+   "name": "aperture/prominence-people-v1",
+   "url": "https://www.honesty.tools/verifier/batteries/prominence-people-v1.json",
+   "sha256": "fd881034ccd02904dfae2296435ebc651ccce63b8d408333f018550ceb154322",
+   "items_total": 168
+  }
+ }
+}

@@ -17,11 +17,12 @@ FAILED=0
 
 command -v node >/dev/null || { echo "node not found — cannot run the browser engine headless"; exit 2; }
 
-BATTERIES="batteries/grounding-coordinate.json batteries/photon-entities.json"
+BATTERIES="batteries/grounding-coordinate.json batteries/photon-entities.json batteries/prominence-people-v1.json batteries/verifydomain-claims-147.json parity/astral.json parity/whitespace.json parity/cjk.json parity/oddcase.json parity/smallcells.json parity/nonstring.json parity/quoted-crlf.csv parity/midquote.csv"
+# parity/*: Unicode, whitespace, rounding-tie, non-string-value and CSV edge cases — see parity/README.md
 
 node nulltest_parity.js $BATTERIES > /tmp/nt_js.json || { echo "JS engine failed"; exit 1; }
 for b in $BATTERIES; do
-  python3 nulltest.py "$b" --json --n-perm 600 > "/tmp/nt_py_$(basename "$b")" 2>&1
+  python3 nulltest.py "$b" --json --n-perm 600 --explain > "/tmp/nt_py_$(basename "$b")" 2>&1
 done
 
 python3 - "$BATTERIES" <<'PY'
@@ -32,7 +33,7 @@ js = json.load(open('/tmp/nt_js.json'))
 def canon(o):
     # 1.0 (python float) and 1 (js int) are the same number; compare VALUES, not encodings
     if isinstance(o, bool): return o
-    if isinstance(o, (int, float)): return round(float(o), 3)
+    if isinstance(o, (int, float)): return round(float(o), 4)   # 4 dp: raw_p and adj_p are reported to 4
     if isinstance(o, dict): return {k: canon(v) for k, v in o.items()}
     if isinstance(o, list): return [canon(v) for v in o]
     return o
@@ -43,18 +44,24 @@ for b in sys.argv[1].split():
     name = os.path.basename(b)
     py = json.load(open('/tmp/nt_py_%s' % name))
     j = js[name]
+    # `explain` is the WHY section: the feature tables the page and the CLI show under a
+    # verdict. Compared too, so the browser never names a different artifact than the CLI.
     a = canon({"verdict": py["verdict"], "headline": py["headline"],
-               "worst_cell": py["worst_cell"], "nulls": py["nulls"]})
+               "worst_cell": py["worst_cell"], "nulls": py["nulls"], "explain": py.get("explain")})
     c = canon({"verdict": j["verdict"], "headline": j["headline"],
-               "worst_cell": j["worst_cell"], "nulls": j["nulls"]})
+               "worst_cell": j["worst_cell"], "nulls": j["nulls"], "explain": j.get("explain")})
     cells = sum(1 + len(v["per_stratum"]) for v in py["nulls"].values())
     total += cells
     same = json.dumps(a, sort_keys=True) == json.dumps(c, sort_keys=True)
     ok &= same
-    print("  %-34s %s  (%d cells: A*, threshold and separates each compared)"
+    print("  %-34s %s  (%d cells: A*, threshold, separates and WHY tables each compared)"
           % (name, "IDENTICAL" if same else "DIVERGES", cells))
     print("     %s | %s" % (py["verdict"], py["headline"]))
     if not same:
+        if a["explain"] != c["explain"]:
+            print("     DIFF in explain:")
+            print("       py", json.dumps(a["explain"], sort_keys=True, ensure_ascii=False)[:600])
+            print("       js", json.dumps(c["explain"], sort_keys=True, ensure_ascii=False)[:600])
         for nm in a["nulls"]:
             if a["nulls"][nm] != c["nulls"].get(nm):
                 print("     DIFF in null %r:" % nm)

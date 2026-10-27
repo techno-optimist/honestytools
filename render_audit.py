@@ -38,6 +38,15 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 RESULTS = os.path.join(HERE, "nulltest_audit_results.json")
 NOTES = os.path.join(HERE, "audit_notes.json")
+SUMMARY = os.path.join(HERE, "nulltest_dossier_summary.json")   # written by nulltest_dossier.py
+BASELINE = os.path.join(HERE, "surface_baseline_results.json")   # written by surface_baseline.py --audit
+MATCHED = [os.path.join(HERE, "matched", "surface_match_results.json"),   # written by surface_match.py --audit
+           os.path.join(HERE, "surface_match_results.json")]
+MATCH_LABEL = {"repaired": "REPAIRED by matching", "not_repaired": "not repairable by matching",
+               "too_small": "too small to verify after matching", "not_needed": "nothing to repair"}
+DOSSIER_URL = "https://github.com/techno-optimist/honestytools/blob/main/AUDIT_DOSSIER.md"
+THEAD = ("<thead><tr><th>benchmark</th><th>n</th><th>worst A*</th><th>adjusted p</th><th>verdict</th>"
+         "<th>what carries it</th><th>surface baseline</th><th>what the verdict can and cannot support</th></tr></thead>")
 PAGE = os.path.abspath(os.path.join(HERE, "..", "audit.html"))
 ALPHA = 0.05
 MARGIN_FACTOR = 3.0
@@ -65,8 +74,66 @@ def order_key(row):
     return (0 if ours else 1, 0 if dq else 1, w.get("adj_p") if w.get("adj_p") is not None else 9)
 
 
-def render_rows(rows, notes):
+def carries(r, summary):
+    """The 'what carries it' cell: the worst explain cell's reading, copied from the dossier's
+    summary file and linked to the row's dossier section. Shown only when the summary was rendered
+    from the same corpus bytes as this row (sha256 match), so a re-scored row cannot keep a stale
+    explanation; otherwise the cell says the dossier is behind."""
+    e = summary.get(r["name"])
+    verdict = r.get("verdict")
+    if r.get("status") != "scored":
+        return "—"
+    if not e or e.get("sha256") != r.get("sha256"):
+        return '<span class="nf-marg">dossier not yet rendered for this corpus version</span>' if e or summary else "—"
+    link = '<a href="%s#%s">dossier</a>' % (DOSSIER_URL, e["anchor"])
+    if verdict != "DISQUALIFIED":
+        return "no cell separates (%s)" % link
+    probes = ", ".join("<code>%s</code>" % html.escape(p) for p in e.get("probes", []))
+    phrase = html.escape(e.get("phrase", ""))
+    if len(phrase) > 170:
+        phrase = phrase[:167].rstrip() + "…"
+    return "%s<br>%s (%s)" % (probes, phrase, link)
+
+
+def baseline_cell(r, base):
+    """Held-out accuracy of the six probes together against the majority rate: the number a detector
+    scored on this benchmark has to beat before its score says anything. Shown only when the
+    baseline was computed on the same corpus bytes (sha256) as the row."""
+    b = base.get(r["name"])
+    if r.get("status") != "scored" or not base:
+        return "—"
+    if not b or b.get("status") != "scored" or b.get("sha256") != r.get("sha256"):
+        return '<span class="nf-marg">not yet computed for this corpus version</span>'
+    acc, lo, hi = b["accuracy"], b["accuracy_ci95"][0], b["accuracy_ci95"][1]
+    gain = acc - b["majority_accuracy"]
+    line = ('<b>%.1f%%</b> <span class="nf-ci">[%.1f, %.1f]</span> vs %.1f%% majority'
+            % (100 * acc, 100 * lo, 100 * hi, 100 * b["majority_accuracy"]))
+    if b.get("n_strata", 1) > 1 and abs(b.get("stratum_prior_accuracy", 0) - b["majority_accuracy"]) >= 0.01:
+        line += ", %.1f%% from the stratum rate alone" % (100 * b["stratum_prior_accuracy"])
+    if gain <= 0.01:
+        line += "<br>no gain from the surface"
+    else:
+        line += "<br>AUROC %.3f" % b["auroc"]
+    return line
+
+
+def match_line(r, matched):
+    """One line from the repair certificate: whether a surface-matched subset survives held-out
+    verification, and how much of the set it keeps. Sha-matched to the row like the other cells."""
+    m = matched.get(r["name"])
+    if not m or m.get("sha256") != r.get("sha256"):
+        return ""
+    txt = "%s: %d of %d kept" % (MATCH_LABEL.get(m["status"], m["status"]), m["n_kept"], m["n_before"])
+    if m["status"] == "not_repaired" and m.get("after_in_sample") == "PASS":
+        txt += ", passes in-sample but fails held-out"
+    return "<br><span class=\"nf-match\">%s</span>" % html.escape(txt)
+
+
+def render_rows(rows, notes, summary=None, base=None, matched=None):
     out = []
+    summary = summary or {}
+    base = base or {}
+    matched = matched or {}
     for r in sorted(rows, key=order_key):
         name = r["name"]
         w = r.get("worst_cell") or {}
@@ -83,22 +150,24 @@ def render_rows(rows, notes):
                     "not proof there is none" % r.get("n"))
         if marginal(verdict, adj):
             note += ('<br><span class="nf-marg"><b>MARGINAL</b> — adjusted p %.4g sits within 3&times; '
-                     'of alpha (%.2f). This verdict is close to its threshold and should not be read '
-                     'as firmly as rows far from it.</span>' % (adj, ALPHA))
+                     'of alpha (%.2f), a wider band than the tool\'s own BORDERLINE flag (2&times;). '
+                     'This verdict is close to its threshold and should not be read as firmly as rows '
+                     'far from it.</span>' % (adj, ALPHA))
         extra = notes.get(name)
         if extra:
             note += '<br><span class="nf-corr">%s</span>' % extra
 
         out.append(
             '<tr class="%s"><td><b>%s</b>%s</td><td class="num">%s</td><td class="num">%s</td>'
-            '<td class="num">%s%s</td><td class="%s">%s</td><td class="nf-note">%s</td></tr>'
+            '<td class="num">%s%s</td><td class="%s">%s</td><td class="nf-carry">%s</td>'
+            '<td class="nf-base">%s</td><td class="nf-note">%s</td></tr>'
             % ("nf-ours" if ours else "",
                html.escape(name),
                ' <span class="nf-tag">ours</span>' if ours else "",
                r.get("n", "—"),
                w.get("astar", "—"),
                ("%.4g" % adj) if adj is not None else "—", (" " + sat) if sat else "",
-               vcls, html.escape(verdict), note))
+               vcls, html.escape(verdict), carries(r, summary), baseline_cell(r, base) + match_line(r, matched), note))
     return out
 
 
@@ -116,15 +185,28 @@ def main(argv):
     names = {r["name"] for r in rows}
     orphan = [k for k in notes if not k.startswith("_") and k not in names]
 
-    body = "<tbody>" + "\n      ".join(render_rows(rows, notes)) + "</tbody>"
+    summary = {}
+    if os.path.exists(SUMMARY):
+        summary = {e["name"]: e for e in json.load(open(SUMMARY))["rows"]}
+    base = {}
+    if os.path.exists(BASELINE):
+        base = {e["name"]: e for e in json.load(open(BASELINE))["rows"]}
+    matched = {}
+    for mp in MATCHED:
+        if os.path.exists(mp):
+            matched = {e["name"]: e for e in json.load(open(mp))["rows"]}
+            break
+    body = "<tbody>" + "\n      ".join(render_rows(rows, notes, summary, base, matched)) + "</tbody>"
     page = open(PAGE, encoding="utf-8").read()
-    new = re.sub(r"<tbody>.*?</tbody>", lambda _: body, page, count=1, flags=re.S)
+    new = re.sub(r"<thead>.*?</thead>", lambda _: THEAD, page, count=1, flags=re.S)
+    new = re.sub(r"<tbody>.*?</tbody>", lambda _: body, new, count=1, flags=re.S)
     # The eyebrow must name the run it actually came from. Match the WHOLE eyebrow up to the
     # closing tag, not a literal "regenerated from" — the first render rewrote that phrase to
     # "generated from", after which the old anchored regex silently stopped matching and the row
     # count went stale (said 13 while the table had 14). Anchor on the stable prefix instead.
-    eyebrow = ("the null-floor audit &middot; nulltest 1.2 &middot; %d rows generated from "
-               "nulltest_audit_results.json by render_audit.py" % len(rows))
+    version = json.load(open(RESULTS)).get("version", "?")
+    eyebrow = ("the null-floor audit &middot; nulltest %s &middot; %d rows generated from "
+               "nulltest_audit_results.json by render_audit.py" % (version, len(rows)))
     new, n_sub = re.subn(r"the null-floor audit &middot; nulltest [^<]*", eyebrow, new, count=1)
     if n_sub != 1:
         raise SystemExit("render_audit: could not find the eyebrow to update its row count — "
@@ -156,6 +238,14 @@ def main(argv):
           % (PAGE, len(rows),
              sum(1 for r in rows if r["name"].startswith("aperture/")),
              sum(1 for r in rows if not r["name"].startswith("aperture/"))))
+    nobase = [r["name"] for r in rows if r.get("status") == "scored" and base
+              and (r["name"] not in base or base[r["name"]].get("sha256") != r.get("sha256"))]
+    if nobase:
+        print("  BASELINE BEHIND THE TABLE (re-run surface_baseline.py --audit): %s" % ", ".join(nobase))
+    behind = [r["name"] for r in rows if r.get("status") == "scored" and summary
+              and (r["name"] not in summary or summary[r["name"]].get("sha256") != r.get("sha256"))]
+    if behind:
+        print("  DOSSIER BEHIND THE TABLE (re-run nulltest_dossier.py): %s" % ", ".join(behind))
     flagged = [r["name"] for r in rows
                if marginal(r.get("verdict"), (r.get("worst_cell") or {}).get("adj_p"))]
     if flagged:

@@ -59,12 +59,16 @@ Honest status. We oversell nothing in either direction — no "six-tool suite wi
 and no eulogies for tools that have a documented way back.
 
 ### Shipped — in the contract, replayable, live
-- **`null`** — model-free surface floor. Proves whether a benchmark measures honesty or string
-  shape before any score on it is trusted. Apache-2.0, 5-gate CI, calibrated ~4.7% false-positive
-  rate over 500 seeds. 8 of 14 audited benchmarks fail it; 4 of them are ours; our worst two are at
-  the top of our own table.
-- **`gate`** — binds every published numeral to a registry id and fails closed. 0 unannotated
-  numerals across 9 live pages.
+- **`null`** — model-free surface floor. Measures whether a benchmark measures honesty or string
+  shape before any score on it is trusted. Apache-2.0, 8-job CI, calibrated 4.0% pooled
+  false-positive rate (v1.4: 10 constructions × 500 seeds, stratified null, worst row 4.8%).
+  19 of 24 audited benchmarks fail it; 5 of them are ours; three rows sit at A* 1.000 and two of
+  them are ours. *(figures updated in place 2026-10-24, three times, and 2026-10-25 for the deception rows; the rest of this section is as written.)*
+- **`gate`** — binds published numerals to a registry id. Unannotated figures are warnings by
+  default and failures only under `--strict`. *(Corrected 2026-10-27: this line said the gate
+  "fails closed" with "0 unannotated numerals across 9 live pages". The default run only warns,
+  and the open nested-figure parsing fix ([#2](https://github.com/techno-optimist/honestytools/pull/2))
+  finds unannotated figures the old parser missed, so the zero no longer holds.)*
 - **`verify`** — re-derives a signed verdict from one stdlib+crypto file with no call back to us.
   The independence primitive: trust the math, not the lab.
 - **`audit`** — scores a manifest of batteries and renders the one table; refuses to go green if any
@@ -182,7 +186,7 @@ Three compounding reasons a two-person lab can hold this:
 
 ## For advisors
 
-> You would be endorsing the only honesty toolkit whose first public act was to disqualify its
+> You would be endorsing an honesty toolkit whose first public act was to disqualify its
 > authors' own two flagship benchmarks, and whose every verdict you can re-derive yourself, offline,
 > with one standard-library file and no trust in us. Your name goes on a **frozen contract** — a
 > calibrated false-positive rate, a break-test that runs on every commit, and a hard wall that keeps
@@ -206,3 +210,62 @@ Two observations, either fatal. We hold ourselves to the rule we hold our tools 
 
 If either lands, we say so in the registry and change course. A mission statement that cannot be
 falsified is exactly the vacuous green this lab exists to refuse.
+
+---
+
+## Amendment, 2026-10-24 — what the evidence supports today
+
+The charter above is kept as written on 2026-07-27, except the figures in the `null` bullet of
+*Shipped*, which are updated in place and marked. Three months on, some of it describes work
+that has not happened, and this document holds itself to the same rule as the tools: say what is
+measured, not what is hoped.
+
+**Who has actually used it.** No one outside this project has run `null` on their own battery or
+re-derived a receipt. The adoption clause in *What would falsify this charter* starts its clock on
+the day a one-line install exists; that day has not come, because `honesttools` is not on PyPI
+yet. Until it is, the install is `git clone`, and the clock is not running.
+
+**Who it is for, in order of evidence.** The audit table is the only usage data we have, and every
+row in it is a *benchmark*, scored by its authors or by us. So the audience the tool has
+demonstrably served is benchmark and eval authors and the reviewers who check them. The 8B–35B
+model deployer listed first above has not appeared: a team shipping a model rarely builds its own
+real/fake battery, and `null` scores batteries, not models. That tier is a hope, not a user, and
+is listed last now. The advisor pitch above should be read with this paragraph next to it.
+
+**What the tool is.** The core idea is the hypothesis-only / partial-input baseline of the NLP
+artifact literature (Gururangan et al. 2018; Poliak et al. 2018; AFLite). The contribution is the
+discipline around it, not the idea: two-sided scoring, worst-cell reporting, refit-inside-permutation
+calibration, family-wise correction, a measured false-positive rate, bit-identical browser and CLI
+engines. Cite it as a packaging of a known test, done carefully.
+
+**What changed in v1.3.** Seven probes instead of four. The two alphabet-position probes were added
+because `prominence-people-v1` passed the four and was broken anyway; it is now caught. Widening
+the family cost one of our own detections: `grounding-coordinate` moved from DISQUALIFIED
+(adjusted p 0.030, 18 cells) to PASS (0.057, 35 cells) with its worst cell unchanged. The report
+now marks such results BORDERLINE instead of letting a binary verdict hide them. The table's
+"4 of 9 ours disqualified" is still true, but it is a different four.
+
+**The roadmap.** Phase 0 shipped. Phase 1 (PyPI, every selftest in CI) is partly done: CI runs
+the gates on every commit; the PyPI release has not been made. Phases 2–4 have not started. The
+`checkerboard`, `renew`, `observertest` and `abstaintest` tools described above exist as research
+notes and partial code elsewhere, not in this repository, and nothing here should be read as
+claiming they ship.
+
+**Later the same day.** The audit table has 17 rows: TruthfulQA's reference answers and both
+HaluEval sets were added and all three fail by answer alone, so the figure in *The toolbox today*
+("8 of 14 audited benchmarks fail it") is now 11 of 17, still 4 of them ours. The `gate`, `verify`
+and `audit` entries under *Shipped* describe `claim_gate.py`, `verify_widget.js` and
+`nulltest_audit.py`: real and in this repository, but only `null` is wrapped in the contract that
+section says they all share; `honest audit` runs the harness and `honest check` replays a receipt,
+and neither is a contract tool. CI runs eight jobs, not five. A GitHub Action now lets a benchmark
+author run the test on every commit of their own repository, which is the install path the
+adoption clause was waiting for; the clock starts when someone outside this project uses it.
+
+**Correction, the same evening (v1.4).** A statistics review of v1.3 found that its permutation
+null shuffled labels across strata, so a benchmark whose categories had different label rates
+false-fired 44% of the time on noise; that its seventh probe could never score; and that the
+family-wise correction was biased at the permutation floor. v1.4 fixes all three: the null is
+stratified, there are six probes, and the permutation count is raised to match the family. The
+grid now carries the constructions v1.3 was never tested on. Re-scored, 16 of 17 audit verdicts stand; our own `grounding-coordinate` goes from borderline PASS to borderline DISQUALIFIED, so the table read 12 of 17, 5 of them ours; with HaluEval summarization, HaluEval general and RAGTruth added the same evening it reads 15 of 20, and `AUDIT_DOSSIER.md` now says what carries the label in every row. The figures in *The toolbox today* were updated in place a second time; the certificate is
+`nulltest_grid.json`. This paragraph exists because the charter says claims match evidence, and
+for part of one day they did not.

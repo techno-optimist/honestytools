@@ -1,0 +1,436 @@
+{
+ "kept": {
+  "pooled": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.502,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.304,
+     "adj_p": 0.9,
+     "separates": false
+    },
+    "hedge": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "function": {
+     "astar": 0.508,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.057,
+     "adj_p": 0.303,
+     "separates": false
+    },
+    "punct": {
+     "astar": 0.591,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true
+    },
+    "digits": {
+     "astar": 0.502,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.597,
+     "adj_p": 0.995,
+     "separates": false
+    },
+    "caps": {
+     "astar": 0.541,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true
+    },
+    "word_len": {
+     "astar": 0.534,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.0985,
+     "adj_p": 0.466,
+     "separates": false
+    },
+    "char_ngram": {
+     "astar": 0.846,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true
+    }
+   },
+   "n_items": 1440,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "char_ngram",
+   "separating": [
+    "punct",
+    "caps",
+    "char_ngram"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst held-out probe char_ngram: A* 0.846, adjusted p 0.0004998 over 8 probes",
+   "strata": [
+    "athletes",
+    "cities",
+    "musicians",
+    "writers"
+   ],
+   "null": "labels permuted within stratum, char_ngram refit",
+   "negation_check": {
+    "items": 1440,
+    "mean_negation_label1": 0.0042,
+    "mean_negation_label0": 0.0008,
+    "items_with_negation": 2,
+    "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+    "p_two_sided": 0.304,
+    "cue_present": false
+   }
+  },
+  "within": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.502,
+     "raw_p": 0.304,
+     "adj_p": 0.919,
+     "separates": false,
+     "auroc_by_stratum": {
+      "athletes": 0.5,
+      "cities": 0.507,
+      "musicians": 0.5,
+      "writers": 0.5
+     }
+    },
+    "hedge": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "athletes": 0.5,
+      "cities": 0.5,
+      "musicians": 0.5,
+      "writers": 0.5
+     }
+    },
+    "function": {
+     "astar": 0.512,
+     "raw_p": 0.046,
+     "adj_p": 0.263,
+     "separates": false,
+     "auroc_by_stratum": {
+      "athletes": 0.51,
+      "cities": 0.527,
+      "musicians": 0.493,
+      "writers": 0.503
+     }
+    },
+    "punct": {
+     "astar": 0.596,
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true,
+     "auroc_by_stratum": {
+      "athletes": 0.435,
+      "cities": 0.321,
+      "musicians": 0.435,
+      "writers": 0.425
+     }
+    },
+    "digits": {
+     "astar": 0.502,
+     "raw_p": 0.832,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "athletes": 0.495,
+      "cities": 0.5,
+      "musicians": 0.5,
+      "writers": 0.497
+     }
+    },
+    "caps": {
+     "astar": 0.581,
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true,
+     "auroc_by_stratum": {
+      "athletes": 0.5,
+      "cities": 0.744,
+      "musicians": 0.474,
+      "writers": 0.446
+     }
+    },
+    "word_len": {
+     "astar": 0.533,
+     "raw_p": 0.444,
+     "adj_p": 0.974,
+     "separates": false,
+     "auroc_by_stratum": {
+      "athletes": 0.45,
+      "cities": 0.469,
+      "musicians": 0.473,
+      "writers": 0.475
+     }
+    },
+    "char_ngram": {
+     "astar": 0.854,
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true,
+     "auroc_by_stratum": {
+      "athletes": 0.846,
+      "cities": 0.92,
+      "musicians": 0.81,
+      "writers": 0.841
+     }
+    }
+   },
+   "n_items": 1440,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "char_ngram",
+   "separating": [
+    "punct",
+    "caps",
+    "char_ngram"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst within-stratum probe char_ngram: A* 0.854, adjusted p 0.0004998 over 8 probes",
+   "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+   "strata_scored": [
+    "athletes",
+    "cities",
+    "musicians",
+    "writers"
+   ],
+   "strata_skipped_one_class": [],
+   "null": "labels permuted within stratum (same draws as pooled), char_ngram refit"
+  }
+ },
+ "source": {
+  "pooled": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.502,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.304,
+     "adj_p": 0.9,
+     "separates": false
+    },
+    "hedge": {
+     "astar": 0.5,
+     "direction": "none",
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false
+    },
+    "function": {
+     "astar": 0.508,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.057,
+     "adj_p": 0.303,
+     "separates": false
+    },
+    "punct": {
+     "astar": 0.591,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true
+    },
+    "digits": {
+     "astar": 0.502,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.597,
+     "adj_p": 0.995,
+     "separates": false
+    },
+    "caps": {
+     "astar": 0.541,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true
+    },
+    "word_len": {
+     "astar": 0.534,
+     "direction": "label-0 scores higher",
+     "raw_p": 0.0985,
+     "adj_p": 0.466,
+     "separates": false
+    },
+    "char_ngram": {
+     "astar": 0.846,
+     "direction": "label-1 scores higher",
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true
+    }
+   },
+   "n_items": 1440,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "char_ngram",
+   "separating": [
+    "punct",
+    "caps",
+    "char_ngram"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst held-out probe char_ngram: A* 0.846, adjusted p 0.0004998 over 8 probes",
+   "strata": [
+    "athletes",
+    "cities",
+    "musicians",
+    "writers"
+   ],
+   "null": "labels permuted within stratum, char_ngram refit",
+   "negation_check": {
+    "items": 1440,
+    "mean_negation_label1": 0.0042,
+    "mean_negation_label0": 0.0008,
+    "items_with_negation": 2,
+    "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+    "p_two_sided": 0.304,
+    "cue_present": false
+   }
+  },
+  "within": {
+   "family": "held-out (never used by the filter)",
+   "backend": "heldout_np",
+   "probes": {
+    "negation": {
+     "astar": 0.502,
+     "raw_p": 0.304,
+     "adj_p": 0.919,
+     "separates": false,
+     "auroc_by_stratum": {
+      "athletes": 0.5,
+      "cities": 0.507,
+      "musicians": 0.5,
+      "writers": 0.5
+     }
+    },
+    "hedge": {
+     "astar": 0.5,
+     "raw_p": 1.0,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "athletes": 0.5,
+      "cities": 0.5,
+      "musicians": 0.5,
+      "writers": 0.5
+     }
+    },
+    "function": {
+     "astar": 0.512,
+     "raw_p": 0.046,
+     "adj_p": 0.263,
+     "separates": false,
+     "auroc_by_stratum": {
+      "athletes": 0.51,
+      "cities": 0.527,
+      "musicians": 0.493,
+      "writers": 0.503
+     }
+    },
+    "punct": {
+     "astar": 0.596,
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true,
+     "auroc_by_stratum": {
+      "athletes": 0.435,
+      "cities": 0.321,
+      "musicians": 0.435,
+      "writers": 0.425
+     }
+    },
+    "digits": {
+     "astar": 0.502,
+     "raw_p": 0.832,
+     "adj_p": 1.0,
+     "separates": false,
+     "auroc_by_stratum": {
+      "athletes": 0.495,
+      "cities": 0.5,
+      "musicians": 0.5,
+      "writers": 0.497
+     }
+    },
+    "caps": {
+     "astar": 0.581,
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true,
+     "auroc_by_stratum": {
+      "athletes": 0.5,
+      "cities": 0.744,
+      "musicians": 0.474,
+      "writers": 0.446
+     }
+    },
+    "word_len": {
+     "astar": 0.533,
+     "raw_p": 0.444,
+     "adj_p": 0.974,
+     "separates": false,
+     "auroc_by_stratum": {
+      "athletes": 0.45,
+      "cities": 0.469,
+      "musicians": 0.473,
+      "writers": 0.475
+     }
+    },
+    "char_ngram": {
+     "astar": 0.854,
+     "raw_p": 0.0005,
+     "adj_p": 0.0005,
+     "separates": true,
+     "auroc_by_stratum": {
+      "athletes": 0.846,
+      "cities": 0.92,
+      "musicians": 0.81,
+      "writers": 0.841
+     }
+    }
+   },
+   "n_items": 1440,
+   "n_perm": 2000,
+   "seed": 20261026,
+   "correction": "westfall_young_min_p over 8 probes",
+   "worst": "char_ngram",
+   "separating": [
+    "punct",
+    "caps",
+    "char_ngram"
+   ],
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst within-stratum probe char_ngram: A* 0.854, adjusted p 0.0004998 over 8 probes",
+   "statistic": "size-weighted mean over strata of max(AUROC_s, 1 - AUROC_s)",
+   "strata_scored": [
+    "athletes",
+    "cities",
+    "musicians",
+    "writers"
+   ],
+   "strata_skipped_one_class": [],
+   "null": "labels permuted within stratum (same draws as pooled), char_ngram refit"
+  }
+ }
+}

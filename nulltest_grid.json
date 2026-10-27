@@ -1,24 +1,24 @@
 {
  "tool": "nulltest",
- "version": "1.2",
+ "version": "1.4",
  "measures": "share of NO-SIGNAL batteries falsely returned DISQUALIFIED",
  "ceiling": 0.1,
  "state": "PASS",
  "seeds": 500,
- "n_perm": 200,
+ "n_perm": 600,
  "seed_base": 9000,
- "worst_observed_rate": 0.056,
+ "worst_observed_rate": 0.048,
  "grid": [
   {
    "construction": "planted-clean as shipped (alternating, 1 stratum)",
    "mode": "alt",
    "strata": 1,
-   "false_disqualified": 26,
+   "false_disqualified": 24,
    "seeds": 500,
-   "rate": 0.052,
+   "rate": 0.048,
    "ci95": [
-    0.03424569808276701,
-    0.07526637103062231
+    0.030993168793488332,
+    0.07058079625732966
    ],
    "reading": "below ceiling"
   },
@@ -26,12 +26,12 @@
    "construction": "coin-flip labels, 1 stratum",
    "mode": "coin",
    "strata": 1,
-   "false_disqualified": 19,
+   "false_disqualified": 22,
    "seeds": 500,
-   "rate": 0.038,
+   "rate": 0.044,
    "ci95": [
-    0.023030770806232365,
-    0.058707290463229006
+    0.027776767285550688,
+    0.06586100032359482
    ],
    "reading": "below ceiling"
   },
@@ -43,8 +43,8 @@
    "seeds": 500,
    "rate": 0.046,
    "ci95": [
-    0.029380175392394056,
-    0.06822542788123823
+    0.029380175392383925,
+    0.06822542788123817
    ],
    "reading": "below ceiling"
   },
@@ -52,12 +52,12 @@
    "construction": "coin-flip, 4 strata",
    "mode": "coin",
    "strata": 4,
-   "false_disqualified": 28,
+   "false_disqualified": 22,
    "seeds": 500,
-   "rate": 0.056,
+   "rate": 0.044,
    "ci95": [
-    0.0375304444750251,
-    0.07992130060435981
+    0.027776767285550688,
+    0.06586100032359482
    ],
    "reading": "below ceiling"
   },
@@ -65,20 +65,85 @@
    "construction": "coin-flip, 6 strata",
    "mode": "coin",
    "strata": 6,
+   "false_disqualified": 12,
+   "seeds": 500,
+   "rate": 0.024,
+   "ci95": [
+    0.01246123905954043,
+    0.041547618799685354
+   ],
+   "reading": "below ceiling"
+  },
+  {
+   "construction": "coin-flip, word-shaped text (all 6 probes live), 1 stratum",
+   "mode": "coinword",
+   "strata": 1,
+   "false_disqualified": 22,
+   "seeds": 500,
+   "rate": 0.044,
+   "ci95": [
+    0.027776767285550688,
+    0.06586100032359482
+   ],
+   "reading": "below ceiling"
+  },
+  {
+   "construction": "coin-flip, word-shaped text (all 6 probes live), 4 strata",
+   "mode": "coinword",
+   "strata": 4,
+   "false_disqualified": 19,
+   "seeds": 500,
+   "rate": 0.038,
+   "ci95": [
+    0.023030770806223844,
+    0.05870729046322849
+   ],
+   "reading": "below ceiling"
+  },
+  {
+   "construction": "coin-flip, word-shaped, 2 strata with 85/15 label rates",
+   "mode": "coinword_imb",
+   "strata": 2,
+   "false_disqualified": 15,
+   "seeds": 500,
+   "rate": 0.03,
+   "ci95": [
+    0.01688598420385172,
+    0.048998225708818094
+   ],
+   "reading": "below ceiling"
+  },
+  {
+   "construction": "coin-flip, word-shaped, 6 strata (36 cells)",
+   "mode": "coinword",
+   "strata": 6,
+   "false_disqualified": 22,
+   "seeds": 500,
+   "rate": 0.044,
+   "ci95": [
+    0.027776767285550688,
+    0.06586100032359482
+   ],
+   "reading": "below ceiling"
+  },
+  {
+   "construction": "coin-flip, word-shaped, 3 strata of 20 items",
+   "mode": "coinword_small",
+   "strata": 3,
    "false_disqualified": 20,
    "seeds": 500,
    "rate": 0.04,
    "ci95": [
-    0.024601312085531228,
-    0.06110260938824501
+    0.024601312085522256,
+    0.0611026093882447
    ],
    "reading": "below ceiling"
   }
  ],
  "provenance": {
-  "tool_sha256": "89ce656234712731979d322899a599fc46a1b5cc65ff90c59e883f5c08ea9f23",
-  "git_commit": "3eeedcd208c3adf7e41e4f4940c82dd0b2861bab",
-  "git_dirty": true,
+  "tool_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+  "git_commit": "77b95e31013587d65b27556a0082e5c11d9cd625",
+  "git_dirty": false,
   "pythonhashseed": null,
   "note": "This artifact is evidence about the code whose sha256 is recorded here. If tool_sha256 does not match the served nulltest.py, the certificate does not describe the served tool and must not be trusted."
  }

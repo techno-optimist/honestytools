@@ -1,0 +1,374 @@
+{
+ "tool": "nulltest",
+ "version": "1.4",
+ "probes": [
+  "lexicality",
+  "words",
+  "length",
+  "shape",
+  "alpha_first",
+  "alpha_last"
+ ],
+ "n": 296,
+ "n_fake": 148,
+ "n_real": 148,
+ "strata": [
+  "book",
+  "firm",
+  "painting",
+  "person",
+  "place"
+ ],
+ "min_cell": 12,
+ "n_perm": 1300,
+ "n_perm_requested": 600,
+ "alpha": 0.05,
+ "family_size": 30,
+ "correction": "westfall_young_min_p",
+ "null": "labels shuffled within stratum (stratified permutation), every probe refit",
+ "label_rate_by_stratum": {
+  "book": {
+   "n": 52,
+   "label1_rate": 0.5
+  },
+  "firm": {
+   "n": 64,
+   "label1_rate": 0.5
+  },
+  "painting": {
+   "n": 20,
+   "label1_rate": 0.5
+  },
+  "person": {
+   "n": 80,
+   "label1_rate": 0.5
+  },
+  "place": {
+   "n": 80,
+   "label1_rate": 0.5
+  }
+ },
+ "nulls": {
+  "lexicality": {
+   "per_stratum": {
+    "book": {
+     "n": 52,
+     "astar": 0.609,
+     "threshold": 0.697,
+     "raw_p": 0.299,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "firm": {
+     "n": 64,
+     "astar": 0.509,
+     "threshold": 0.678,
+     "raw_p": 0.9185,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "painting": {
+     "n": 20,
+     "astar": 0.57,
+     "threshold": 0.81,
+     "raw_p": 0.671,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "person": {
+     "n": 80,
+     "astar": 0.603,
+     "threshold": 0.661,
+     "raw_p": 0.2206,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "place": {
+     "n": 80,
+     "astar": 0.689,
+     "threshold": 0.656,
+     "raw_p": 0.0154,
+     "adj_p": 0.3582,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  },
+  "words": {
+   "per_stratum": {
+    "book": {
+     "n": 52,
+     "astar": 0.618,
+     "threshold": 0.7,
+     "raw_p": 0.2706,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "firm": {
+     "n": 64,
+     "astar": 0.563,
+     "threshold": 0.639,
+     "raw_p": 0.3636,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "painting": {
+     "n": 20,
+     "astar": 0.64,
+     "threshold": 0.795,
+     "raw_p": 0.3943,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "person": {
+     "n": 80,
+     "astar": 0.534,
+     "threshold": 0.604,
+     "raw_p": 0.5872,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "place": {
+     "n": 80,
+     "astar": 0.512,
+     "threshold": 0.561,
+     "raw_p": 0.8094,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  },
+  "length": {
+   "per_stratum": {
+    "book": {
+     "n": 52,
+     "astar": 0.532,
+     "threshold": 0.663,
+     "raw_p": 0.6949,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "firm": {
+     "n": 64,
+     "astar": 0.535,
+     "threshold": 0.644,
+     "raw_p": 0.6203,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "painting": {
+     "n": 20,
+     "astar": 0.54,
+     "threshold": 0.76,
+     "raw_p": 0.7855,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "person": {
+     "n": 80,
+     "astar": 0.503,
+     "threshold": 0.627,
+     "raw_p": 0.96,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "place": {
+     "n": 80,
+     "astar": 0.655,
+     "threshold": 0.626,
+     "raw_p": 0.0161,
+     "adj_p": 0.3674,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  },
+  "shape": {
+   "per_stratum": {
+    "book": {
+     "n": 52,
+     "astar": 0.553,
+     "threshold": 0.686,
+     "raw_p": 0.5688,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "firm": {
+     "n": 64,
+     "astar": 0.549,
+     "threshold": 0.665,
+     "raw_p": 0.5719,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "painting": {
+     "n": 20,
+     "astar": 0.57,
+     "threshold": 0.775,
+     "raw_p": 0.6295,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "person": {
+     "n": 80,
+     "astar": 0.594,
+     "threshold": 0.656,
+     "raw_p": 0.2022,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "place": {
+     "n": 80,
+     "astar": 0.575,
+     "threshold": 0.648,
+     "raw_p": 0.3244,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  },
+  "alpha_first": {
+   "per_stratum": {
+    "book": {
+     "n": 52,
+     "astar": 0.579,
+     "threshold": 0.663,
+     "raw_p": 0.3405,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "firm": {
+     "n": 64,
+     "astar": 0.554,
+     "threshold": 0.638,
+     "raw_p": 0.4681,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "painting": {
+     "n": 20,
+     "astar": 0.635,
+     "threshold": 0.755,
+     "raw_p": 0.3082,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "person": {
+     "n": 80,
+     "astar": 0.557,
+     "threshold": 0.628,
+     "raw_p": 0.4066,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "place": {
+     "n": 80,
+     "astar": 0.528,
+     "threshold": 0.627,
+     "raw_p": 0.6449,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  },
+  "alpha_last": {
+   "per_stratum": {
+    "book": {
+     "n": 52,
+     "astar": 0.517,
+     "threshold": 0.665,
+     "raw_p": 0.8317,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "firm": {
+     "n": 64,
+     "astar": 0.53,
+     "threshold": 0.637,
+     "raw_p": 0.7025,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "painting": {
+     "n": 20,
+     "astar": 0.59,
+     "threshold": 0.75,
+     "raw_p": 0.4973,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "person": {
+     "n": 80,
+     "astar": 0.5,
+     "threshold": 0.607,
+     "raw_p": 0.9539,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    },
+    "place": {
+     "n": 80,
+     "astar": 0.528,
+     "threshold": 0.627,
+     "raw_p": 0.691,
+     "adj_p": 1.0,
+     "separates": false,
+     "underpowered": false
+    }
+   }
+  }
+ },
+ "underpowered_cells": [],
+ "n_perm_note": "600 permutations requested; 30 cells need at least 1300 to resolve alpha=0.05 under min-p, so 1300 were run.",
+ "worst_cell": {
+  "astar": 0.689,
+  "adj_p": 0.3582,
+  "raw_p": 0.0154,
+  "null": "lexicality",
+  "stratum": "place",
+  "n": 80,
+  "threshold": 0.656,
+  "underpowered": false
+ },
+ "n_separating_cells": 0,
+ "verdict": "PASS",
+ "borderline": false,
+ "headline": "worst cell A* = 0.689 in lexicality/place (n=80), family-adjusted p = 0.3582 over 30 cells",
+ "p_floor": 0.000769,
+ "saturated": false,
+ "power": {
+  "n": 296,
+  "measured_mde": 0.6,
+  "mde_basis": "one planted spelling/length artifact (a character appended to a fraction of the label-1 items) in a single stratum, 4 seeds; a wider family, a smaller cell or an artifact of another shape lowers power below this",
+  "comparable_across_batteries": false,
+  "note_on_comparison": "A* depends on n. Do not rank this battery against one of a different size: cities.csv is DISQUALIFIED at n=1496 and PASSES 5 of 5 subsamples at n=354.",
+  "reading": "PASS at n=296. Measured: an artifact must cover about 60% of the label-1 half before this test catches it at this size. A PASS here does NOT exclude a weaker artifact."
+ },
+ "scope": "SCOPE: this measures how much of the label signal is recoverable from SURFACE FORM alone by six model-free probes, two-sided, refit inside every permutation (labels shuffled within stratum) and family-wise corrected across all cells (Westfall-Young min-p). A PASS does NOT certify the benchmark is good: it cannot see circularity (labels drawn from the same store the system under test retrieves from), contamination, or mislabelling. It scores no model."
+}

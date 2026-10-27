@@ -1,0 +1,35 @@
+{
+  "schema": "aperture.witness/v1",
+  "cell": "code_verified",
+  "answer_sha256": "2feec2f2b0b54e2e6d97c7b1ddd7d54e1ce5d050497a2a05a8da6c8030094152",
+  "emitted_at": "2026-07-24T21:56:26Z",
+  "emitted_with": {
+    "interpreter": "cpython-3.14.2",
+    "emitter_sandbox": "darwin-sandbox-exec"
+  },
+  "claim": {
+    "kind": "code_execution",
+    "asserted_values": [
+      {
+        "answer_span": [
+          42,
+          45
+        ],
+        "binds_to": "stdout_span",
+        "span": [
+          0,
+          3
+        ]
+      }
+    ]
+  },
+  "witness": {
+    "language": "python",
+    "interpreter": "cpython>=3.9,<4",
+    "code": "print(sum(i*i for i in range(1, 11)))",
+    "stdin": "",
+    "expected_stdout": "385\n",
+    "expected_exit": 0,
+    "timeout_s": 30
+  }
+}

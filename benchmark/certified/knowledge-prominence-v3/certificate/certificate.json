@@ -1,0 +1,227 @@
+{
+ "format": "floor/certificate/v1",
+ "mode": "unpaired",
+ "benchmark": "FLOOR",
+ "dataset": "aperture__knowledge-prominence-v3",
+ "issued": "2026-10-27T03:00:31-0600",
+ "status": "NOT_CERTIFIABLE",
+ "status_reasons": [
+  "filter_reached_floor_with_cues"
+ ],
+ "status_rule": {
+  "floor_items": 984,
+  "min_per_class": 320,
+  "min_kept_share": 0.5,
+  "min_per_class_basis": "certify.py's paired power floor (320) reused per class; conservative, no separate unpaired derivation",
+  "stopped_at_floor": true
+ },
+ "source": {
+  "file": "items.json",
+  "sha256": "f4d2a8eb0e82618f377925f126e1e4c8de76be31d75f7d05f45d401354e1b6b1",
+  "n_items": 1968,
+  "classes": {
+   "label1": 984,
+   "label0": 984
+  }
+ },
+ "split": {
+  "file": "certified.json",
+  "sha256": "bb02c7e5a38e283fbffbb5800c90bb1fb2a9028383a0ed44045205515d5c86e5",
+  "n_items": 1011,
+  "classes": {
+   "label1": 506,
+   "label0": 505
+  },
+  "retained_share": 0.514
+ },
+ "filter": {
+  "method": "item-level adversarial filtering (AFLite-style), class-proportional drops",
+  "probes": [
+   "lexicality",
+   "words",
+   "length",
+   "shape"
+  ],
+  "seeds": [
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "step": 0.05,
+  "screen_perm": 200,
+  "screen_seed": 7,
+  "screen_stop": 0.2,
+  "rounds": [
+   {
+    "in": 1968,
+    "screen_adj_p": 0.0184,
+    "dropped": 98
+   },
+   {
+    "in": 1870,
+    "screen_adj_p": 0.02,
+    "dropped": 94
+   },
+   {
+    "in": 1776,
+    "screen_adj_p": 0.0192,
+    "dropped": 89
+   },
+   {
+    "in": 1687,
+    "screen_adj_p": 0.02,
+    "dropped": 84
+   },
+   {
+    "in": 1603,
+    "screen_adj_p": 0.0184,
+    "dropped": 80
+   },
+   {
+    "in": 1523,
+    "screen_adj_p": 0.0192,
+    "dropped": 76
+   },
+   {
+    "in": 1447,
+    "screen_adj_p": 0.0177,
+    "dropped": 72
+   },
+   {
+    "in": 1375,
+    "screen_adj_p": 0.0184,
+    "dropped": 69
+   },
+   {
+    "in": 1306,
+    "screen_adj_p": 0.0192,
+    "dropped": 65
+   },
+   {
+    "in": 1241,
+    "screen_adj_p": 0.0177,
+    "dropped": 62
+   },
+   {
+    "in": 1179,
+    "screen_adj_p": 0.0175,
+    "dropped": 59
+   },
+   {
+    "in": 1120,
+    "screen_adj_p": 0.0138,
+    "dropped": 56
+   },
+   {
+    "in": 1064,
+    "screen_adj_p": 0.0154,
+    "dropped": 53
+   },
+   {
+    "in": 1011,
+    "screen_adj_p": 0.0108,
+    "stopped": "floor"
+   }
+  ]
+ },
+ "tests": {
+  "unpaired": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst cell A* = 0.751 in lexicality/person (n=929), family-adjusted p = 0.0092 over 29 cells",
+   "n_perm": 1200,
+   "seed": 20260724,
+   "stratum": "category"
+  },
+  "held_out": {
+   "verdict": "DISQUALIFIED",
+   "borderline": false,
+   "headline": "worst held-out probe char_ngram: A* 0.761, adjusted p 0.0004998 over 8 probes",
+   "separating": [
+    "word_len",
+    "char_ngram"
+   ],
+   "probes": {
+    "negation": {
+     "astar": 0.5,
+     "adj_p": 1.0,
+     "direction": "none"
+    },
+    "hedge": {
+     "astar": 0.502,
+     "adj_p": 0.961,
+     "direction": "label-1 scores higher"
+    },
+    "function": {
+     "astar": 0.503,
+     "adj_p": 0.934,
+     "direction": "label-0 scores higher"
+    },
+    "punct": {
+     "astar": 0.5,
+     "adj_p": 1.0,
+     "direction": "none"
+    },
+    "digits": {
+     "astar": 0.5,
+     "adj_p": 1.0,
+     "direction": "none"
+    },
+    "caps": {
+     "astar": 0.516,
+     "adj_p": 0.943,
+     "direction": "label-0 scores higher"
+    },
+    "word_len": {
+     "astar": 0.59,
+     "adj_p": 0.0005,
+     "direction": "label-0 scores higher"
+    },
+    "char_ngram": {
+     "astar": 0.761,
+     "adj_p": 0.0005,
+     "direction": "label-1 scores higher"
+    }
+   },
+   "n_perm": 2000,
+   "seed": 20261026,
+   "source_headline": "worst held-out probe char_ngram: A* 0.538, adjusted p 0.1094 over 8 probes",
+   "source_separating": []
+  },
+  "negation_cue": {
+   "items": 1011,
+   "mean_negation_label1": 0.0,
+   "mean_negation_label0": 0.0,
+   "items_with_negation": 0,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 1.0,
+   "cue_present": false
+  },
+  "negation_cue_source": {
+   "items": 1968,
+   "mean_negation_label1": 0.001,
+   "mean_negation_label0": 0.0,
+   "items_with_negation": 1,
+   "test": "two-sided permutation test (labels permuted within stratum) on the difference in mean negation-cue count",
+   "p_two_sided": 1.0,
+   "cue_present": false
+  }
+ },
+ "gates": {
+  "in_family_unpaired": false,
+  "held_out_probes": false,
+  "negation_cue_absent": true
+ },
+ "provenance": {
+  "nulltest_version": "1.4",
+  "nulltest_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+  "certify_sha256": "4fb9a4417556492505b5e11b7747fe9626287a0a782c162afd434af3c958db15",
+  "certify_unpaired_sha256": "75bf01a7b0c182a07c2d95ca7a5957e67aa7e5164cd36cb51b880a221efb014d",
+  "heldout_sha256": "543f47d74d54dd5eb38383421dcead428b6b7dc55d4eb6e29d2884e154f5f981",
+  "heldout_np_sha256": "c6b0a210a2d019c119d7854535211c2f89002c7a74fe588df99256c985e77550"
+ },
+ "caveat": "The kept items were selected against the in-family probes, so that gate is circular; the held-out probes and the negation test were never used to select. A pass means none of these probe families recovers the labels on the kept items; it is not a claim that no surface reader can (no model-based reader is run). Unsigned prototype.",
+ "replay": "python3 benchmark/certified/certify_unpaired.py items.json --out DIR --n-perm 600 --text-key entity --stratum-key category"
+}
