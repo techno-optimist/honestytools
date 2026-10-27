@@ -18,10 +18,10 @@ To update, copy the files from the site again and regenerate `SOURCE.sha256` in 
 **What a pass means:** the bytes were signed by a pinned key and have not changed since. That is provenance, not truth.
 
 **Not yet covered:**
-- the log is not published as signed tree heads;
-- there is no external co-signer.
+- the log has one signed checkpoint (the 22-leaf genesis, anchored in Sigstore Rekor; see below), not a regularly published series of signed tree heads, and later receipts are not in it;
+- that checkpoint is signed by us; there is no external witness co-signer.
 
-See CHARTER stage 4. The design is in progress: C2SP checkpoints, anchored to Sigstore Rekor v2 or C2SP witness cosignatures.
+See CHARTER stage 4: regular C2SP checkpoints and C2SP witness cosignatures are still to do.
 
 ## Signed checkpoints and the Rekor anchor
 `log/` holds the receipt log's genesis checkpoint (22 entries), signed by the receipt-log key
