@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Build knowledge-prominence-v3: well-known vs little-known real entities, matched on surface form.
 
-    python3 build_kp_v3.py fetch            # category members + REST pageviews -> candidates.json.gz (network)
+    python3 build_kp_v3.py fetch            # category members + pageviews -> candidates.json.gz (network)
     python3 build_kp_v3.py build            # candidates.json.gz -> battery.json + items.json (offline, deterministic)
 
 Both classes are REAL Wikipedia article subjects. label 0 = high en.wikipedia pageviews (a model
@@ -32,20 +32,18 @@ SEEDS = {
 # US place titles carry the state ("Austin, Texas"); that suffix is removed before any filter.
 STRIP_SUFFIX = {"Cities in Texas": ", Texas", "Cities in Ohio": ", Ohio",
                 "Towns in Massachusetts": ", Massachusetts"}
-PV_REST = ("https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia/all-access/user/"
-           "{title}/daily/{a}/{b}")
-WINDOW = ("2026-07-27", "2026-10-24")    # 90 days, fixed; ends before the build date
-MAX_PER_SEED = 1500
-WORKERS = 4
-HIGH = 100.0                    # label 0: mean daily user pageviews >= HIGH
-LOW = 5.0                       # label 1: mean daily user pageviews <= LOW
+PV_DAYS = 60                    # prop=pageviews returns the last 60 days; the fixed WINDOW below is used
+WINDOW = ("2026-08-28", "2026-10-25")    # 59 days, fixed; fetched 2026-10-27
+MAX_PER_SEED = 6000
+HIGH = 50.0                     # label 0: mean daily user pageviews >= HIGH
+LOW = 10.0                      # label 1: mean daily user pageviews <= LOW
 FORM = re.compile(r"^[A-Za-z]+( [A-Za-z]+){0,4}$")
 MIN_LEN, MAX_LEN = 4, 30
 FUNCTION = {"a", "an", "the", "of", "and", "or", "in", "on", "at", "to", "for", "from", "by", "with",
             "no", "not", "nor", "is", "are", "was", "be", "as", "into", "over", "under", "my", "your",
             "his", "her", "its", "our", "their", "this", "that", "who", "what", "where", "when"}
 SEED = 20261027
-MAX_PAIRS_PER_DOMAIN = 110
+MAX_PAIRS_PER_DOMAIN = 10000   # effectively uncapped: persons dominate (see README)
 
 
 def api(params, tries=10):
@@ -76,24 +74,19 @@ def list_members(cat):
         cont = d["continue"]
 
 
-def pageviews(title, first, last, tries=10):
-    url = PV_REST.format(title=urllib.parse.quote(title.replace(" ", "_"), safe=""),
-                         a=first.replace("-", ""), b=last.replace("-", ""))
-    for k in range(tries):
-        try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r:
-                d = json.load(r)
-            return {"%s-%s-%s" % (i["timestamp"][:4], i["timestamp"][4:6], i["timestamp"][6:8]): i["views"]
-                    for i in d.get("items", [])}
-        except urllib.error.HTTPError as e:
-            if e.code == 404:
-                return {}                      # no recorded user views in the window
-            print("retry %s HTTP %s" % (title, e.code), file=sys.stderr)
-            time.sleep(min(60, 3 * 2 ** k))
-        except Exception as e:  # noqa: BLE001
-            print("retry %s %r" % (title, e), file=sys.stderr)
-            time.sleep(min(60, 3 * 2 ** k))
-    raise RuntimeError("pageviews failed: " + title)
+def pageviews_batch(titles):
+    """MediaWiki prop=pageviews (per-article daily user views, as served by the Wikimedia
+    pageviews service) for up to 50 titles; follows pvipcontinue until every title is covered."""
+    got, cont = {}, {}
+    while True:
+        d = api(dict({"action": "query", "titles": "|".join(titles), "prop": "pageviews",
+                      "pvipdays": str(PV_DAYS)}, **cont))
+        for p in d["query"]["pages"]:
+            if "pageviews" in p:
+                got[p["title"]] = p["pageviews"]
+        if "continue" not in d:
+            return got
+        cont = d["continue"]
 
 
 def eligible(seed, title):
@@ -106,7 +99,6 @@ def eligible(seed, title):
 
 
 def fetch(out, window):
-    from concurrent.futures import ThreadPoolExecutor
     rng = random.Random(SEED)
     jobs, counts = [], {}
     for dom, cats in SEEDS.items():
@@ -117,25 +109,15 @@ def fetch(out, window):
             counts[cat] = {"members": len(mem), "form_eligible": len(ok), "sampled": len(take)}
             print("%-8s %-50s %s" % (dom, cat, counts[cat]), file=sys.stderr)
             jobs += [(dom, cat, t) for t in take]
-    cache_path = out + ".cache.jsonl"             # resumable: one line per fetched title
-    cache = {}
-    if os.path.exists(cache_path):
-        for line in open(cache_path):
-            r = json.loads(line); cache[r["t"]] = r["pv"]
-    todo = sorted({t for _, _, t in jobs} - set(cache))
-    import threading
-    lock = threading.Lock()
-    with open(cache_path, "a") as cf:
-        def one(t):
-            pv = pageviews(t, window[0], window[-1])
-            with lock:
-                cf.write(json.dumps({"t": t, "pv": pv}) + "\n"); cf.flush(); cache[t] = pv
-        with ThreadPoolExecutor(WORKERS) as ex:
-            list(ex.map(one, todo))
-    pvs = [cache[t] for _, _, t in jobs]
-    rows = [{"domain": d, "seed": c, "title": t, "pv": pv} for (d, c, t), pv in zip(jobs, pvs)]
+    titles = sorted({t for _, _, t in jobs})
+    pv = {}
+    for i in range(0, len(titles), 50):
+        pv.update(pageviews_batch(titles[i:i + 50]))
+        if i % 1000 == 0:
+            print("pageviews %d/%d" % (i, len(titles)), file=sys.stderr)
+    rows = [{"domain": d, "seed": c, "title": t, "pv": pv.get(t, {})} for d, c, t in jobs]
     meta = {"retrieved": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "members_api": API + " list=categorymembers cmnamespace=0 cmtype=page",
-            "pageviews_api": PV_REST, "window": [window[0], window[-1]], "per_seed": counts,
+            "pageviews_api": API + " prop=pageviews pvipdays=%d (daily user views, all access)" % PV_DAYS, "window": [window[0], window[-1]], "per_seed": counts,
             "sampling": "form-eligible titles per seed category; seeded random sample of at most %d (random.Random(%d), seeds in SEEDS order)" % (MAX_PER_SEED, SEED)}
     with gzip.open(out, "wt") as f:
         json.dump({"meta": meta, "rows": rows}, f)
@@ -159,13 +141,15 @@ def form_key(name):
 def build(cand, out, window):
     C = json.load(gzip.open(cand, "rt"))
     rng = random.Random(SEED)
-    items, excluded = [], {"form": 0, "middle": 0, "dupe_name": 0}
+    items, excluded = [], {"form": 0, "window": 0, "middle": 0, "dupe_name": 0}
     seen = {}
     for r in C["rows"]:
         ok, name = eligible(r["seed"], r["title"])
         if not ok:
             excluded["form"] += 1; continue
-        views = sum((r["pv"].get(d) or 0) for d in window) / len(window)
+        if not all(d in r["pv"] for d in window):
+            excluded["window"] += 1; continue
+        views = sum((r["pv"][d] or 0) for d in window) / len(window)
         if LOW < views < HIGH:
             excluded["middle"] += 1; continue
         seen.setdefault(name, []).append(len(items))
@@ -211,7 +195,7 @@ def build(cand, out, window):
             "seed_categories": SEEDS, "membership": "direct article members only (namespace 0, gcmtype=page); no subcategory traversal",
             "title_transform": {"strip_suffix": STRIP_SUFFIX},
             "pageview_window": {"first": window[0], "last": window[-1], "days": len(window),
-                                "statistic": "mean daily views (REST per-article, all-access, agent=user) over every day of the window; a day absent from the response counts as 0; a 404 (no views recorded) counts as 0 throughout"},
+                                "statistic": "mean daily user views over every day of the window (MediaWiki prop=pageviews); a null day counts as 0; a title whose response lacks any window date is excluded"},
             "thresholds": {"HIGH_label0_min_mean_daily": HIGH, "LOW_label1_max_mean_daily": LOW, "between_excluded": True},
             "form_filter": {"regex": FORM.pattern, "min_len": MIN_LEN, "max_len": MAX_LEN, "excluded": "titles starting 'List of'; names appearing under two seed categories"},
             "pairing": {"within": "same seed category", "exact": ["word count", "per-word capitalisation shape (A=Initial, a=lower, U=ALLCAPS, M=mixed)",
