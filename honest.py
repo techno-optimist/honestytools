@@ -5,7 +5,8 @@
 
     honest list                     what is in the box, and at which tier
     honest null <battery> [flags]   run the model-free surface floor; same flags as nulltest.py
-    honest paired <battery> --pair-key F [flags]   paired surface floor (within-pair sign flip)
+    honest paired <battery> --pair-key F [flags]   paired surface floor (within-pair sign flip;
+                                    EXPERIMENTAL tier: verdict stamped, never stable-green)
                                     (--text-key --label-key --stratum-key --explode --split
                                      --positive-label --n-perm --jobs --explain)
     honest check <receipt> <file>   replay a published verdict against the bytes in front of you
@@ -112,21 +113,128 @@ class NullTool(Tool):
         if not os.path.exists(p):
             return None
         try:
-            d = json.load(open(p))
+            with open(p) as fh:
+                d = json.load(fh)
         except Exception:
             return None
         stamped = (d.get("provenance") or {}).get("tool_sha256") or d.get("tool_sha256")
-        actual = hashlib.sha256(open(os.path.join(HERE, "nulltest.py"), "rb").read()).hexdigest()
+        with open(os.path.join(HERE, "nulltest.py"), "rb") as fh:
+            actual = hashlib.sha256(fh.read()).hexdigest()
         if stamped != actual:
             return None      # the certificate is not about this code; refuse to quote it
+        rows = [r for r in (d.get("grid") or []) if isinstance(r, dict)]
+        worst = max(rows, key=lambda r: (r.get("rate") or 0), default=None)
+        his = [r["ci95"][1] for r in rows if isinstance(r.get("ci95"), list) and len(r["ci95"]) == 2]
         return {"worst_rate": d.get("worst_observed_rate") or d.get("worst_rate"),
+                # contract: "a number with no interval is not an answer" -- the grid's own 95%
+                # interval for the worst row, and the highest upper bound over every row
+                "worst_row": (worst or {}).get("construction"),
+                "worst_ci95": (worst or {}).get("ci95"),
+                "max_ci95_upper": max(his) if his else None,
                 "ceiling": d.get("ceiling"), "seeds": d.get("seeds"), "state": d.get("state"),
+                "grid": [{"construction": r.get("construction"), "false_disqualified": r.get("false_disqualified"),
+                          "seeds": r.get("seeds"), "rate": r.get("rate"), "ci95": r.get("ci95")} for r in rows],
                 "source": "nulltest_grid.json (provenance matches this tool)"}
 
     def replay(self, receipt) -> Verdict:
         """null needs no signed receipt: the battery IS the receipt. Re-running run() on the same
         bytes reproduces the verdict, offline, with stdlib — which is what replay means here."""
         return self.run(receipt)
+
+
+# ── paired: the within-pair sign-flip floor, registered experimental ────────────────────────
+class PairedTool(Tool):
+    name = "paired"
+    summary = ("paired surface floor — inside a matched pair, can wording tell the labels apart? "
+               "(EXPERIMENTAL — no calibrated FPR for this code yet)")
+
+    def _np(self):
+        _load("nulltest", "nulltest.py")
+        return _load("nulltest_paired", "nulltest_paired.py")
+
+    def run(self, battery_path, pair_key, n_perm=600, text_key=None, label_key=None,
+            stratum_key=None, explode=None, split=None, positive_label=None, jobs=1,
+            alpha=0.05) -> Verdict:
+        import hashlib
+        P = self._np(); nt = P.N
+        # same reader and flags as `python3 nulltest_paired.py` (and nulltest.py)
+        raw = nt.read_items(battery_path)
+        mapping = None
+        if explode:
+            mapping = nt.parse_explode(explode)
+            raw = nt.explode_items(raw, mapping, split=split)
+            text_key, label_key = "text", "label"
+        tk, lk, sk = nt.sniff_keys(raw, text_key, label_key, stratum_key)
+        if tk is None or lk is None:
+            raise SystemExit("could not find a text and a label field in %s; name them with "
+                             "--text-key and --label-key" % battery_path)
+        items = nt.load(battery_path, tk, lk, positive_label, explode=mapping, split=split)
+        if not any(pair_key in it for it in items):
+            raise SystemExit("no item carries the pair field %r (under --explode, use --pair-key _row)"
+                             % pair_key)
+        tkeys = tk.split(",") if "," in tk else tk
+        rep = P.evaluate_paired(items, tkeys, lk, pair_key, sk, n_perm=n_perm, alpha=alpha, jobs=jobs)
+        with open(battery_path, "rb") as fh:
+            battery_sha = hashlib.sha256(fh.read()).hexdigest()
+        with open(os.path.join(HERE, "nulltest_paired.py"), "rb") as fh:
+            paired_sha = hashlib.sha256(fh.read()).hexdigest()
+        evidence = {"worst_cell": rep.get("worst_cell"), "n_pairs": rep.get("n_pairs"),
+                    "pairs_dropped_not_1v1": rep.get("pairs_dropped_not_1v1"),
+                    "family_size": rep.get("family_size"), "n_perm": rep.get("n_perm", n_perm),
+                    "alpha": alpha, "borderline": bool(rep.get("borderline")),
+                    "battery": os.path.basename(battery_path), "battery_sha256": battery_sha,
+                    "tool_sha256": nt._tool_sha256(), "paired_tool_sha256": paired_sha,
+                    "nulltest_version": nt.VERSION, "paired_version": P.PAIRED_VERSION,
+                    "keys": {"text": tk, "label": lk, "stratum": sk, "pair": pair_key},
+                    "explode": ({"fields": dict(mapping), "split": split} if mapping else None),
+                    "report": rep}
+        return Verdict(tool=self.name, tier=EXPERIMENTAL, verdict=rep["verdict"],
+                       headline=rep.get("headline", ""), evidence=evidence,
+                       fpr=self.false_positive_rate(), replayable=True)
+
+    @staticmethod
+    def _pairs(n, seed, leak):
+        import random
+        r = random.Random(seed)
+        w = lambda k=6: "".join(r.choice("abcdefghijklmnopqrstuvwxyz") for _ in range(k))
+        out = []
+        for i in range(n):
+            t = w()
+            a, b = "%s %s %s" % (t, w(), w()), "%s %s %s" % (t, w(), w())
+            if leak:
+                b += " " + w(9)
+            out += [{"text": a, "label": 0, "q": i}, {"text": b, "label": 1, "q": i}]
+        return out
+
+    def selftest(self) -> bool:
+        """paired's break-test: pairs whose label-1 member is always longer must be DISQUALIFIED;
+        pairs that only share a topic word (no within-pair cue) must not be."""
+        P = self._np()
+        must_fire = P.evaluate_paired(self._pairs(60, 2, True), "text", "label", "q", n_perm=200)["verdict"]
+        clean = P.evaluate_paired(self._pairs(80, 1, False), "text", "label", "q", n_perm=200)["verdict"]
+        ok = (must_fire == "DISQUALIFIED" and clean != "DISQUALIFIED")
+        print("  paired.selftest: planted within-pair length cue -> %s (want DISQUALIFIED), "
+              "shared-topic pairs -> %s (want not-DISQUALIFIED): %s"
+              % (must_fire, clean, "PASS" if ok else "FAIL"))
+        return ok
+
+    def false_positive_rate(self) -> dict | None:
+        """Not yet measured for THIS code. The 5/100 label-scrambled calibration in the benchmark
+        branch ran on an earlier build (paired code inside nulltest.py), so it is not quoted here."""
+        return None
+
+    def replay(self, receipt) -> Verdict:
+        """Re-run on the same bytes with the keys the receipt recorded. `receipt` is a dict with
+        `battery_path` and the verdict's `evidence` (keys, explode, n_perm, alpha)."""
+        ev = receipt.get("evidence") or {}
+        keys = ev.get("keys") or {}
+        ex = ev.get("explode") or None
+        explode = ",".join("%s=%s" % kv for kv in ex["fields"].items()) if ex else None
+        return self.run(receipt["battery_path"], keys.get("pair"), n_perm=ev.get("n_perm", 600),
+                        text_key=None if ex else keys.get("text"),
+                        label_key=None if ex else keys.get("label"),
+                        stratum_key=keys.get("stratum"), explode=explode,
+                        split=(ex or {}).get("split"), alpha=ev.get("alpha", 0.05))
 
 
 # ── observertest: registered experimental ON PURPOSE, to exercise the wall ─────────────────
@@ -156,6 +264,7 @@ class ObservertestStub(Tool):
 
 
 contract.register(NullTool(), STABLE)
+contract.register(PairedTool(), EXPERIMENTAL)
 contract.register(ObservertestStub(), EXPERIMENTAL)
 
 
@@ -193,6 +302,10 @@ def _cmd_fpr(name):
         # calibrated grid is not installed beside the tool (a pip wheel does not bundle it yet),
         # point to the published measurement and to how a stranger reproduces it, rather than
         # printing a number that might not describe this build.
+        if name != "null":
+            print("  %s: no calibrated false-positive rate has been measured for this code, so none is" % name)
+            print("  quoted. (contract: None means not yet measured.)")
+            return 1
         print("  %s: no calibrated grid is installed beside this build, so there is no rate this" % name)
         print("  tool can verify against the code you are running — and it will not quote one it")
         print("  cannot verify. The calibrated false-positive rate for the published version is at")
@@ -229,8 +342,25 @@ def main(argv=None):
             return 2
         return _load("nulltest", "nulltest.py").check_receipt(argv[2], argv[3])
     if cmd == "paired":
-        # paired surface floor: within-pair sign-flip null (nulltest_paired.py)
-        return _load("nulltest_paired", "nulltest_paired.py").main(["nulltest_paired"] + argv[2:]) or 0
+        # paired surface floor (nulltest_paired.py), dispatched THROUGH THE CONTRACT so the verdict
+        # carries the experimental stamp. The bare `python3 nulltest_paired.py` stays as it was.
+        import argparse
+        ap = argparse.ArgumentParser(prog="honest paired")
+        ap.add_argument("battery")
+        ap.add_argument("--pair-key", required=True)
+        for k in ("--text-key", "--label-key", "--stratum-key", "--explode", "--split", "--positive-label"):
+            ap.add_argument(k, default=None)
+        ap.add_argument("--n-perm", type=int, default=600)
+        ap.add_argument("--jobs", type=int, default=1)
+        ap.add_argument("--alpha", type=float, default=0.05)
+        a = ap.parse_args(argv[2:])
+        v = contract.run("paired", a.battery, a.pair_key, n_perm=a.n_perm, text_key=a.text_key,
+                         label_key=a.label_key, stratum_key=a.stratum_key, explode=a.explode,
+                         split=a.split, positive_label=a.positive_label, jobs=a.jobs, alpha=a.alpha)
+        print(v.to_json())
+        # experimental: never green. A disqualification is still a real "no" (exit 0, as for
+        # `honest null`); any other raw verdict exits 1.
+        return 0 if v.evidence.get("raw_verdict") == "DISQUALIFIED" else 1
     if cmd == "match":
         # repair: keep a surface-matched subset, verified on held-out halves (surface_match.py)
         return _load("surface_match", "surface_match.py").main(["surface_match"] + argv[2:]) or 0
