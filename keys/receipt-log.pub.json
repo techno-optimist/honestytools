@@ -1,0 +1,13 @@
+{
+  "name": "www.honesty.tools/receipts",
+  "alg": "ed25519",
+  "pub_raw_b64": "QX8nadAqf3QFrnY2MrSOqAhhrKhxFAYBiwrs9R0Pv4I=",
+  "spki_b64": "MCowBQYDK2VwAyEAQX8nadAqf3QFrnY2MrSOqAhhrKhxFAYBiwrs9R0Pv4I=",
+  "fingerprint_sha256_raw": "d1f9d9386e4173ba6e5e80ad3bb624cf18ee389fe9ba8ed6669be195f4a76342",
+  "fingerprint_sha256_spki": "8b21a4d9bb2b654cd9b288e16c8b3e1f8688041ebcd2355803b4b1887fa11e8c",
+  "note_key_id": "fcd79bdd",
+  "vkey": "www.honesty.tools/receipts+fcd79bdd+AUF/J2nQKn90Ba52NjK0jqgIYayocRQGAYsK7PUdD7+C",
+  "holder": "Kevin Russell, Lead Researcher, Honesty.tools",
+  "custody": "generated on and kept only on the holder's DGX; private key never copied off it",
+  "created_utc": "2026-10-27T05:54:21Z"
+}

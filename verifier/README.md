@@ -1,7 +1,7 @@
 # verifier/: offline verifier for honesty.tools signed receipts (mirror)
 
 These files are byte-identical copies of the verifier published at https://www.honesty.tools/verifier/.
-The source is the honesty.tools site repo, commit 2813cec, `Aperture/web/static/verifier/` (plus its `demo_witnesses/`, which the witness selftest reads). They are
+The source is the honesty.tools site repo, commit f1f2b50 (merged as d7bd360), `Aperture/web/static/verifier/` (plus its `demo_witnesses/`, which the witness selftest reads, and `log/`, the signed genesis checkpoint and its Rekor entry). They are
 mirrored here so the `verify` step that CHARTER.md promises ships with the public tools.
 `SOURCE.sha256` pins the bytes, and `tests/test_verifier.py` fails if a copy drifts from it.
 To update, copy the files from the site again and regenerate `SOURCE.sha256` in the same commit.
@@ -22,3 +22,13 @@ To update, copy the files from the site again and regenerate `SOURCE.sha256` in 
 - there is no external co-signer.
 
 See CHARTER stage 4. The design is in progress: C2SP checkpoints, anchored to Sigstore Rekor v2 or C2SP witness cosignatures.
+
+## Signed checkpoints and the Rekor anchor
+`log/` holds the receipt log's genesis checkpoint (22 entries), signed by the receipt-log key
+held by Kevin Russell (key and fingerprint: [`../keys/`](../keys/)), and its Sigstore Rekor v2 entry
+(`log2025-1`, index 171316570). See [`../ANCHORING.md`](../ANCHORING.md).
+
+    python3 transparency_log.py verify-checkpoint log/checkpoint log/leaves.jsonl
+    python3 transparency_log.py verify-anchor log/checkpoint log/rekor-entry-0.json
+
+`verify-anchor` re-checks the Ed25519ph entry signature only if `pycryptodome` is installed, and says so if it isn't; the inclusion proof and Rekor's checkpoint signature need only `cryptography`.

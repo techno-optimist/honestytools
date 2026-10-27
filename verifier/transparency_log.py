@@ -25,6 +25,9 @@ CLI:
     python3 transparency_log.py check receipt.json          # verify a receipt IS in the current log
     python3 transparency_log.py session-root r1.json r2.json ...          # the head of an ordered session trail
     python3 transparency_log.py verify-session <root> r1.json r2.json ... # verify a whole agent-run trail
+    python3 transparency_log.py verify-checkpoint log/checkpoint [log/leaves.jsonl]  # C2SP checkpoint under the pinned log key
+    python3 transparency_log.py verify-anchor log/checkpoint log/rekor-entry-0.json  # that checkpoint is logged in Sigstore Rekor v2
+    python3 transparency_log.py keys                        # the pinned receipt-log key and who holds it
     python3 transparency_log.py selftest                    # RFC6962 inclusion + consistency + session + tamper
 
 SESSION TRAILS (the C9 "flight recorder"): a session is an ordered list of Aperture receipts from one agent
@@ -195,6 +198,142 @@ class TransparencyLog:
                 "audit_path": [p.hex() for p in proof]}
 
 
+# ── C2SP signed checkpoints + the pinned receipt-log key + Rekor v2 anchors (ANCHORING.md) ───────────
+# A checkpoint is a C2SP signed note (c2sp.org/tlog-checkpoint): "<origin>\n<size>\n<b64 root>\n", then a
+# blank line and "— <key name> <b64(4-byte key id || ed25519 sig)>". The key is the dedicated receipt-LOG key
+# (not the registry receipt key): held by Kevin Russell, Lead Researcher, Honesty.tools, generated and kept
+# only on his DGX. Anchor: the same checkpoint body, Ed25519ph-signed by the same key, logged as a Rekor v2
+# hashedrekord (SHA2_512 digest). Verification is offline: our note sig, Rekor's body digest + key binding,
+# the Merkle inclusion proof, and Rekor's own checkpoint signature under its pinned key.
+LOG_ORIGIN = "www.honesty.tools/receipts"
+PINNED_LOG_VKEYS = {
+    "www.honesty.tools/receipts+fcd79bdd+AUF/J2nQKn90Ba52NjK0jqgIYayocRQGAYsK7PUdD7+C":
+        "receipt-log key (ed25519, sha256(pub)=d1f9d9386e4173ba6e5e80ad3bb624cf18ee389fe9ba8ed6669be195f4a76342) — "
+        "held by Kevin Russell, Lead Researcher, Honesty.tools; generated 2026-10-27T05:54:21Z and kept only on his DGX",
+}
+# Rekor v2 shard keys, copied from Sigstore's TUF trusted_root.json (sigstore/root-signing, targets/).
+PINNED_REKOR_LOGS = {"log2025-1.rekor.sigstore.dev": "t8rlp1knGwjfbcXAYPYAkn0XiLz1x8O4t0YkEhie244="}
+_SPKI_ED25519 = bytes.fromhex("302a300506032b6570032100")
+
+
+def parse_vkey(vkey: str):
+    """C2SP signed-note verifier key '<name>+<hex key id>+<b64(0x01||pub)>' -> (name, key_id, raw pub)."""
+    import base64
+    name, kid_hex, b = vkey.strip().split("+", 2)
+    blob = base64.b64decode(b)
+    if len(blob) != 33 or blob[0] != 1:
+        raise ValueError("not an ed25519 (type 0x01) vkey")
+    pub = blob[1:]
+    kid = _h(name.encode(), b"\n\x01", pub)[:4]
+    if kid.hex() != kid_hex.lower():
+        raise ValueError("vkey key id does not match its name+key")
+    return name, kid, pub
+
+
+def checkpoint_body(origin: str, size: int, root: bytes) -> bytes:
+    import base64
+    return ("%s\n%d\n%s\n" % (origin, size, base64.b64encode(root).decode())).encode()
+
+
+def _split_note(note: str):
+    if "\n\n" not in note:
+        raise ValueError("not a signed note (no blank line before signatures)")
+    text, sigs = note.split("\n\n", 1)
+    return text + "\n", [l for l in sigs.splitlines() if l.strip()]
+
+
+def verify_checkpoint(note: str, vkeys: dict | None = None) -> dict:
+    """Verify a C2SP checkpoint under a PINNED log vkey. Signatures by unknown keys are ignored (C2SP);
+    at least one pinned signature must verify. Returns {origin, tree_size, root, key}."""
+    import base64
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+    from cryptography.exceptions import InvalidSignature
+    vkeys = PINNED_LOG_VKEYS if vkeys is None else vkeys
+    text, sigs = _split_note(note)
+    lines = text.split("\n")[:-1]
+    if len(lines) < 3:
+        raise ValueError("checkpoint body needs origin, size, root")
+    origin, size, root = lines[0], int(lines[1]), base64.b64decode(lines[2])
+    if len(root) != 32 or lines[1] != str(size):
+        raise ValueError("malformed checkpoint size/root")
+    for vk in vkeys:
+        name, kid, pub = parse_vkey(vk)
+        if name != origin:
+            continue
+        for l in sigs:
+            parts = l.split(" ")
+            if len(parts) != 3 or parts[0] != "\u2014" or parts[1] != name:
+                continue
+            blob = base64.b64decode(parts[2])
+            if blob[:4] != kid:
+                continue
+            try:
+                Ed25519PublicKey.from_public_bytes(pub).verify(blob[4:], text.encode())
+            except InvalidSignature:
+                raise ValueError("checkpoint signature by the pinned log key does NOT verify")
+            return {"origin": origin, "tree_size": size, "root": root.hex(), "key": vk, "body": text}
+    raise ValueError("no signature from a pinned log key on this checkpoint")
+
+
+def _verify_rekor_checkpoint(env: str, logs: dict) -> dict:
+    import base64
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+    text, sigs = _split_note(env)
+    lines = text.split("\n")[:-1]
+    origin = lines[0]
+    if origin not in logs:
+        raise ValueError("Rekor checkpoint origin %r is not a pinned Rekor shard" % origin)
+    pub = base64.b64decode(logs[origin])
+    kid = _h(origin.encode(), b"\n\x01", pub)[:4]
+    for l in sigs:
+        parts = l.split(" ")
+        if len(parts) == 3 and parts[1] == origin and base64.b64decode(parts[2])[:4] == kid:
+            Ed25519PublicKey.from_public_bytes(pub).verify(base64.b64decode(parts[2])[4:], text.encode())
+            others = sorted({l.split(" ")[1] for l in sigs if l.split(" ")[1] != origin})
+            return {"origin": origin, "tree_size": int(lines[1]), "root": base64.b64decode(lines[2]),
+                    "other_signers_unverified": others}
+    raise ValueError("no signature by the pinned Rekor key on its checkpoint")
+
+
+def verify_rekor_anchor(note: str, entry: dict, vkeys: dict | None = None, rekor_logs: dict | None = None) -> dict:
+    """ANCHORED check: the Rekor v2 TransparencyLogEntry `entry` logs THIS checkpoint, under THIS log key, and
+    is included in a Rekor checkpoint signed by a pinned Rekor shard key. Offline; raises ValueError on failure."""
+    import base64
+    cp = verify_checkpoint(note, vkeys)
+    rekor_logs = PINNED_REKOR_LOGS if rekor_logs is None else rekor_logs
+    body = base64.b64decode(entry["canonicalizedBody"])
+    rec = json.loads(body)
+    if rec.get("kind") != "hashedrekord" or rec.get("apiVersion") != "0.0.2":
+        raise ValueError("Rekor entry is not hashedrekord 0.0.2")
+    spec = rec["spec"]["hashedRekordV002"]
+    if spec["data"]["algorithm"] != "SHA2_512" or \
+            base64.b64decode(spec["data"]["digest"]) != hashlib.sha512(cp["body"].encode()).digest():
+        raise ValueError("Rekor entry digest is not SHA-512 of this checkpoint body")
+    ver = spec["signature"]["verifier"]
+    _, _, pub = parse_vkey(cp["key"])
+    if ver.get("keyDetails") != "PKIX_ED25519_PH" or base64.b64decode(ver["publicKey"]["rawBytes"]) != _SPKI_ED25519 + pub:
+        raise ValueError("Rekor entry was not made with the pinned receipt-log key")
+    ph = "not re-checked offline (needs pycryptodome; Rekor verified it on admission)"
+    try:
+        from Crypto.PublicKey import ECC
+        from Crypto.Signature import eddsa
+        from Crypto.Hash import SHA512
+        eddsa.new(ECC.import_key(_SPKI_ED25519 + pub), "rfc8032").verify(
+            SHA512.new(cp["body"].encode()), base64.b64decode(spec["signature"]["content"]))
+        ph = "verified"
+    except ImportError:
+        pass
+    except ValueError:
+        raise ValueError("Ed25519ph signature in the Rekor entry does NOT verify")
+    ip = entry["inclusionProof"]
+    rk = _verify_rekor_checkpoint(ip["checkpoint"]["envelope"], rekor_logs)
+    idx = int(entry["logIndex"])
+    if not verify_inclusion(body, idx, rk["tree_size"], [base64.b64decode(x) for x in ip["hashes"]], rk["root"]):
+        raise ValueError("Rekor inclusion proof does not verify against Rekor's signed checkpoint")
+    return {"ok": True, "checkpoint": {k: cp[k] for k in ("origin", "tree_size", "root")},
+            "rekor": {"log": rk["origin"], "log_index": idx, "tree_size": rk["tree_size"],
+                      "ed25519ph_sig": ph, "cosigners_listed_not_verified": rk["other_signers_unverified"]}}
+
 # ── session trails: the C9 "flight recorder" — verify a whole agent run, not one receipt ──────────────
 # A session is an ORDERED list of Aperture receipts from one agent run. Its tamper-evident head is the
 # Merkle root over the receipt leaves. Verifying a session = (1) every receipt's Aperture signature is valid,
@@ -298,6 +437,37 @@ def main(argv: list[str]) -> int:
                 why.append("root mismatch: recomputed %s… vs recorded %s…" % (rep["root"][:16], rep["claimed_root"][:16]))
             print("  ✗ SESSION NOT VERIFIED — %s" % "; ".join(why))
         return 0 if rep["ok"] else 1
+    if cmd == "verify-checkpoint":                        # verify-checkpoint <checkpoint> [leaves.jsonl]
+        try:
+            cp = verify_checkpoint(open(argv[2], encoding="utf-8").read())
+        except Exception as e:
+            print("  \u2717 CHECKPOINT NOT VERIFIED \u2014 %s" % e)
+            return 1
+        print("  \u2713 checkpoint signed by the pinned receipt-log key: %s size %d root %s\u2026"
+              % (cp["origin"], cp["tree_size"], cp["root"][:16]))
+        if len(argv) > 3:
+            lg = TransparencyLog(argv[3])
+            if lg.size() != cp["tree_size"] or lg.root_hex() != cp["root"]:
+                print("  \u2717 leaves file does NOT reproduce this checkpoint (size %d root %s\u2026)" % (lg.size(), lg.root_hex()[:16]))
+                return 1
+            print("  \u2713 leaves file reproduces the checkpoint root")
+        return 0
+    if cmd == "verify-anchor":                            # verify-anchor <checkpoint> <rekor_entry.json>
+        try:
+            rep = verify_rekor_anchor(open(argv[2], encoding="utf-8").read(), json.load(open(argv[3], encoding="utf-8")))
+        except Exception as e:
+            print("  \u2717 NOT ANCHORED \u2014 %s" % e)
+            return 1
+        print("  \u2713 ANCHORED \u2014 checkpoint %s size %d is Rekor v2 entry %d in %s (Rekor checkpoint size %d); Ed25519ph sig %s"
+              % (rep["checkpoint"]["origin"], rep["checkpoint"]["tree_size"], rep["rekor"]["log_index"], rep["rekor"]["log"],
+                 rep["rekor"]["tree_size"], rep["rekor"]["ed25519ph_sig"]))
+        print("    proves: this log head existed and was published by the log key no later than Rekor logged it."
+              " Does NOT prove any receipt's content is true.")
+        return 0
+    if cmd == "keys":
+        for k, role in PINNED_LOG_VKEYS.items():
+            print("  %s\n    %s" % (k, role))
+        return 0
     if cmd == "selftest":
         return _selftest()
     sys.stderr.write("unknown command %r\n" % cmd)
@@ -348,6 +518,35 @@ def _selftest() -> int:
     print("  %s reordering the trail breaks the session root" % ("✓" if hit else "✗"))
     total += 1; hit = not verify_session([sess[0], sess[2]], sroot, pinned=pin)["root_matches"]; ok += hit
     print("  %s dropping a receipt breaks the session root" % ("✓" if hit else "✗"))
+    # C2SP checkpoint: sign with an ephemeral key, verify; tampered size and unpinned key must fail
+    import base64 as _b
+    lsk = Ed25519PrivateKey.generate()
+    lpub = lsk.public_key().public_bytes_raw()
+    nm = "example.test/log"
+    kid = _h(nm.encode(), b"\n\x01", lpub)[:4]
+    vk = {"%s+%s+%s" % (nm, kid.hex(), _b.b64encode(b"\x01" + lpub).decode()): "selftest"}
+    body = checkpoint_body(nm, len(leaves), root)
+    note = (body + b"\n" + ("\u2014 %s %s\n" % (nm, _b.b64encode(kid + lsk.sign(body)).decode())).encode()).decode()
+    total += 1; hit = verify_checkpoint(note, vk)["root"] == root.hex(); ok += hit
+    print("  %s a C2SP checkpoint signed by a pinned log key verifies" % ("\u2713" if hit else "\u2717"))
+    def _fails(n, v):
+        try:
+            verify_checkpoint(n, v); return False
+        except ValueError:
+            return True
+    total += 1; hit = _fails(note.replace("\n%d\n" % len(leaves), "\n%d\n" % (len(leaves) - 1), 1), vk); ok += hit
+    print("  %s a checkpoint with an altered tree size fails" % ("\u2713" if hit else "\u2717"))
+    total += 1; hit = _fails(note, PINNED_LOG_VKEYS); ok += hit
+    print("  %s a checkpoint signed by an unpinned key is rejected" % ("\u2713" if hit else "\u2717"))
+    here = os.path.dirname(os.path.abspath(__file__))
+    cpf, rkf = os.path.join(here, "log", "checkpoint"), os.path.join(here, "log", "rekor-entry-0.json")
+    if os.path.exists(cpf) and os.path.exists(rkf):
+        try:
+            hit = verify_rekor_anchor(open(cpf, encoding="utf-8").read(), json.load(open(rkf, encoding="utf-8")))["ok"]
+        except ValueError:
+            hit = False
+        total += 1; ok += hit
+        print("  %s the published genesis checkpoint verifies as ANCHORED in Rekor v2" % ("\u2713" if hit else "\u2717"))
     print("  transparency-log self-test: %d/%d passed" % (ok, total))
     return 0 if ok == total else 1
 
