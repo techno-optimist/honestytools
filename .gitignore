@@ -14,3 +14,6 @@ dossier_cache/
 matched/*.json
 !matched/surface_match_results.json
 !matched/aperture_*.json
+
+# witness client local state (attempt log, cosigned checkpoints); keep a backup, do not commit
+witness/state/
