@@ -19,9 +19,19 @@ To update, copy the files from the site again and regenerate `SOURCE.sha256` in 
 
 **Not yet covered:**
 - the log has one signed checkpoint (the 22-leaf genesis, anchored in Sigstore Rekor; see below), not a regularly published series of signed tree heads, and later receipts are not in it;
-- that checkpoint is signed by us; there is no external witness co-signer.
+- that checkpoint is signed by us; there is no external witness co-signer in this mirror.
 
 See CHARTER stage 4: regular C2SP checkpoints and C2SP witness cosignatures are still to do.
+
+**The live log is ahead of this mirror (checked 2026-11-02).** The log served at
+https://www.honesty.tools/verifier/log/ has checkpoints 22 and 23 (`log/checkpoints/22`, `log/checkpoints/23`),
+each anchored in Sigstore Rekor v2 (`log/rekor-entry-0.json`, `log/rekor-entry-1.json`), a consistency proof
+(`log/proofs/consistency-22-23.json`), and checkpoint 23 co-signed by `rgdd.se/poc-witness` and
+`markovianprotocol.com/witness` (`log/cosigned/23`, keys in `log/witnesses.txt`). Both witnesses are on the
+Witness Network testing list, which may be reset; this is not production witnessing. The served
+`transparency_log.py` has a `consistency` command and the site also serves `verify_cosignatures.py`; neither
+is mirrored here yet. The commands below check this mirror's size-22 genesis only. To check the live log, fetch
+the served `/verifier/` files and follow the served `log/KEYHOLDER.md`.
 
 ## Signed checkpoints and the Rekor anchor
 `log/` holds the receipt log's genesis checkpoint (22 entries), signed by the receipt-log key
