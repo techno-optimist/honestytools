@@ -280,7 +280,9 @@ still be contaminated, circular or mislabelled.
 
 - **A PASS is not a certificate of quality.** It says these six probes did not recover the labels
   at this n. A weaker or a differently shaped artifact can be present and missed; the power table
-  says how weak.
+  says how weak. A failed partial-input baseline does not show a dataset is free of artifacts:
+  patterns visible only in the full input can evade any partial-input test (Feng, Wallace and
+  Boyd-Graber 2019, [Misleading Failures of Partial-input Baselines](https://aclanthology.org/P19-1554/)).
 - **Circularity, contamination and mislabelling are invisible here.** They are provenance
   properties, not surface ones.
 - **A wider family costs power.** Going from four probes to seven in v1.3 moved our own
