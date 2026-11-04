@@ -9,7 +9,9 @@ order, not the ability the benchmark claims to measure.
 `nulltest` measures how much of a benchmark's label signal is recoverable from surface form alone,
 and says PASS, DISQUALIFIED or NOT_SCORABLE. It scores no model. It needs no GPU, no network and no
 API key, and nothing from whoever built the benchmark. One Python file, standard library only, and
-a JavaScript port measured bit-identical to it on 92 cells across six batteries.
+a JavaScript port that matches it on every compared value of the bundled fixtures (`bash nulltest_parity.sh`:
+270 cells across 14 batteries, reported values compared to 4 decimal places; fixture parity, not a proof
+of equivalence on every input).
 
 ```bash
 git clone https://github.com/techno-optimist/honestytools && cd honestytools
@@ -32,7 +34,7 @@ python3 -m unittest discover -s tests                        # 112 tests, a few 
 | test a benchmark file on your laptop | `python3 nulltest.py FILE` (JSON, JSONL, CSV, TSV; `--explode` for QA rows) |
 | know *why* it failed | `--explain`, or read the WHY section every DISQUALIFIED report prints |
 | test it in your own CI, every commit | the [GitHub Action](#run-it-in-your-own-ci) below, five lines of YAML |
-| test it in a browser, nothing uploaded | [honesty.tools/evidence](https://www.honesty.tools/evidence) runs the same engine, proven bit-identical |
+| test it in a browser, nothing uploaded | [honesty.tools/evidence](https://www.honesty.tools/evidence) runs the JavaScript port, checked against the CLI on the bundled fixtures (`nulltest_parity.sh`) |
 | publish a verdict someone else can check | `--json` writes a receipt with the file's sha256 and the tool's; `--check RECEIPT` replays it |
 | see how published benchmarks fare | the [audit table](https://www.honesty.tools/audit), 24 rows, every one with a URL and a sha256 |
 | know what carries the label in each of them | [AUDIT_DOSSIER.md](AUDIT_DOSSIER.md): every row's full report and `--explain` feature tables, generated, never typed |
@@ -198,8 +200,8 @@ This is the hypothesis-only / partial-input baseline of the NLP artifact literat
 al. 2018, Poliak et al. 2018) and the artifact filtering of AFLite (Le Bras et al. 2020), applied to
 two-class text benchmarks. The idea is not new. What this tool adds is the discipline around it:
 two-sided scoring, worst cell not mean, refit inside every permutation, family-wise correction, a
-measured false-positive rate, a reproducible power table, and a browser engine measured
-bit-identical to the command line on 92 cells. Cite it as a careful packaging of a known test.
+measured false-positive rate, a reproducible power table, and a browser engine that matches
+the command line on 270 fixture cells across 14 batteries. Cite it as a careful packaging of a known test.
 
 ## What the tool says about itself
 
