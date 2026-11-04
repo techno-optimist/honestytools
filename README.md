@@ -333,7 +333,7 @@ still be contaminated, circular or mislabelled.
 | `batteries/` | our own nine batteries, all of them in the table |
 | `verifier/` | the offline verifier for signed honesty.tools receipts and certificates (`aperture_verify.py`), the RFC 6962 receipt log primitives (`transparency_log.py`) and the witness checker (`aperture_witness.py`). Byte-identical mirror of [honesty.tools/verifier](https://www.honesty.tools/verifier/aperture_verify.py), pinned by `verifier/SOURCE.sha256`; needs `cryptography`. A pass is provenance, not truth |
 | `honest.py`, `contract.py` | the toolbox entry point (`honest null`, `honest check`, `honest audit`, `honest fpr`) and the four-method tool contract; see `CHARTER.md` |
-| `render_audit.py`, `claim_gate.py`, `null_floor_reconcile.py`, `demo.sh` | the harness we run against our own site; they expect the site tree beside them and do nothing useful in a bare checkout |
+| `render_audit.py`, `claim_gate.py`, `null_floor_reconcile.py`, `demo.sh` | the harness we run against our own site; they expect the site tree beside them and do nothing useful in a bare checkout. `claim_gate.py` checks that each figure names a registry entry that exists and that withdrawn sources and DISQUALIFIED batteries are labelled; it does not check that the number shown equals the value stored on that entry, so a real number cited to the wrong entry passes |
 
 `audit_cache/` is gitignored on purpose: the audit records a URL and a sha256 for each third-party
 corpus, never a copy.
