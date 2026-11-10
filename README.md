@@ -36,7 +36,7 @@ python3 -m unittest discover -s tests                        # 112 tests, a few 
 | test it in your own CI, every commit | the [GitHub Action](#run-it-in-your-own-ci) below, five lines of YAML |
 | test it in a browser, nothing uploaded | [honesty.tools/evidence](https://www.honesty.tools/evidence) runs the JavaScript port, checked against the CLI on the bundled fixtures (`nulltest_parity.sh`) |
 | publish a verdict someone else can check | `--json` writes a receipt with the file's sha256 and the tool's; `--check RECEIPT` replays it |
-| see how published benchmarks fare | the [audit table](https://www.honesty.tools/audit), 24 rows, every one with a URL and a sha256 |
+| see how published benchmarks fare | the [audit table](https://www.honesty.tools/audit), 28 rows: 24 generated from `nulltest_audit_results.json`, each with a URL and a sha256, plus 4 external cross-checks |
 | know what carries the label in each of them | [AUDIT_DOSSIER.md](AUDIT_DOSSIER.md): every row's full report and `--explain` feature tables, generated, never typed |
 | repair a benchmark the surface can score | `python3 surface_match.py FILE --out matched.json`: keeps a surface-matched subset, verified on held-out halves; see [repair](#repair-keep-the-items-the-surface-cannot-tell-apart) |
 | know the number a detector has to beat | `python3 surface_baseline.py FILE`: held-out accuracy of the six probes together, against the majority rate; see [the number to beat](#the-number-to-beat) |
