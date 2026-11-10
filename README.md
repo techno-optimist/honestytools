@@ -434,7 +434,11 @@ it removes nothing. TruthfulQA's 2,446 matched reference answers still fail both
 
 What this cannot do: add items; see an artifact the six probes do not; or leave what the set
 measures unchanged. A matched set keeps the surface-ambiguous items and measures something narrower
-than the original, and must be cited as surface-matched. A clean held-out half also fails one time
+than the original, and must be cited as surface-matched. "Repaired" means repaired against these
+six probes, not against a stronger reader: Ovcharov (2026) filtered a legal multiple-choice bank until
+the model doing the filtering scored 0.204 with the question hidden, and a stronger model that took no
+part in the selection still answered 0.515 of the kept items blind
+([Gated Against One Model, Open to the Next](https://arxiv.org/abs/2608.15428)). A clean held-out half also fails one time
 in twenty by chance, because `nulltest` is a 5% test, so a borderline held-out DISQUALIFIED should
 be read with its adjusted p. The matched subsets of our own batteries are committed under
 `matched/`; third-party subsets are not redistributed, and the one-line command above regenerates
