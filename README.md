@@ -145,11 +145,13 @@ stratum field is sniffed from the file and you do not want one, pass `--stratum-
 
 | command | 0 | 1 | 2 |
 |---|---|---|---|
-| `nulltest.py BATTERY` (text or `--json`) | PASS | DISQUALIFIED or NOT_SCORABLE | usage error, unreadable file, undecidable labels |
+| `nulltest.py BATTERY` (text or `--json`) | PASS | DISQUALIFIED or NOT_SCORABLE; also an unreadable or empty file and undecidable labels (message only, no verdict) | usage error (missing or unknown flag) |
 | `nulltest.py BATTERY --check RECEIPT` | REPLAYS | DIVERGES | receipt names other bytes or cannot be replayed |
 | `nulltest.py --selftest` | within the ceiling | FAIL | INDISTINGUISHABLE (25 seeds cannot resolve 5% vs 10%; expected) |
 | `honest null BATTERY` | a verdict a pipeline may rely on: PASS with a matching certificate, or DISQUALIFIED | anything else | usage |
 | `nulltest_action.sh` | per `fail-on` | the verdict named by `fail-on` | bad input |
+
+Exit 1 alone does not mean DISQUALIFIED: a file the tool cannot read or whose labels it cannot decide also exits 1, with a message and no verdict. A pipeline should read the verdict from `--json` (as `nulltest_action.sh` does, which exits 2 when no report is produced) rather than from the exit code.
 
 `python3 -m nulltest` is the same program as `python3 nulltest.py` and is the form the wheel
 offers. Large files print a permutation counter to stderr while they run (a 60,000-item file takes
