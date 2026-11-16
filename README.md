@@ -247,6 +247,14 @@ Unchanged from v1.3: the same four rows were re-measured under v1.4 and agree.
 A PASS at n=156 therefore says only that no artifact covering 60% or more of one class was found.
 The POWER line in every report quotes this table for the battery's n.
 
+Read the table as a best case, not as this battery's power. It was measured on one stratum, one
+artifact shape (a trailing character) and 4 seeds; a battery with more strata has smaller cells and a
+wider family, and a different artifact shape can be harder to see, so its real power is lower than
+the row for its n. "Caught in 3 of 4 seeds" is also a coarse rate (95% interval roughly 19% to 99%).
+Generic power budgets taken from a few calibration runs can be miscalibrated at exactly these
+sample sizes, and a non-rejection is only interpretable beside the power check that produced it
+(Shihab, Akter and Sharma 2026, [arXiv 2608.07914](https://arxiv.org/abs/2608.07914)).
+
 **`--selftest` is a smoke test, not a certificate.** At 25 seeds it usually returns
 INDISTINGUISHABLE, which is the honest answer: a 25-seed point estimate of a 5% rate compared
 against a 10% ceiling fails a perfectly calibrated tool about half the time. `--selftest` is
