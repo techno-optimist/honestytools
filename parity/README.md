@@ -1,10 +1,10 @@
 # parity/ — batteries that exercise what the published ones do not
 
 `nulltest_parity.sh` scores every file here with both engines (`nulltest.js` under node,
-`nulltest.py`) and compares every cell and the WHY tables. The parity run includes four of our nine
-published batteries (grounding-coordinate, photon-entities, prominence-people-v1, verifydomain-claims-147), all
-ASCII-only JSON; the other five, including the one with non-ASCII text (postcutoff-trials-v1), are not in the
-parity list. So each file below exists to cover one way the browser port could drift from
+`nulltest.py`) and compares every cell, the WHY tables, and the fields the /audit page shows
+(n, family size, saturation, power, borderline and n_perm notes). The parity run includes all
+nine of our published batteries (including postcutoff-trials-v1, which has non-ASCII text) plus
+the fixtures below. Each file here exists to cover one way the browser port could drift from
 the CLI, which stays the reference. The labels are noise or planted; the verdicts mean nothing.
 
 | file | exercises |

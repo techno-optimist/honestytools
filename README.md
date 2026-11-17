@@ -10,7 +10,7 @@ order, not the ability the benchmark claims to measure.
 and says PASS, DISQUALIFIED or NOT_SCORABLE. It scores no model. It needs no GPU, no network and no
 API key, and nothing from whoever built the benchmark. One Python file, standard library only, and
 a JavaScript port that matches it on every compared value of the bundled fixtures (`bash nulltest_parity.sh`:
-270 cells across 14 batteries: 4 of our 9 published batteries, 8 edge-case fixtures and 2 planted controls; reported values compared to 4 decimal places; fixture parity, not a proof
+406 cells across 19 batteries: all 9 of our published batteries, 8 edge-case fixtures and 2 planted controls; reported values compared to 4 decimal places; fixture parity, not a proof
 of equivalence on every input).
 
 ```bash
@@ -203,7 +203,7 @@ al. 2018, Poliak et al. 2018) and the artifact filtering of AFLite (Le Bras et a
 two-class text benchmarks. The idea is not new. What this tool adds is the discipline around it:
 two-sided scoring, worst cell not mean, refit inside every permutation, family-wise correction, a
 measured false-positive rate, a reproducible power table, and a browser engine that matches
-the command line on 270 fixture cells across 14 batteries. Cite it as a careful packaging of a known test.
+the command line on 406 fixture cells across 19 batteries. Cite it as a careful packaging of a known test.
 
 ## What the tool says about itself
 
@@ -345,7 +345,7 @@ still be contaminated, circular or mislabelled.
 | `batteries/` | our own nine batteries, all of them in the table |
 | `verifier/` | the offline verifier for signed honesty.tools receipts and certificates (`aperture_verify.py`), the RFC 6962 receipt log primitives (`transparency_log.py`) and the witness checker (`aperture_witness.py`). Byte-identical mirror of [honesty.tools/verifier](https://www.honesty.tools/verifier/aperture_verify.py), pinned by `verifier/SOURCE.sha256`; needs `cryptography`. A pass is provenance, not truth |
 | `honest.py`, `contract.py` | the toolbox entry point (nine subcommands: `honest list`, `null`, `paired`, `check`, `baseline`, `match`, `audit`, `selftest`, `fpr`; `honest --help` prints them) and the four-method tool contract (`run`, `selftest`, `false_positive_rate`, `replay`); `null` is the one stable tool, `paired` and `observertest` are experimental and cannot return a stable-green verdict; see `CHARTER.md` |
-| `render_audit.py`, `claim_gate.py`, `null_floor_reconcile.py`, `demo.sh` | the harness we run against our own site; they expect the site tree beside them and do nothing useful in a bare checkout. `claim_gate.py` checks that each figure names a registry entry that exists and that withdrawn sources and DISQUALIFIED batteries are labelled; it does not check that the number shown equals the value stored on that entry, so a real number cited to the wrong entry passes. It reads only the `.html` files directly in the folder above it, so pages in subfolders are not read at all (on our site that is every blog post plus /papers, /leaderboard and /benchmark: 32 pages, checked 2026-11-16), and a battery that `nulltest.py` cannot evaluate is skipped without a warning, so `0 failures` covers only the pages and batteries it actually read. `render_audit.py --check` compares the page with `nulltest_audit_results.json` and checks that every file in `batteries/` has a row; it does not re-hash the battery files against each row's sha256 or re-score them, and it prints an orphaned correction note but still exits 0. CI's battery job re-scores verdicts only, so an edited battery whose verdict does not change (worst cell, A* or adjusted p moved) still reads "current" (planted and checked 2026-11-16) |
+| `render_audit.py`, `claim_gate.py`, `null_floor_reconcile.py`, `demo.sh` | the harness we run against our own site; they expect the site tree beside them and do nothing useful in a bare checkout. `claim_gate.py` checks that each figure names a registry entry that exists and that withdrawn sources and DISQUALIFIED batteries are labelled; it does not check that the number shown equals the value stored on that entry, so a real number cited to the wrong entry passes. It reads only the `.html` files directly in the folder above it, so pages in subfolders are not read at all (on our site that is every blog post plus /papers, /leaderboard and /benchmark: 32 pages, checked 2026-11-16), and a battery that `nulltest.py` cannot evaluate is skipped without a warning, so `0 failures` covers only the pages and batteries it actually read. `render_audit.py --check` compares the page with `nulltest_audit_results.json`, checks that every file in `batteries/` has a row, re-hashes each aperture/ battery against its row sha256 and `nulltest.py` against the results `tool_sha256` (a mismatch exits 1 with `ROW DESCRIBES DIFFERENT BYTES`), and exits 1 on an orphaned correction note. CI re-scores every published battery at `n_perm` 600 and compares the fields the /audit page shows (n, worst cell, A*, adjusted p, family size — the headline — and the verdict), not the verdict alone |
 
 `audit_cache/` is gitignored on purpose: the audit records a URL and a sha256 for each third-party
 corpus, never a copy.

@@ -8,6 +8,8 @@ produced them. What is listed under *not done* is as much a part of the record a
 
 `nulltest.py` and `nulltest_paired.py` are byte-identical to 0.7.3.
 
+- **P11.** `render_audit.py --check` re-hashes every aperture/ battery against its row sha256 and `nulltest.py` against the results `tool_sha256` (mismatch exits 1, `ROW DESCRIBES DIFFERENT BYTES`) and fails on an orphaned correction note. CI compares the fields the /audit page shows (n, worst cell, A*, adjusted p, family size, headline, verdict), not the verdict alone. `nulltest_parity.sh` runs all 9 published batteries plus the 8 edge fixtures and 2 planted controls (406 cells across 19 batteries) and compares those page-displayed fields too. Planted tests: flipped labels, an edited `nulltest.py`, and an orphaned note each fail; a clean tree passes. The committed `nulltest_parity.json` certificate is unchanged (it still records the earlier 14-battery run and is stamped to the same `nulltest.py`).
+
 - `verifier/aperture_witness.py` is re-mirrored from site commit 96aadb3 (sha256 `0e634b28…`). `--pin B64=role` now requires the canonical base64 encoding. Before this, Python 3.10 accepted surplus `=` padding, so the role separator stayed attached to the key and the pin never matched. `SOURCE.sha256` is updated to the new hash.
 - The CI unit-test job installs `cryptography` and `sympy`, so the receipt-verifier tests and the witness selftest run instead of skipping.
 - **FLOOR v1 status table** (`benchmark/README.md`). FLOOR was run on every inventory dataset with a clear permissive licence; certificates are in `benchmark/certified/floor-v1/`. One dataset is CERTIFIED: `aperture/postcutoff-trials-v1`, 702 items, nothing removed. Every other dataset is NOT_CERTIFIABLE.

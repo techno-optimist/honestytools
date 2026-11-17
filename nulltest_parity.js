@@ -23,7 +23,10 @@ files.forEach(function (f) {
   var rep = window.NullTest.evaluate(L.items, L.keys, { nPerm: 600 });
   out[path.basename(f)] = { keys: L.keys, verdict: rep.verdict, headline: rep.headline,
                             worst_cell: rep.worst_cell, nulls: rep.nulls,
-                            explain: window.NullTest.explain(L.items, L.keys, rep) };
+                            explain: window.NullTest.explain(L.items, L.keys, rep),
+                            n: rep.n, family_size: rep.family_size, saturated: rep.saturated,
+                            power: rep.power, borderline_note: rep.borderline_note,
+                            n_perm_note: rep.n_perm_note };
 });
 
 /* the two planted controls the PAGE offers as buttons. They are generated from the same

@@ -24,11 +24,14 @@ DISQUALIFIED at adjusted p 0.03 and a PASS at 0.0982 are each a coin-toss away f
 verdict, and the reader is told so.
 
     python3 render_audit.py            # rewrite audit.html's <tbody>
-    python3 render_audit.py --check    # exit 1 if the page is stale (for a pre-serve gate)
+    python3 render_audit.py --check    # exit 1 if the page is stale, a battery or
+                                       # nulltest.py no longer matches its recorded sha256,
+                                       # or a correction note is orphaned
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
 import json
 import os
@@ -171,13 +174,76 @@ def render_rows(rows, notes, summary=None, base=None, matched=None):
     return out
 
 
+
+def sha256_file(path):
+    return hashlib.sha256(open(path, "rb").read()).hexdigest()
+
+
+def byte_mismatches(doc, rows):
+    """Bind each aperture/ row to the battery file beside this script, and the results
+    file to nulltest.py. A mismatch means the row describes different bytes than we serve."""
+    bad = []
+    stamped_tool = doc.get("tool_sha256")
+    nt_path = os.path.join(HERE, "nulltest.py")
+    if not stamped_tool:
+        bad.append("ROW DESCRIBES DIFFERENT BYTES: nulltest_audit_results.json has no tool_sha256")
+    elif not os.path.exists(nt_path):
+        bad.append("ROW DESCRIBES DIFFERENT BYTES: nulltest.py is missing; results tool_sha256 is %s"
+                   % stamped_tool)
+    else:
+        actual_tool = sha256_file(nt_path)
+        if actual_tool != stamped_tool:
+            bad.append("ROW DESCRIBES DIFFERENT BYTES: nulltest.py is %s but results tool_sha256 is %s"
+                       % (actual_tool, stamped_tool))
+    bat_dir = os.path.join(HERE, "batteries")
+    for r in rows:
+        if not r["name"].startswith("aperture/"):
+            continue
+        slug = r["name"].split("/", 1)[1]
+        path = os.path.join(bat_dir, slug + ".json")
+        stamped = r.get("sha256")
+        if not os.path.exists(path):
+            bad.append("ROW DESCRIBES DIFFERENT BYTES: %s — battery file missing" % r["name"])
+            continue
+        actual = sha256_file(path)
+        if not stamped:
+            bad.append("ROW DESCRIBES DIFFERENT BYTES: %s — row has no sha256 (file is %s)"
+                       % (r["name"], actual))
+        elif actual != stamped:
+            bad.append("ROW DESCRIBES DIFFERENT BYTES: %s file sha256 %s but row sha256 %s"
+                       % (r["name"], actual, stamped))
+    return bad
+
+
+def displayed_mismatches(report, row):
+    """Compare a fresh evaluate() report to a published audit row on the fields the /audit
+    page shows: n, worst cell, A*, adjusted p, family size (the headline), and the verdict."""
+    fail = []
+    name = row.get("name", "?")
+    if report.get("verdict") != row.get("verdict"):
+        fail.append("%s verdict: table %s, code %s" % (name, row.get("verdict"), report.get("verdict")))
+    if report.get("n") != row.get("n"):
+        fail.append("%s n: table %s, code %s" % (name, row.get("n"), report.get("n")))
+    if report.get("headline") != row.get("headline"):
+        fail.append("%s headline: table %r, code %r" % (name, row.get("headline"), report.get("headline")))
+    if report.get("family_size") != row.get("cells"):
+        fail.append("%s family_size: table %s, code %s"
+                    % (name, row.get("cells"), report.get("family_size")))
+    got, want = report.get("worst_cell") or {}, row.get("worst_cell") or {}
+    if got != want:
+        fail.append("%s worst_cell: table %s, code %s" % (name, want, got))
+    return fail
+
+
 def main(argv):
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true",
-                    help="exit 1 if audit.html does not match the results file")
+                    help="exit 1 if the page is stale, a recorded sha256 no longer matches, "
+                         "or a correction note is orphaned")
     a = ap.parse_args(argv[1:])
 
-    rows = json.load(open(RESULTS))["rows"]
+    doc = json.load(open(RESULTS))
+    rows = doc["rows"]
     notes = json.load(open(NOTES)) if os.path.exists(NOTES) else {}
 
     # A note for a benchmark that is no longer in the table is a correction that has silently
@@ -204,7 +270,7 @@ def main(argv):
     # closing tag, not a literal "regenerated from" — the first render rewrote that phrase to
     # "generated from", after which the old anchored regex silently stopped matching and the row
     # count went stale (said 13 while the table had 14). Anchor on the stable prefix instead.
-    version = json.load(open(RESULTS)).get("version", "?")
+    version = doc.get("version", "?")
     eyebrow = ("the null-floor audit &middot; nulltest %s &middot; %d rows generated from "
                "nulltest_audit_results.json by render_audit.py" % (version, len(rows)))
     new, n_sub = re.subn(r"the null-floor audit &middot; nulltest [^<]*", eyebrow, new, count=1)
@@ -222,16 +288,20 @@ def main(argv):
     in_table = {r["name"].split("/", 1)[1] for r in rows if r["name"].startswith("aperture/")}
     unaudited = sorted(on_disk - in_table)
 
+    hash_fail = byte_mismatches(doc, rows)
+
     if a.check:
         stale = (new != page)
-        print("audit.html is %s (%d rows in results)"
+        print("audit.html is %s (%d from results)"
               % ("STALE — run render_audit.py" if stale else "current", len(rows)))
+        for line in hash_fail:
+            print("  %s" % line)
         for k in orphan:
             print("  orphan note, no longer displayed: %s" % k)
         for b in unaudited:
             print("  OUR BATTERY NOT IN THE TABLE: %s — the page claims to include every one of "
                   "ours, so this makes the page false" % b)
-        return 1 if (stale or unaudited) else 0
+        return 1 if (stale or unaudited or orphan or hash_fail) else 0
 
     open(PAGE, "w", encoding="utf-8").write(new)
     print("wrote %s — %d rows (%d ours, %d third-party)"
@@ -250,6 +320,8 @@ def main(argv):
                if marginal(r.get("verdict"), (r.get("worst_cell") or {}).get("adj_p"))]
     if flagged:
         print("  flagged MARGINAL: %s" % ", ".join(flagged))
+    for line in hash_fail:
+        print("  %s" % line)
     for k in orphan:
         print("  ORPHAN NOTE (a correction that would silently vanish): %s" % k)
     return 0

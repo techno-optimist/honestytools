@@ -17,8 +17,10 @@ FAILED=0
 
 command -v node >/dev/null || { echo "node not found — cannot run the browser engine headless"; exit 2; }
 
-BATTERIES="batteries/grounding-coordinate.json batteries/photon-entities.json batteries/prominence-people-v1.json batteries/verifydomain-claims-147.json parity/astral.json parity/whitespace.json parity/cjk.json parity/oddcase.json parity/smallcells.json parity/nonstring.json parity/quoted-crlf.csv parity/midquote.csv"
-# parity/*: Unicode, whitespace, rounding-tie, non-string-value and CSV edge cases — see parity/README.md
+# All nine published batteries plus the edge fixtures in parity/. postcutoff-trials-v1
+# is the non-ASCII published battery; the fixtures cover cases the published ones do not.
+# See parity/README.md.
+BATTERIES="batteries/calibration-battery-v1.json batteries/grounding-coordinate.json batteries/knowledge-prominence-v1.json batteries/knowledge-prominence-v2.json batteries/photon-entities.json batteries/postcutoff-trials-v1.json batteries/prominence-people-v1.json batteries/prominence-people-v2.json batteries/verifydomain-claims-147.json parity/astral.json parity/whitespace.json parity/cjk.json parity/oddcase.json parity/smallcells.json parity/nonstring.json parity/quoted-crlf.csv parity/midquote.csv"
 
 node nulltest_parity.js $BATTERIES > /tmp/nt_js.json || { echo "JS engine failed"; exit 1; }
 for b in $BATTERIES; do
@@ -44,12 +46,12 @@ for b in sys.argv[1].split():
     name = os.path.basename(b)
     py = json.load(open('/tmp/nt_py_%s' % name))
     j = js[name]
-    # `explain` is the WHY section: the feature tables the page and the CLI show under a
-    # verdict. Compared too, so the browser never names a different artifact than the CLI.
-    a = canon({"verdict": py["verdict"], "headline": py["headline"],
-               "worst_cell": py["worst_cell"], "nulls": py["nulls"], "explain": py.get("explain")})
-    c = canon({"verdict": j["verdict"], "headline": j["headline"],
-               "worst_cell": j["worst_cell"], "nulls": j["nulls"], "explain": j.get("explain")})
+    # Fields the /audit page (and the CLI report) show, plus the WHY tables and per-cell
+    # nulls. Missing and null are treated as the same so a JS undefined and a Python None agree.
+    FIELDS = ("verdict", "headline", "worst_cell", "nulls", "explain",
+              "power", "borderline_note", "n_perm_note", "saturated", "family_size", "n")
+    a = canon({k: py.get(k) for k in FIELDS})
+    c = canon({k: j.get(k) for k in FIELDS})
     cells = sum(1 + len(v["per_stratum"]) for v in py["nulls"].values())
     total += cells
     same = json.dumps(a, sort_keys=True) == json.dumps(c, sort_keys=True)
@@ -58,15 +60,18 @@ for b in sys.argv[1].split():
           % (name, "IDENTICAL" if same else "DIVERGES", cells))
     print("     %s | %s" % (py["verdict"], py["headline"]))
     if not same:
-        if a["explain"] != c["explain"]:
-            print("     DIFF in explain:")
-            print("       py", json.dumps(a["explain"], sort_keys=True, ensure_ascii=False)[:600])
-            print("       js", json.dumps(c["explain"], sort_keys=True, ensure_ascii=False)[:600])
-        for nm in a["nulls"]:
-            if a["nulls"][nm] != c["nulls"].get(nm):
-                print("     DIFF in null %r:" % nm)
-                print("       py", json.dumps(a["nulls"][nm], sort_keys=True)[:400])
-                print("       js", json.dumps(c["nulls"].get(nm), sort_keys=True)[:400])
+        for k in a:
+            if a[k] != c.get(k):
+                if k == "nulls":
+                    for nm in a["nulls"]:
+                        if a["nulls"][nm] != (c.get("nulls") or {}).get(nm):
+                            print("     DIFF in null %r:" % nm)
+                            print("       py", json.dumps(a["nulls"][nm], sort_keys=True)[:400])
+                            print("       js", json.dumps((c.get("nulls") or {}).get(nm), sort_keys=True)[:400])
+                else:
+                    print("     DIFF in %s:" % k)
+                    print("       py", json.dumps(a[k], sort_keys=True, ensure_ascii=False)[:600])
+                    print("       js", json.dumps(c.get(k), sort_keys=True, ensure_ascii=False)[:600])
     out["pairs"].append({"battery": name, "identical": same, "cells": cells,
                          "verdict": py["verdict"], "headline": py["headline"]})
 
