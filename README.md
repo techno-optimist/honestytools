@@ -21,7 +21,7 @@ python3 nulltest.py your_benchmark.json --json              # machine-readable
 python3 nulltest.py your_benchmark.json --jobs 8            # permutations in parallel
 python3 nulltest.py your_benchmark.json --explain           # which strings carry the label
 python3 nulltest.py qa_data.json --explode right_answer=0,hallucinated_answer=1   # QA rows
-python3 -m unittest discover -s tests                        # 112 tests, a few seconds
+python3 -m unittest discover -s tests                        # 133 tests, under a minute
 ```
 
 (`pip install honesttools` is the plan, and `pyproject.toml` is ready for it, but the package is
@@ -148,7 +148,7 @@ stratum field is sniffed from the file and you do not want one, pass `--stratum-
 | `nulltest.py BATTERY` (text or `--json`) | PASS | DISQUALIFIED or NOT_SCORABLE; also an unreadable or empty file and undecidable labels (message only, no verdict) | usage error (missing or unknown flag) |
 | `nulltest.py BATTERY --check RECEIPT` | REPLAYS | DIVERGES | receipt names other bytes or cannot be replayed |
 | `nulltest.py --selftest` | within the ceiling | FAIL | INDISTINGUISHABLE (25 seeds cannot resolve 5% vs 10%; expected) |
-| `honest null BATTERY` | a verdict a pipeline may rely on: PASS with a matching certificate, or DISQUALIFIED | anything else | usage |
+| `honest null BATTERY` | a verdict a pipeline may rely on: PASS with a matching certificate, or DISQUALIFIED | anything else, including a PASS from an installed build (`pip install .`): the wheel ships no certificate (`nulltest_grid.json`), so there a PASS exits 1, the same code as an unreadable file; read `verdict` and `fpr` from the JSON | usage |
 | `nulltest_action.sh` | per `fail-on` | the verdict named by `fail-on` | bad input |
 
 Exit 1 alone does not mean DISQUALIFIED: a file the tool cannot read or whose labels it cannot decide also exits 1, with a message and no verdict. A pipeline should read the verdict from `--json` (as `nulltest_action.sh` does, which exits 2 when no report is produced) rather than from the exit code.
