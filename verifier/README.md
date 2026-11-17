@@ -33,6 +33,13 @@ Witness Network testing list, which may be reset; this is not production witness
 is mirrored here yet. The commands below check this mirror's size-22 genesis only. To check the live log, fetch
 the served `/verifier/` files and follow the served `log/KEYHOLDER.md`.
 
+Read the served `verify_cosignatures.py` output line by line (checked 2026-11-16). It exits 0 when the log
+signature verifies and the body matches `log/checkpoints/<size>`; a witness with no valid co-signature is printed
+as `- <witness>: no valid co-signature on this checkpoint` and does not change the exit code, so exit 0 alone does
+not show that either witness co-signed. It also does not report how old a co-signature is. The newest
+co-signatures on the live log are from 2026-10-28, and Markovian's own history for this log
+(https://witness.markovianprotocol.com/7b4fdd1b1fe4949d9f3b9423c653206423a7ea00ee63138d4f1c3fb1bef10d7d/history) has that one entry.
+
 ## Signed checkpoints and the Rekor anchor
 `log/` holds the receipt log's genesis checkpoint (22 entries), signed by the receipt-log key
 held by Kevin Russell (key and fingerprint: [`../keys/`](../keys/)), and its Sigstore Rekor v2 entry
