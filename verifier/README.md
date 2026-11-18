@@ -40,6 +40,13 @@ not show that either witness co-signed. It also does not report how old a co-sig
 co-signatures on the live log are from 2026-10-28, and Markovian's own history for this log
 (https://witness.markovianprotocol.com/7b4fdd1b1fe4949d9f3b9423c653206423a7ea00ee63138d4f1c3fb1bef10d7d/history) has that one entry.
 
+The served `transparency_log.py verify-checkpoint` (checked 2026-11-18) differs from this mirror's. This mirror's
+requires the leaves file to have exactly the checkpoint's size. The served one compares only the first `<size>`
+leaves, so that older checkpoints verify against the newest leaves file: a leaves file with more rows than the
+checkpoint still exits 0 and prints `the first <size> of the <n> leaves ... reproduce the checkpoint root`.
+Neither reads the `index` field of each row. When you check the live log, compare the row count of
+`log/leaves.jsonl` with the size in `log/checkpoint` yourself (23 on 2026-11-18).
+
 ## Signed checkpoints and the Rekor anchor
 `log/` holds the receipt log's genesis checkpoint (22 entries), signed by the receipt-log key
 held by Kevin Russell (key and fingerprint: [`../keys/`](../keys/)), and its Sigstore Rekor v2 entry
