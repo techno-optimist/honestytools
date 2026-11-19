@@ -40,6 +40,13 @@ not show that either witness co-signed. It also does not report how old a co-sig
 co-signatures on the live log are from 2026-10-28, and Markovian's own history for this log
 (https://witness.markovianprotocol.com/7b4fdd1b1fe4949d9f3b9423c653206423a7ea00ee63138d4f1c3fb1bef10d7d/history) has that one entry.
 
+The served `verify_cosignatures.py` pins only the log key (checked 2026-11-19). It reads the witness keys from the
+`witnesses.txt` next to the file you check, so whatever keys that file lists are the witnesses it reports. With a
+made-up witness key and a co-signature from it dated 2030-01-01, it printed a ✓ for that witness and exited 0. It
+does not reject co-signature times in the future. Compare each line of `witnesses.txt` with that witness's own
+about page (linked in the file) and check that no co-signature time is later than now. On 2026-11-19 both served
+keys matched those pages.
+
 The served `transparency_log.py verify-checkpoint` (checked 2026-11-18) differs from this mirror's. This mirror's
 requires the leaves file to have exactly the checkpoint's size. The served one compares only the first `<size>`
 leaves, so that older checkpoints verify against the newest leaves file: a leaves file with more rows than the
