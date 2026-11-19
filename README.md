@@ -311,6 +311,16 @@ still be contaminated, circular or mislabelled.
   use the experimental paired floor, `honest paired FILE --pair-key F` (`nulltest_paired.py`,
   within-pair sign flip, folds by pair); it is versioned separately and is not part of the
   JS-parity core.
+- **Rows are treated as independent; folds are assigned per row, not per source.** Rows that come
+  from one source (several answers to one prompt, several follow-ups to one scenario, chunks of one
+  document) can land in different folds, so a probe is fitted on an item's siblings and then scores
+  it. Depending on how the siblings' labels relate, that can inflate or deflate `A*`, and the
+  effective sample size is the number of sources, not the number of rows. `nulltest.py` has no
+  group key yet. Until it does, check such a corpus with one row per source (a random draw, repeated
+  with a few seeds), or, for matched pairs, with paired mode, which keeps each pair together but not
+  pairs that share a source. Grouped splits matter for the same reason elsewhere: selection before
+  the split and duplicates across it inflate held-out scores (Sharma 2026,
+  [arXiv 2611.18598](https://arxiv.org/abs/2611.18598)).
 - **Non-Latin text.** The probes run on any Unicode text, but the alphabet probes drop out as
   degenerate when initials are not letters, and `words` splits on whitespace, so unspaced scripts
   give it one token per sentence. The report lists which cells were dropped as degenerate; it
