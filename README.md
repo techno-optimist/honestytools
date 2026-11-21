@@ -129,6 +129,13 @@ python3 nulltest.py benchmark.jsonl --check nulltest_receipt.json
 and exits non-zero on DIVERGES. It also accepts the JSON that `honest null` writes. Every number
 this page quotes comes from a committed file or says where it came from.
 
+A REPLAYS says the receipt's numbers follow from the bytes you pass in. It does not say those
+bytes are still the current published version of the benchmark: receipts carry no date, and
+`--check` does not compare `battery_sha256` with the currently served file or its /audit row, so a
+receipt for a superseded copy still replays (exit 0) against that copy (checked 2026-11-20). To
+know whether a receipt describes today's file, compare its `battery_sha256` with the current file's
+sha256 yourself.
+
 ### What the report says before the verdict
 
 The text report opens with what the loader did, because a silent change of corpus is a silent
