@@ -40,11 +40,19 @@ WHAT THIS CHECKS
 
 Rule 4 alone would have caught the 17-vs-16. Rule 1 would have caught all four pages.
 
+    An unannotated figure whose nearest tracked ancestor with a registry id is reported as
+    WRAPPER-CLAIM, not plain UNANNOTATED. Rules 2-3 then run on it with that ancestor's id
+    (disclosure is judged on the ancestor's inner HTML). A child with its own id does not
+    inherit, so one wrapper id cannot silently cover unrelated sibling numbers. --retract
+    collects numerals from the citing element's own text and from WRAPPER-CLAIM figures bound
+    to that id, and lists those figures.
+
     python3 claim_gate.py                 # check the served tree (rule 1 warns only)
-    python3 claim_gate.py --strict        # same, but unannotated figures fail the run
+    python3 claim_gate.py --strict        # same, but unannotated and WRAPPER-CLAIM figures fail
     python3 claim_gate.py --retract <id>  # every file:line citing a registry id, plus every
-                                          # distinct numeral inside those elements, then every
-                                          # unannotated occurrence of those numerals tree-wide
+                                          # distinct numeral in those elements and in WRAPPER-CLAIM
+                                          # figures bound to the id, then every unannotated
+                                          # occurrence of those numerals tree-wide
 """
 from __future__ import annotations
 
@@ -208,7 +216,7 @@ class _Owners(HTMLParser):
             # whole element matched the gate's OWN annotation and passed every retracted claim
             # silently. Disclosure may sit in a child (<s>, "withdrawn"), so it is the full inner
             # HTML; the figures are only the element's own text.
-            self.out.append((el["start"], el["line"], self.src[el["inner"]:end], el["attrs"],
+            self.out.append((el["start"], end, el["line"], self.src[el["inner"]:end], el["attrs"],
                              " ".join(el["text"])))
 
     def close(self):
@@ -227,16 +235,62 @@ def _snippet(text, width=90):
     return ("…" if start else "") + text[start:start + width]
 
 
-def _elements(html):
-    """(line, inner_html, attrs, own_text) for every tracked element, in document order.
+def _parse(html):
+    """Tracked elements as dicts (start, end, line, inner, attrs, text), in document order.
 
-    own_text is the element's text minus the text of tracked elements nested in it. Comments are
-    not published and are not read. Lines are 1-based lines of `html` as passed in.
+    text is the element's own text — not the text of tracked elements nested in it. Comments are
+    not published and are not read. Lines are 1-based lines of `html` as passed in. start/end are
+    offsets into `html` (end is the start of the end tag).
     """
     p = _Owners(html)
     p.feed(html)
     p.close()
-    return [(line, inner, attrs, text) for _, line, inner, attrs, text in sorted(p.out)]
+    rows = []
+    for start, end, line, inner, attrs, text in sorted(p.out):
+        rows.append({"start": start, "end": end, "line": line, "inner": inner,
+                     "attrs": attrs, "text": text})
+    return rows
+
+
+def _elements(html):
+    """(line, inner_html, attrs, own_text) for every tracked element, in document order."""
+    return [(el["line"], el["inner"], el["attrs"], el["text"]) for el in _parse(html)]
+
+
+def _claim_id(attrs):
+    m = re.search(r'data-claim="([^"]+)"', attrs)
+    return m.group(1) if m else None
+
+
+def _battery_id(attrs):
+    m = re.search(r'data-battery="([^"]+)"', attrs)
+    return m.group(1) if m else None
+
+
+def _nearest_registry_wrapper(el, elements, reg):
+    """Nearest tracked ancestor whose data-claim is a registry entry, or None."""
+    best = None
+    for anc in elements:
+        if anc["start"] < el["start"] and anc["end"] >= el["end"]:
+            cid = _claim_id(anc["attrs"])
+            if cid and cid in reg:
+                if best is None or anc["start"] > best["start"]:
+                    best = anc
+    return best
+
+
+def _wrapper_bound_figures(elements, cid, reg):
+    """Unannotated figure-bearing elements whose nearest registry-id ancestor is cid."""
+    out = []
+    for el in elements:
+        if _claim_id(el["attrs"]):
+            continue
+        if not FIGURE.search(el["text"]) or PLACEHOLDER.search(el["text"].strip()):
+            continue
+        anc = _nearest_registry_wrapper(el, elements, reg)
+        if anc and _claim_id(anc["attrs"]) == cid:
+            out.append((el, anc))
+    return out
 
 
 def check(strict_unannotated=False):
@@ -269,19 +323,38 @@ def check(strict_unannotated=False):
         # line numbers still point at the real source.
         body = re.sub(r"<(style|script)\b.*?</\1>",
                       lambda m: "\n" * m.group(0).count("\n"), body, flags=re.S)
-        for line, whole, attrs, inner in _elements(body):
+        elements = _parse(body)
+        for el in elements:
+            line, whole, attrs, inner = el["line"], el["inner"], el["attrs"], el["text"]
             if not FIGURE.search(inner):
                 continue
             # "0 / 0", "0 / 1,000" and friends are live counters rendered by JS, not measurements.
             if PLACEHOLDER.search(inner.strip()):
                 continue
-            cid = re.search(r'data-claim="([^"]+)"', attrs)
-            bat = re.search(r'data-battery="([^"]+)"', attrs)
+            cid = _claim_id(attrs)
+            bat = _battery_id(attrs)
             if not cid:
-                (fails if strict_unannotated else warns).append(
-                    ("UNANNOTATED", fn, line, _snippet(inner)))
+                wrapper = _nearest_registry_wrapper(el, elements, reg)
+                if wrapper:
+                    wcid = _claim_id(wrapper["attrs"])
+                    (fails if strict_unannotated else warns).append(
+                        ("WRAPPER-CLAIM", fn, line,
+                         "%s  (wrapper %s:%s %s)" % (_snippet(inner), fn, wrapper["line"], wcid)))
+                    # rules 2-3 with the ancestor's id; disclosure on the ancestor's inner HTML
+                    entry = reg.get(wcid)
+                    if entry and entry.get("status") in DEAD and not DISCLOSED.search(wrapper["inner"]):
+                        fails.append(("RETRACTED-NOT-DISCLOSED", fn, line, wcid))
+                    wbat = bat or _battery_id(wrapper["attrs"])
+                    if wbat:
+                        whtml = whole if bat else wrapper["inner"]
+                        rep = _floor(wbat)
+                        if rep and rep["verdict"] == "DISQUALIFIED" and "DISQUALIFIED" not in whtml:
+                            fails.append(("DISQUALIFIED-NOT-LABELLED", fn, line, wbat))
+                else:
+                    (fails if strict_unannotated else warns).append(
+                        ("UNANNOTATED", fn, line, _snippet(inner)))
                 continue
-            key = cid.group(1)
+            key = cid
             if key in SPECIAL:
                 debt.append((key, fn, line, inner.strip()[:70]))
                 continue
@@ -290,11 +363,11 @@ def check(strict_unannotated=False):
                 fails.append(("CLAIM-ID-NOT-IN-REGISTRY", fn, line, key))
                 continue
             if entry and entry.get("status") in DEAD and not DISCLOSED.search(whole):
-                fails.append(("RETRACTED-NOT-DISCLOSED", fn, line, cid.group(1)))
+                fails.append(("RETRACTED-NOT-DISCLOSED", fn, line, key))
             if bat:
-                rep = _floor(bat.group(1))
+                rep = _floor(bat)
                 if rep and rep["verdict"] == "DISQUALIFIED" and "DISQUALIFIED" not in whole:
-                    fails.append(("DISQUALIFIED-NOT-LABELLED", fn, line, bat.group(1)))
+                    fails.append(("DISQUALIFIED-NOT-LABELLED", fn, line, bat))
 
     # rule 4 — artifacts must not assert their own verdict
     for bn in sorted(os.listdir(BATTERIES)) if os.path.isdir(BATTERIES) else []:
@@ -323,16 +396,26 @@ def retract(cid):
     print("retracting: %s" % cid)
     if cid in reg:
         print("  registry status: %s" % reg[cid].get("status"))
-    hits, numerals = [], set()
+    hits, numerals, wrappers = [], set(), []
     for fn in sorted(PUBLIC):
         html = open(os.path.join(STATIC, fn), encoding="utf-8", errors="replace").read()
-        for line, whole, attrs, inner in _elements(html):
-            if ('data-claim="%s"' % cid) in attrs:
-                hits.append((fn, line, inner.strip()[:80]))
-                numerals.update(FIGURE.findall(inner))
+        elements = _parse(html)
+        for el in elements:
+            if _claim_id(el["attrs"]) == cid:
+                hits.append((fn, el["line"], el["text"].strip()[:80]))
+                numerals.update(FIGURE.findall(el["text"]))
+        for el, anc in _wrapper_bound_figures(elements, cid, reg):
+            wrappers.append((fn, el["line"], _snippet(el["text"]), anc["line"]))
+            numerals.update(FIGURE.findall(el["text"]))
     print("\n  elements citing it (%d):" % len(hits))
     for fn, ln, txt in hits:
         print("    %s:%d  %s" % (fn, ln, txt))
+    print("\n  WRAPPER-CLAIM figures (%d):" % len(wrappers))
+    if wrappers:
+        for fn, ln, txt, wln in wrappers:
+            print("    %s:%d  %s  (wrapper %s:%d)" % (fn, ln, txt, fn, wln))
+    else:
+        print("    none")
     print("\n  numerals inside them (%d): %s" % (len(numerals), ", ".join(sorted(numerals)) or "none"))
     print("\n  UNANNOTATED occurrences of those numerals elsewhere — these are what gets missed:")
     found = 0

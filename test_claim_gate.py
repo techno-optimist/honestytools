@@ -45,6 +45,9 @@ def _gate_script():
 REGISTRY = {"entries": [
     {"id": "live-claim", "status": "grounded-empirical"},
     {"id": "dead-claim", "status": "falsified-negative"},
+    {"id": "probe-transfer-universal-axes", "status": "grounded-empirical"},
+    {"id": "c7-affine-portability-decisive-negative", "status": "grounded-empirical"},
+    {"id": "prominence-people-v2-surface-blind-battery", "status": "grounded-empirical"},
 ]}
 
 HEAD = "<!doctype html>\n<html>\n<head>\n<title>t</title>\n</head>\n<body>\n"
@@ -61,9 +64,17 @@ PAGES = {
     "nested_retracted": '<div class="bl-txt">Headline: <b data-claim="dead-claim">0 of 36 fabricated</b>.</div>',
     # ...and with its withdrawal shown, which must pass
     "nested_retracted_disclosed": '<div class="bl-txt">Headline: <b data-claim="dead-claim"><s>0 of 36</s> withdrawn</b>.</div>',
-    # a wrapper's id must not cover a number that lives in its child (the double-count the
-    # original INNERMOST rule was written to prevent)
+    # a wrapper's id does not silently cover a child figure: the child is WRAPPER-CLAIM,
+    # not annotated, and the warning names the wrapper line
     "wrapper": '<div class="card" data-claim="live-claim">Summary <b>AUROC 0.951</b></div>',
+    # P56 (d): a dead id on the wrapper must fail RETRACTED-NOT-DISCLOSED for the child figure
+    "wrapper_retracted": '<div class="card" data-claim="dead-claim">Summary <b>AUROC 0.947</b></div>',
+    # disclosure is judged on the ancestor's inner HTML, not only the child's
+    "wrapper_retracted_disclosed": '<div class="card" data-claim="dead-claim">Summary <b>AUROC 0.947</b> withdrawn</div>',
+    # a child with its own id must not inherit the wrapper's (even a dead one)
+    "child_own_id": '<div class="card" data-claim="dead-claim">Summary <b data-claim="live-claim">AUROC 0.947</b></div>',
+    # one wrapper id over sibling figures still warns each child (does not silently annotate both)
+    "sibling_wrapper": '<div class="nums" data-claim="live-claim"><div class="v">0.996</div><div class="v">0.515</div></div>',
     # a parent's own figure must still be checked when a child also carries one
     "parent_own_figure": '<p>Rate 4.64% and <b data-claim="unregistered">116 of 2,500</b> runs.</p>',
     "parent_own_figure_annotated": '<p data-claim="live-claim">Rate 4.64% and <b data-claim="unregistered">116 of 2,500</b> runs.</p>',
@@ -135,9 +146,30 @@ class ClaimGateBreakTests(unittest.TestCase):
     # -- no wrapper double-count, no parent blind spot ------------------------------------------
 
     def test_wrapper_id_does_not_cover_child_figure(self):
-        hits = self._fails("wrapper", "UNANNOTATED")
+        hits = self._fails("wrapper", "WRAPPER-CLAIM")
         self.assertEqual(len(hits), 1, self.stdout)
         self.assertIn("0.951", hits[0][3])
+        self.assertIn("wrapper", hits[0][3])
+        self.assertEqual(self._fails("wrapper", "UNANNOTATED"), [], self.stdout)
+
+    def test_dead_wrapper_id_fails_retracted_not_disclosed(self):
+        hits = self._fails("wrapper_retracted", "RETRACTED-NOT-DISCLOSED")
+        self.assertEqual(len(hits), 1, self.stdout)
+        self.assertIn("dead-claim", hits[0][3])
+        self.assertEqual(self._fails("wrapper_retracted_disclosed", "RETRACTED-NOT-DISCLOSED"), [],
+                         self.stdout)
+
+    def test_child_with_own_id_does_not_inherit_wrapper(self):
+        self.assertEqual(self._fails("child_own_id", "RETRACTED-NOT-DISCLOSED"), [], self.stdout)
+        self.assertEqual(self._fails("child_own_id", "WRAPPER-CLAIM"), [], self.stdout)
+
+    def test_sibling_wrapper_still_warns_each_child(self):
+        hits = self._fails("sibling_wrapper", "WRAPPER-CLAIM")
+        self.assertEqual(len(hits), 2, self.stdout)
+        detail = " ".join(h[3] for h in hits)
+        self.assertIn("0.996", detail)
+        self.assertIn("0.515", detail)
+        self.assertEqual(self._fails("sibling_wrapper", "UNANNOTATED"), [], self.stdout)
 
     def test_parent_own_figure_is_checked(self):
         hits = self._fails("parent_own_figure", "UNANNOTATED")
@@ -160,6 +192,91 @@ class ClaimGateBreakTests(unittest.TestCase):
         hits = self._fails("nested_unannotated", "UNANNOTATED")
         self.assertEqual(len(hits), 1, self.stdout)
         self.assertEqual(int(hits[0][2]), self._line_of("nested_unannotated", "<b>17 of 18"), self.stdout)
+
+
+
+# Live /certificate and /evidence markup as it stood before the P56 attribute edits:
+# the registry id sits on the wrapper, not on the value element that owns the numeral.
+HEADLINE_PAGE = """
+<div class="nums" data-claim="probe-transfer-universal-axes">
+  <div class="num"><div class="v">0.996<small>vs 0.993 native</small></div><div class="c">ported fidelity. <b>G1 clears.</b></div></div>
+  <div class="num" data-claim="c7-affine-portability-decisive-negative"><div class="v">0.515</div><div class="c" data-claim="c7-affine-portability-decisive-negative">the random-orthogonal null, dead.</div></div>
+  <div class="num" data-claim="c7-affine-portability-decisive-negative"><div class="v">0.947<small>vs 0.911 native</small></div><div class="c" data-claim="c7-affine-portability-decisive-negative">a reading direction, rotated.</div></div>
+</div>
+<div class="bl-row" data-claim="prominence-people-v2-surface-blind-battery">
+  <div class="bl-what">an AUROC of 1.000<br>WAS 0.9997</div>
+  <div class="bl-txt">A script printed the rounded figure.</div>
+</div>
+"""
+
+FILLER = "<p>No figures on this page.</p>"
+
+
+def _write_tree(root, pages, registry):
+    static = os.path.join(root, "static")
+    os.makedirs(os.path.join(static, "verifier"))
+    shutil.copy(_gate_script(), os.path.join(static, "verifier", "claim_gate.py"))
+    for name, body in pages.items():
+        with open(os.path.join(static, name + ".html"), "w", encoding="utf-8") as fh:
+            fh.write(HEAD + body + TAIL)
+    reg = os.path.join(root, "registry.json")
+    with open(reg, "w") as fh:
+        json.dump(registry, fh)
+    return static, reg
+
+
+def _run_gate(static, registry, args):
+    env = dict(os.environ, CLAIM_GATE_REGISTRY=registry)
+    return subprocess.run([sys.executable, os.path.join(static, "verifier", "claim_gate.py"), *args],
+                          capture_output=True, text=True, env=env, timeout=120)
+
+
+class ClaimGateRetractAndHeadlineTests(unittest.TestCase):
+    """P56: --retract lists child numerals and WRAPPER-CLAIM figures; the four headline
+    numbers on a /certificate+/evidence-shaped page are reported against their registry ids.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = tempfile.mkdtemp(prefix="claim_gate_retract_")
+        pages = {
+            "wrapped": '<div class="card" data-claim="live-claim">Summary <b>AUROC 0.951</b></div>',
+            "headlines": HEADLINE_PAGE,
+            "plain": FILLER,
+            "plain2": FILLER,
+            "plain3": FILLER,
+        }
+        cls.static, cls.reg = _write_tree(cls.tmp, pages, REGISTRY)
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def test_retract_lists_child_numerals_and_wrapper_claim(self):
+        out = _run_gate(self.static, self.reg, ["--retract", "live-claim"])
+        text = out.stdout + out.stderr
+        self.assertEqual(out.returncode, 0, text)
+        self.assertIn("0.951", text)
+        self.assertIn("WRAPPER-CLAIM", text)
+
+    def test_four_headline_numbers_are_reported(self):
+        # The four number-level claims: 0.996, 0.515, 0.947, and the evidence 0.9997
+        # (FIGURE does not match a bare 1.000; the element is found via 0.9997).
+        cases = [
+            ("probe-transfer-universal-axes", ["0.996"]),
+            ("c7-affine-portability-decisive-negative", ["0.515", "0.947"]),
+            ("prominence-people-v2-surface-blind-battery", ["0.9997"]),
+        ]
+        missing = []
+        for cid, nums in cases:
+            out = _run_gate(self.static, self.reg, ["--retract", cid])
+            text = out.stdout + out.stderr
+            self.assertEqual(out.returncode, 0, text)
+            for n in nums:
+                if n not in text:
+                    missing.append((cid, n, text))
+        self.assertEqual(missing, [], "claim_gate --retract did not report the headline numerals:\n" +
+                         "\n".join("%s missing %s\n%s" % (c, n, t) for c, n, t in missing))
 
 
 if __name__ == "__main__":
