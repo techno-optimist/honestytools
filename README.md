@@ -327,7 +327,12 @@ still be contaminated, circular or mislabelled.
   with a few seeds), or, for matched pairs, with paired mode, which keeps each pair together but not
   pairs that share a source. Grouped splits matter for the same reason elsewhere: selection before
   the split and duplicates across it inflate held-out scores (Sharma 2026,
-  [arXiv 2611.18598](https://arxiv.org/abs/2611.18598)).
+  [arXiv 2611.18598](https://arxiv.org/abs/2611.18598)). Our own `batteries/calibration-battery-v1.json`
+  is such a corpus: each of its 84 entities is on two rows with the same text and label (text key
+  `entity`), so a probe can be fitted on a string and then score that same string. Its verdict does not
+  depend on this: with one row per entity it is still DISQUALIFIED (5 of 34 cells separate at n = 84,
+  against 15 at n = 168). The cell count does: at equal n (72 rows, 6 draws) the version with each text
+  on two rows separated 7.0 cells on average, against 3.8 with each text once (checked 2026-11-23).
 - **Non-Latin text.** The probes run on any Unicode text, but the alphabet probes drop out as
   degenerate when initials are not letters, and `words` splits on whitespace, so unspaced scripts
   give it one token per sentence. The report lists which cells were dropped as degenerate; it
