@@ -54,6 +54,20 @@ checkpoint still exits 0 and prints `the first <size> of the <n> leaves ... repr
 Neither reads the `index` field of each row. When you check the live log, compare the row count of
 `log/leaves.jsonl` with the size in `log/checkpoint` yourself (23 on 2026-11-18).
 
+Signature lines are decoded leniently (checked 2026-11-25). This mirror's `transparency_log.py verify-checkpoint`,
+and the served `transparency_log.py` and `verify_cosignatures.py`, accept a signature line rewritten in
+non-canonical base64 (the same bytes with a different last character) or with stray characters such as `#!*`
+inserted: each still prints ✓ and exits 0 (served: log line and both witness lines of `log/cosigned/23`; this
+mirror: the log line of `log/checkpoint`). The C2SP signed-note spec says decoders must reject non-canonical
+encodings. No signature is forged, since the decoded bytes are the same, but two files that differ byte for byte
+can both verify, so compare checkpoints by their verified content rather than by a hash of the file.
+
+What the live log covers (checked 2026-11-25). Its 23 leaves are the 20 registry certificates and 2 example read
+receipts in `log/leaves_manifest.json`, plus leaf 22, which the site's /goodfire page names as the
+goodfire-sdxl-7446 bundle (manifest not published). We found no leaf and no signature for the other pages the
+site publishes under `/receipts/` (including the VP ≠ VNP statement reads of 23 and 24 November 2026); their files
+are pinned only by the `SHA256SUMS` published with each page and by the site's git history.
+
 ## Signed checkpoints and the Rekor anchor
 `log/` holds the receipt log's genesis checkpoint (22 entries), signed by the receipt-log key
 held by Kevin Russell (key and fingerprint: [`../keys/`](../keys/)), and its Sigstore Rekor v2 entry
