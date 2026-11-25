@@ -356,7 +356,7 @@ still be contaminated, circular or mislabelled.
 | file | role |
 |---|---|
 | `nulltest.py` | the instrument. `--selftest`, `--calibrate`, `--measure-power`, `--emit-grid` |
-| `nulltest.js` | the same instrument for a browser; `bash nulltest_parity.sh` (needs node) checks the two agree cell by cell. The browser engine scores flat two-class files and shows the WHY tables; `--explode` is command-line only |
+| `nulltest.js` | the same instrument for a browser; `bash nulltest_parity.sh` (needs node) checks the two agree cell by cell. The browser engine scores flat two-class files and shows the WHY tables; `--explode` is command-line only The site's deploy check (`render_audit.py --check`) re-hashes the batteries and `nulltest.py` but not `nulltest.js`, `nulltest_parity.js` or the parity certificate: on a copy of the site tree, changing `nulltest.js`'s default alpha from 0.05 to 0.10 makes `nulltest_parity.sh` FAIL (one fixture flips from PASS to DISQUALIFIED; 11 of 17 battery and fixture files differ) while `--check` and both build steps exit 0 and the served `nulltest_parity.json` still says PASS (checked 2026-11-25). Re-run `bash nulltest_parity.sh` after any change to either engine. |
 | `tests/` | 133 unit tests: every probe catches the artifact it was written for, the stratified null holds on unequal label rates, the loader refuses to guess and says what it dropped, parallel equals serial, receipts replay, the stable/experimental wall holds, the verifier mirror matches its source and verifies real receipts |
 | `action.yml`, `nulltest_action.sh` | the GitHub Action; the script runs without GitHub too |
 | `CONTRIBUTING.md`, `CHANGELOG.md` | how to add a benchmark to the table, how to change the tool, what shipped and what did not |
