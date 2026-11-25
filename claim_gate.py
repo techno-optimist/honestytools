@@ -25,9 +25,19 @@ WHAT THIS CHECKS
      prints the count, so a default run exiting 0 does not mean every figure is annotated. It is the
      load-bearing rule; the rest only work on what it forces to be labelled.
 
-  2. RETRACTED SOURCES.  If data-claim names a registry entry whose status is falsified-negative,
-     retracted or withdrawn, the element must itself render the withdrawal — a <s> strike or the
-     word "withdrawn" — so a dead number cannot appear as a live one.
+  2. RETRACTED SOURCES.  Registry statuses are normalised (lowercase, strip, '_'/' ' -> '-') and
+     classified against a closed allowlist: live (grounded-empirical, DOI, proven-no-doi,
+     machine-verified-nogo), provisional (candidate, conjecture-open), and dead
+     (falsified-negative, retracted, withdrawn, superseded, deprecated). superseded and
+     deprecated are treated as dead so a replaced result cannot look live; a page may also
+     declare itself superseded with name="claim-gate" content="superseded" and is then skipped
+     with a visible note. Any other or missing status on a cited id is UNKNOWN-STATUS and fails
+     in both modes. A dead entry must itself render the withdrawal — a <s> strike or the word
+     "withdrawn", "retracted", "superseded" or "deprecated" — so a dead number cannot appear as
+     a live one. A provisional entry must render a qualifier (candidate, preliminary, open,
+     conjecture, or not established) in the element or its citing wrapper; that is a warning
+     by default and a failure under --strict. The gate prints cited-id status counts and
+     labels provisional figures in its output.
 
   3. DISQUALIFIED BATTERIES.  If data-battery names a battery that nulltest DISQUALIFIES, the
      element must say DISQUALIFIED. A score measured on a battery that fails the floor is not
@@ -36,7 +46,11 @@ WHAT THIS CHECKS
   4. SELF-REPORTING ARTIFACTS.  A battery JSON's surface_floor block must match what nulltest
      computes on that same file. calibration-battery-v1.json hand-carried cells_separating: 17
      while the tool printed 16 — and our own retraction quoted the artifact. An artifact must never
-     be able to assert its own verdict.
+     be able to assert its own verdict. A mismatch whose block has no nulltest_version, or an
+     older one, is ARTIFACT-SUPERSEDED-DISCLOSED (informational, exit unaffected) when
+     audit_notes.json for that battery states the block's count (for example "16 of 18 under
+     v1.2"); otherwise it is still ARTIFACT-SELF-REPORT. New self-report blocks must carry
+     nulltest_version.
 
 Rule 4 alone would have caught the 17-vs-16. Rule 1 would have caught all four pages.
 
@@ -48,7 +62,8 @@ Rule 4 alone would have caught the 17-vs-16. Rule 1 would have caught all four p
     to that id, and lists those figures.
 
     python3 claim_gate.py                 # check the served tree (rule 1 warns only)
-    python3 claim_gate.py --strict        # same, but unannotated and WRAPPER-CLAIM figures fail
+    python3 claim_gate.py --strict        # same, but unannotated, WRAPPER-CLAIM, and unlabelled
+                                          # provisional figures fail
     python3 claim_gate.py --retract <id>  # every file:line citing a registry id, plus every
                                           # distinct numeral in those elements and in WRAPPER-CLAIM
                                           # figures bound to the id, then every unannotated
@@ -105,7 +120,17 @@ FIGURE = re.compile(
 # a bare running counter, not a published measurement
 PLACEHOLDER = re.compile(r"^\W*\d[\d,]*\s*/\s*\d[\d,]*\W*$|^\W*0\s*/\s*0\W*$")
 
-DEAD = {"falsified-negative", "retracted", "withdrawn"}
+# Closed status vocabulary. Statuses are normalised (lowercase, strip, '_'/' ' -> '-')
+# before classification. Anything else, including a missing status, is UNKNOWN-STATUS
+# and fails in both default and --strict modes, so a typo cannot look live.
+LIVE = {"grounded-empirical", "doi", "proven-no-doi", "machine-verified-nogo"}
+PROVISIONAL = {"candidate", "conjecture-open"}
+# superseded and deprecated are treated as dead so a replaced result cannot appear as a
+# live number. The registry did not use those two statuses as of 2026-11-25; they are in
+# the allowlist so they fail closed if adopted. A page may also declare itself superseded
+# with name="claim-gate" content="superseded" (skipped, with a visible note).
+DEAD = {"falsified-negative", "retracted", "withdrawn", "superseded", "deprecated"}
+ALLOWED_STATUS = LIVE | PROVISIONAL | DEAD
 
 # Three annotations, because pretending every published numeral maps to a registry entry would be
 # its own dishonesty. Most do not — the registry holds results, the site holds prose about them.
@@ -114,7 +139,10 @@ DEAD = {"falsified-negative", "retracted", "withdrawn"}
 #                      on every run so it has to trend down. It is not a pass.
 #   "not-a-measurement" file sizes, item counts, latencies, prices — nothing a floor applies to.
 SPECIAL = {"unregistered", "not-a-measurement"}
-DISCLOSED = re.compile(r"<s>|withdrawn|WITHDRAWN|retracted|RETRACTED|DISQUALIFIED", re.I)
+DISCLOSED = re.compile(
+    r"<s>|withdrawn|WITHDRAWN|retracted|RETRACTED|DISQUALIFIED|superseded|deprecated", re.I)
+PROVISIONAL_MARK = re.compile(
+    r"candidate|preliminary|\bopen\b|conjecture|not established", re.I)
 
 PUBLIC = [f for f in os.listdir(STATIC) if f.endswith(".html")] if os.path.isdir(STATIC) else []
 
@@ -293,6 +321,111 @@ def _wrapper_bound_figures(elements, cid, reg):
     return out
 
 
+def _normalize_status(status):
+    """Lowercase, strip, collapse space, underscore and hyphen to a single '-'."""
+    if status is None:
+        return None
+    s = str(status).strip().lower().replace("_", " ").replace("-", " ")
+    s = "-".join(s.split())
+    return s or None
+
+
+def _classify_status(status):
+    """Return (class, normalised) where class is live, provisional, dead, or unknown."""
+    norm = _normalize_status(status)
+    if norm in LIVE:
+        return "live", norm
+    if norm in PROVISIONAL:
+        return "provisional", norm
+    if norm in DEAD:
+        return "dead", norm
+    return "unknown", norm
+
+
+def _audit_notes_path():
+    env = os.environ.get("CLAIM_GATE_AUDIT_NOTES")
+    if env:
+        return env
+    return os.path.join(HERE, "audit_notes.json")
+
+
+def _audit_notes():
+    path = _audit_notes_path()
+    if not os.path.exists(path):
+        return {}
+    try:
+        data = json.load(open(path, encoding="utf-8"))
+    except Exception:
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def _battery_audit_note(notes, bn):
+    """Match a battery filename to an audit_notes.json entry.
+
+    Notes are keyed like aperture/calibration-battery-v1; files are
+    calibration-battery-v1.json. A leading _ key is documentation, not a battery.
+    """
+    stem = bn[:-5] if bn.endswith(".json") else bn
+    candidates = [stem, "aperture/" + stem]
+    if stem.startswith("aperture/"):
+        candidates.append(stem[len("aperture/"):])
+    for key in candidates:
+        if key in notes and not str(key).startswith("_"):
+            return notes[key], key
+    for key, val in notes.items():
+        if str(key).startswith("_"):
+            continue
+        if str(key).rsplit("/", 1)[-1] == stem:
+            return val, key
+    return None, None
+
+
+def _version_tuple(value):
+    if value is None or value == "":
+        return None
+    parts = [int(p) for p in re.findall(r"\d+", str(value))]
+    return tuple(parts) if parts else None
+
+
+def _note_states_count(note, claimed, cells):
+    """True when the audit note records the block's count, e.g. '16 of 18 under v1.2'."""
+    if not note or claimed is None:
+        return False
+    text = str(note)
+    if cells is not None:
+        pat = r"\b%s\s+of\s+%s\b" % (re.escape(str(claimed)), re.escape(str(cells)))
+        return re.search(pat, text) is not None
+    return re.search(r"\b%s\b" % re.escape(str(claimed)), text) is not None
+
+
+def _status_findings(entry, html, fn, line, key, strict):
+    """Classify a cited entry. Returns (fails, warns, labelled, (key, class, norm, raw))."""
+    raw = None if entry is None else entry.get("status")
+    klass, norm = _classify_status(raw)
+    cited = (key, klass, norm, raw)
+    fails, warns, labelled = [], [], []
+    if klass == "unknown":
+        if raw is None or str(raw).strip() == "":
+            shown = "missing"
+        else:
+            shown = repr(raw)
+        fails.append(("UNKNOWN-STATUS", fn, line,
+                      "%s  status %s is not in the allowlist (live: %s; provisional: %s; dead: %s)"
+                      % (key, shown, ", ".join(sorted(LIVE)),
+                         ", ".join(sorted(PROVISIONAL)), ", ".join(sorted(DEAD)))))
+    elif klass == "dead":
+        if not DISCLOSED.search(html or ""):
+            fails.append(("RETRACTED-NOT-DISCLOSED", fn, line, key))
+    elif klass == "provisional":
+        rec = ("PROVISIONAL-NOT-LABELLED", fn, line, "%s  status %s" % (key, norm))
+        if not PROVISIONAL_MARK.search(html or ""):
+            (fails if strict else warns).append(rec)
+        else:
+            labelled.append((fn, line, key, norm))
+    return fails, warns, labelled, cited
+
+
 def check(strict_unannotated=False):
     # A DENOMINATOR, mirroring the registry guard. With PUBLIC empty — a wrong cwd, a moved tree, a
     # glob that matched nothing — this walked zero pages and reported "0 failures", which reads
@@ -304,6 +437,10 @@ def check(strict_unannotated=False):
                          % (len(PUBLIC), STATIC))
     reg = _registry()
     fails, warns, debt, skipped = [], [], [], []
+    cited_ids = {}
+    provisional_labelled = []
+    artifact_disclosed = []
+    notes = _audit_notes()
     for fn in sorted(PUBLIC):
         path = os.path.join(STATIC, fn)
         html = open(path, encoding="utf-8", errors="replace").read()
@@ -342,8 +479,13 @@ def check(strict_unannotated=False):
                          "%s  (wrapper %s:%s %s)" % (_snippet(inner), fn, wrapper["line"], wcid)))
                     # rules 2-3 with the ancestor's id; disclosure on the ancestor's inner HTML
                     entry = reg.get(wcid)
-                    if entry and entry.get("status") in DEAD and not DISCLOSED.search(wrapper["inner"]):
-                        fails.append(("RETRACTED-NOT-DISCLOSED", fn, line, wcid))
+                    if entry:
+                        sf, sw, sl, cited = _status_findings(
+                            entry, wrapper["inner"], fn, line, wcid, strict_unannotated)
+                        fails.extend(sf)
+                        warns.extend(sw)
+                        provisional_labelled.extend(sl)
+                        cited_ids[cited[0]] = cited[1:]
                     wbat = bat or _battery_id(wrapper["attrs"])
                     if wbat:
                         whtml = whole if bat else wrapper["inner"]
@@ -362,8 +504,12 @@ def check(strict_unannotated=False):
             if entry is None:
                 fails.append(("CLAIM-ID-NOT-IN-REGISTRY", fn, line, key))
                 continue
-            if entry and entry.get("status") in DEAD and not DISCLOSED.search(whole):
-                fails.append(("RETRACTED-NOT-DISCLOSED", fn, line, key))
+            sf, sw, sl, cited = _status_findings(
+                entry, whole, fn, line, key, strict_unannotated)
+            fails.extend(sf)
+            warns.extend(sw)
+            provisional_labelled.extend(sl)
+            cited_ids[cited[0]] = cited[1:]
             if bat:
                 rep = _floor(bat)
                 if rep and rep["verdict"] == "DISQUALIFIED" and "DISQUALIFIED" not in whole:
@@ -384,10 +530,30 @@ def check(strict_unannotated=False):
         if claimed is None:
             continue
         rep = _floor(bn)
-        if rep and rep.get("n_separating_cells") != claimed:
+        if not rep:
+            continue
+        got = rep.get("n_separating_cells")
+        if got == claimed:
+            continue
+        block_t = _version_tuple(sf.get("nulltest_version"))
+        cur_ver = rep.get("version")
+        cur_t = _version_tuple(cur_ver)
+        stale = block_t is None or (cur_t is not None and block_t < cur_t)
+        note, note_key = _battery_audit_note(notes, bn)
+        if stale and _note_states_count(note, claimed, sf.get("cells")):
+            artifact_disclosed.append(
+                ("ARTIFACT-SUPERSEDED-DISCLOSED", bn, 0,
+                 "says %s, nulltest %s says %s; count recorded in audit_notes.json (%s)"
+                 % (claimed, cur_ver or "current", got, note_key or "entry")))
+        else:
             fails.append(("ARTIFACT-SELF-REPORT", bn, 0,
-                          "says %s, nulltest says %s" % (claimed, rep["n_separating_cells"])))
-    return fails, warns, debt, skipped
+                          "says %s, nulltest says %s" % (claimed, got)))
+    info = {
+        "cited": cited_ids,
+        "provisional_labelled": provisional_labelled,
+        "artifact_disclosed": artifact_disclosed,
+    }
+    return fails, warns, debt, skipped, info
 
 
 def retract(cid):
@@ -434,21 +600,52 @@ def main(argv):
     ap = argparse.ArgumentParser()
     ap.add_argument("--retract", metavar="REGISTRY_ID")
     ap.add_argument("--strict", action="store_true",
-                    help="treat unannotated figures as failures (the end state; warnings until annotated)")
+                    help="treat unannotated, WRAPPER-CLAIM, and unlabelled provisional figures as failures")
     a = ap.parse_args(argv[1:])
     if a.retract:
         return retract(a.retract)
 
-    fails, warns, debt, skipped = check(strict_unannotated=a.strict)
+    fails, warns, debt, skipped, info = check(strict_unannotated=a.strict)
     for kind, fn, line, detail in fails:
         print("FAIL  %-26s %s:%s  %s" % (kind, fn, line, detail))
-    if warns:
+    unann = [w for w in warns if w[0] in ("UNANNOTATED", "WRAPPER-CLAIM")]
+    prov_warns = [w for w in warns if w[0] == "PROVISIONAL-NOT-LABELLED"]
+    other_warns = [w for w in warns if w not in unann and w not in prov_warns]
+    if unann:
         print("\n%d unannotated figures (warnings until the annotation pass lands; --strict fails on them)"
-              % len(warns))
-        for kind, fn, line, detail in warns[:12]:
+              % len(unann))
+        for kind, fn, line, detail in unann[:12]:
             print("  warn  %s:%s  %s" % (fn, line, detail))
-        if len(warns) > 12:
-            print("  ... and %d more" % (len(warns) - 12))
+        if len(unann) > 12:
+            print("  ... and %d more" % (len(unann) - 12))
+    if prov_warns:
+        print("\n%d provisional figures not labelled (warning; --strict fails on them)"
+              % len(prov_warns))
+        for kind, fn, line, detail in prov_warns:
+            print("  warn  %-26s %s:%s  %s" % (kind, fn, line, detail))
+    for kind, fn, line, detail in other_warns:
+        print("  warn  %-26s %s:%s  %s" % (kind, fn, line, detail))
+    labelled = info.get("provisional_labelled") or []
+    if labelled:
+        print("\n%d provisional figures (labelled):" % len(labelled))
+        for fn, line, key, norm in labelled:
+            print("  %s:%s  %s  %s" % (fn, line, key, norm))
+    for kind, fn, line, detail in info.get("artifact_disclosed") or []:
+        print("INFO  %-26s %s:%s  %s" % (kind, fn, line, detail))
+    cited = info.get("cited") or {}
+    if cited:
+        classes, statuses = {}, {}
+        for key, (klass, norm, raw) in cited.items():
+            classes[klass] = classes.get(klass, 0) + 1
+            label = norm or "missing"
+            statuses.setdefault(klass, {})
+            statuses[klass][label] = statuses[klass].get(label, 0) + 1
+        print("\ncited registry statuses (%d unique ids):" % len(cited))
+        for klass in ("live", "provisional", "dead", "unknown"):
+            n = classes.get(klass, 0)
+            breakdown = statuses.get(klass) or {}
+            extra = ", ".join("%s %d" % (s, c) for s, c in sorted(breakdown.items()))
+            print("  %-12s %d%s" % (klass, n, (": " + extra) if extra else ""))
     if debt:
         print("\n%d figures annotated but UNREGISTERED or not-a-measurement — standing debt, must trend down:"
               % len(debt))
@@ -460,7 +657,7 @@ def main(argv):
             print("  %-22s %-18s %d" % (fn, kind, n))
     if skipped:
         print("\nskipped as superseded (still served, not live claims): %s" % ", ".join(skipped))
-    print("\n%d failures, %d unannotated, %d annotated-debt" % (len(fails), len(warns), len(debt)))
+    print("\n%d failures, %d unannotated, %d annotated-debt" % (len(fails), len(unann), len(debt)))
     return 1 if fails else 0
 
 

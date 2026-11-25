@@ -279,5 +279,173 @@ class ClaimGateRetractAndHeadlineTests(unittest.TestCase):
                          "\n".join("%s missing %s\n%s" % (c, n, t) for c, n, t in missing))
 
 
+
+def _filler_pages(n=5, prefix="plain"):
+    return {"%s%d" % (prefix, i): FILLER for i in range(n)}
+
+
+def _write_p82_tree(root, pages, registry, batteries=None, notes=None, nulltest_payload=None):
+    """A throwaway tree with optional batteries, audit_notes, and a stub nulltest."""
+    static, reg = _write_tree(root, pages, registry)
+    verifier = os.path.join(static, "verifier")
+    if batteries:
+        bdir = os.path.join(verifier, "batteries")
+        os.makedirs(bdir, exist_ok=True)
+        for name, body in batteries.items():
+            with open(os.path.join(bdir, name), "w", encoding="utf-8") as fh:
+                json.dump(body, fh)
+    if notes is not None:
+        with open(os.path.join(verifier, "audit_notes.json"), "w", encoding="utf-8") as fh:
+            json.dump(notes, fh)
+    if nulltest_payload is not None:
+        stub = os.path.join(verifier, "nulltest.py")
+        with open(stub, "w", encoding="utf-8") as fh:
+            fh.write("#!/usr/bin/env python3\nimport json, sys\n"
+                     "print(json.dumps(%s))\n" % json.dumps(nulltest_payload))
+        os.chmod(stub, 0o755)
+    return static, reg
+
+
+def _p82_pages(body, extras=None):
+    pages = _filler_pages()
+    pages["p0"] = body
+    if extras:
+        pages.update(extras)
+    return pages
+
+
+class ClaimGateP82Tests(unittest.TestCase):
+    """P82: closed status vocabulary, provisional labels, disclosed stale self-reports."""
+
+    def _run(self, pages, registry, args=None, batteries=None, notes=None, nulltest_payload=None):
+        tmp = tempfile.mkdtemp(prefix="claim_gate_p82_")
+        self.addCleanup(shutil.rmtree, tmp, True)
+        static, reg = _write_p82_tree(tmp, pages, registry, batteries, notes, nulltest_payload)
+        out = _run_gate(static, reg, args or [])
+        text = out.stdout + out.stderr
+        fails = [FAIL_LINE.match(l).groups() for l in out.stdout.splitlines() if FAIL_LINE.match(l)]
+        return out.returncode, text, fails
+
+    def _reg(self, status, cid="planted-id"):
+        entry = {"id": cid}
+        if status is not None:
+            entry["status"] = status
+        return {"entries": [entry, {"id": "live-claim", "status": "grounded-empirical"}]}
+
+    def _figure(self, cid="planted-id", qualifier=""):
+        extra = (" " + qualifier) if qualifier else ""
+        return '<div data-claim="%s">transfer AUROC 0.947 across providers%s</div>' % (cid, extra)
+
+    def test_retracted_title_case_fails_when_undisclosed(self):
+        code, text, fails = self._run(_p82_pages(self._figure()), self._reg("Retracted"))
+        self.assertEqual(code, 1, text)
+        self.assertEqual([f[0] for f in fails], ["RETRACTED-NOT-DISCLOSED"], text)
+
+    def test_retracted_trailing_space_fails_when_undisclosed(self):
+        code, text, fails = self._run(_p82_pages(self._figure()), self._reg("retracted "))
+        self.assertEqual(code, 1, text)
+        self.assertEqual([f[0] for f in fails], ["RETRACTED-NOT-DISCLOSED"], text)
+
+    def test_falsified_negative_space_separator_fails_when_undisclosed(self):
+        code, text, fails = self._run(_p82_pages(self._figure()), self._reg("falsified negative"))
+        self.assertEqual(code, 1, text)
+        self.assertEqual([f[0] for f in fails], ["RETRACTED-NOT-DISCLOSED"], text)
+
+    def test_missing_status_is_unknown_status(self):
+        code, text, fails = self._run(_p82_pages(self._figure()), self._reg(None))
+        self.assertEqual(code, 1, text)
+        self.assertEqual([f[0] for f in fails], ["UNKNOWN-STATUS"], text)
+        self.assertIn("missing", fails[0][3], text)
+
+    def test_empty_status_is_unknown_status(self):
+        code, text, fails = self._run(_p82_pages(self._figure()), self._reg(""))
+        self.assertEqual(code, 1, text)
+        self.assertEqual([f[0] for f in fails], ["UNKNOWN-STATUS"], text)
+
+    def test_superseded_undisclosed_fails_and_does_not_pass_silently(self):
+        code, text, fails = self._run(_p82_pages(self._figure()), self._reg("superseded"))
+        self.assertEqual(code, 1, text)
+        self.assertEqual([f[0] for f in fails], ["RETRACTED-NOT-DISCLOSED"], text)
+
+    def test_superseded_disclosed_passes(self):
+        body = '<div data-claim="planted-id"><s>AUROC 0.947</s> superseded</div>'
+        code, text, fails = self._run(_p82_pages(body), self._reg("superseded"))
+        self.assertEqual(fails, [], text)
+        self.assertEqual(code, 0, text)
+        self.assertIn("dead", text)
+        self.assertIn("superseded", text)
+
+    def test_unknown_status_corrected_fails_closed(self):
+        code, text, fails = self._run(_p82_pages(self._figure()), self._reg("corrected"))
+        self.assertEqual(code, 1, text)
+        self.assertEqual([f[0] for f in fails], ["UNKNOWN-STATUS"], text)
+        self.assertIn("corrected", fails[0][3], text)
+
+    def test_candidate_without_qualifier_warns_and_fails_under_strict(self):
+        pages, registry = _p82_pages(self._figure()), self._reg("candidate")
+        code, text, fails = self._run(pages, registry)
+        self.assertEqual(code, 0, text)
+        self.assertEqual(fails, [], text)
+        self.assertIn("PROVISIONAL-NOT-LABELLED", text)
+        self.assertIn("provisional figures not labelled", text)
+        code_s, text_s, fails_s = self._run(pages, registry, args=["--strict"])
+        self.assertEqual(code_s, 1, text_s)
+        self.assertEqual([f[0] for f in fails_s], ["PROVISIONAL-NOT-LABELLED"], text_s)
+
+    def test_candidate_with_qualifier_is_labelled_in_output(self):
+        code, text, fails = self._run(
+            _p82_pages(self._figure(qualifier="(candidate)")), self._reg("candidate"))
+        self.assertEqual(code, 0, text)
+        self.assertEqual(fails, [], text)
+        self.assertNotIn("PROVISIONAL-NOT-LABELLED", text)
+        self.assertIn("provisional figures (labelled)", text)
+        self.assertIn("planted-id", text)
+        self.assertIn("candidate", text)
+
+    def test_stale_self_report_with_matching_audit_note_is_disclosed(self):
+        batteries = {"calibration-battery-v1.json": {
+            "items": [],
+            "surface_floor": {"cells": 18, "cells_separating": 16},
+        }}
+        notes = {"aperture/calibration-battery-v1":
+                 "RE-SCORED under v1.4: 15 of 34 cells separate (16 of 18 under v1.2)."}
+        payload = {"version": "1.4", "n_separating_cells": 15, "verdict": "DISQUALIFIED"}
+        code, text, fails = self._run(
+            _filler_pages(), self._reg("grounded-empirical", "live-claim"),
+            batteries=batteries, notes=notes, nulltest_payload=payload)
+        self.assertEqual(fails, [], text)
+        self.assertEqual(code, 0, text)
+        self.assertIn("ARTIFACT-SUPERSEDED-DISCLOSED", text)
+        self.assertIn("16", text)
+        self.assertNotIn("FAIL  ARTIFACT-SELF-REPORT", text)
+
+    def test_stale_self_report_without_note_still_fails(self):
+        batteries = {"calibration-battery-v1.json": {
+            "items": [],
+            "surface_floor": {"cells": 18, "cells_separating": 16},
+        }}
+        payload = {"version": "1.4", "n_separating_cells": 15, "verdict": "DISQUALIFIED"}
+        code, text, fails = self._run(
+            _filler_pages(), self._reg("grounded-empirical", "live-claim"),
+            batteries=batteries, notes={}, nulltest_payload=payload)
+        self.assertEqual(code, 1, text)
+        self.assertEqual([f[0] for f in fails], ["ARTIFACT-SELF-REPORT"], text)
+        self.assertNotIn("ARTIFACT-SUPERSEDED-DISCLOSED", text)
+
+    def test_current_version_mismatch_fails_even_with_a_note(self):
+        batteries = {"calibration-battery-v1.json": {
+            "items": [],
+            "surface_floor": {"cells": 18, "cells_separating": 16, "nulltest_version": "1.4"},
+        }}
+        notes = {"aperture/calibration-battery-v1": "16 of 18 under v1.4, but the tool now prints 15."}
+        payload = {"version": "1.4", "n_separating_cells": 15, "verdict": "DISQUALIFIED"}
+        code, text, fails = self._run(
+            _filler_pages(), self._reg("grounded-empirical", "live-claim"),
+            batteries=batteries, notes=notes, nulltest_payload=payload)
+        self.assertEqual(code, 1, text)
+        self.assertEqual([f[0] for f in fails], ["ARTIFACT-SELF-REPORT"], text)
+
+
+
 if __name__ == "__main__":
     unittest.main()
