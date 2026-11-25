@@ -136,6 +136,14 @@ receipt for a superseded copy still replays (exit 0) against that copy (checked 
 know whether a receipt describes today's file, compare its `battery_sha256` with the current file's
 sha256 yourself.
 
+`--check` re-runs the receipt under the rules of the nulltest.py you run, not the rules that wrote
+the receipt. When the tool differs, it says so, but it does not compare the receipt's `version` and
+`probes` fields with its own. A receipt written under an earlier probe set can therefore print
+DIVERGES (exit 1, the same as a falsified receipt) when only the rules changed, or REPLAYS when
+the probe sets differ but the verdict happens to agree (checked 2026-11-25 with a planted copy of
+1.4 without the two alphabet probes). If the tool line says DIFFERS, compare the receipt's `version`
+and `probes` with the current tool before reading DIVERGES as a wrong receipt.
+
 ### What the report says before the verdict
 
 The text report opens with what the loader did, because a silent change of corpus is a silent
