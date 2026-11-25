@@ -122,7 +122,7 @@ class Anchor(unittest.TestCase):
     the Rekor v2 entry anchors it, and the key in keys/ is the one the verifier pins."""
     def setUp(self):
         self.t = _imp("transparency_log")
-        self.note = open(os.path.join(VDIR, "log", "checkpoint")).read()
+        self.note = open(os.path.join(VDIR, "log", "checkpoints", "22")).read()
         self.entry = json.load(open(os.path.join(VDIR, "log", "rekor-entry-0.json")))
 
     def test_keys_dir_matches_pin(self):
@@ -137,7 +137,7 @@ class Anchor(unittest.TestCase):
         cp = self.t.verify_checkpoint(self.note)
         self.assertEqual((cp["tree_size"], cp["root"]),
                          (22, "890d25bd770f265415256a5fda48013a25ff78fc543711e2785376ad05c8ae71"))
-        r = _run("transparency_log.py", "verify-checkpoint", "log/checkpoint", "log/leaves.jsonl")
+        r = _run("transparency_log.py", "verify-checkpoint", "log/checkpoints/22", "log/leaves.jsonl")
         self.assertEqual(r.returncode, 0, r.stdout[-400:] + r.stderr[-400:])
 
     def test_rekor_anchor(self):
@@ -154,6 +154,59 @@ class Anchor(unittest.TestCase):
         with self.assertRaises(Exception):
             self.t.verify_rekor_anchor(self.note, e)
 
+
+    def test_checkpoint_23_consistency_and_all_23_leaves(self):
+        c23 = open(os.path.join(VDIR, "log", "checkpoints", "23")).read()
+        cp = self.t.verify_checkpoint(c23)
+        self.assertEqual((cp["tree_size"], cp["root"]),
+                         (23, "97d2ecae83e6e9b2c06fb0f87110b277f5e8a216c07658d988222c57b8c5d72b"))
+        self.assertEqual(c23, open(os.path.join(VDIR, "log", "checkpoint")).read())
+        r = _run("transparency_log.py", "verify-checkpoint", "log/checkpoint", "log/leaves.jsonl")
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        e1 = json.load(open(os.path.join(VDIR, "log", "rekor-entry-1.json")))
+        self.assertEqual(self.t.verify_rekor_anchor(c23, e1)["rekor"]["log_index"], 171750012)
+        proof = json.load(open(os.path.join(VDIR, "log", "proofs", "consistency-22-23.json")))
+        self.assertTrue(self.t.verify_consistency_file(self.note, c23, proof)["ok"])
+        manifest = json.load(open(os.path.join(VDIR, "log", "leaves_manifest.json")))
+        leaves = self.t.TransparencyLog(os.path.join(VDIR, "log", "leaves.jsonl")).leaves
+        self.assertEqual(len(leaves), 23)
+        self.assertEqual(len(manifest["entries"]), 23)
+        self.assertEqual(manifest["entries"][22]["id"], "goodfire-sdxl-7446")
+
+    def test_cosignatures_22_and_23_and_strict_gauntlet(self):
+        import base64, shutil, tempfile
+        r22 = _run("verify_cosignatures.py", "log/cosigned/22")
+        self.assertEqual(r22.returncode, 0, r22.stdout + r22.stderr)
+        r23 = _run("verify_cosignatures.py", "log/cosigned/23")
+        self.assertEqual(r23.returncode, 0, r23.stdout + r23.stderr)
+        self.assertIn("rgdd.se/poc-witness co-signed", r23.stdout)
+        self.assertIn("markovianprotocol.com/witness co-signed", r23.stdout)
+        rc = _run("tests/test_consistency.py")
+        self.assertEqual(rc.returncode, 0, rc.stdout + rc.stderr)
+
+        # Also verify verify_cosignatures.py rejects non-canonical b64 and stray chars
+        orig = open(os.path.join(VDIR, "log", "cosigned", "23"), encoding="utf-8").read()
+        body, sigs = orig.split("\n\n", 1)
+        lines = sigs.splitlines()
+        alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+        with tempfile.TemporaryDirectory() as d:
+            os.makedirs(os.path.join(d, "log", "cosigned"))
+            os.makedirs(os.path.join(d, "log", "checkpoints"))
+            shutil.copy(os.path.join(VDIR, "log", "witnesses.txt"), os.path.join(d, "log", "witnesses.txt"))
+            shutil.copy(os.path.join(VDIR, "log", "checkpoints", "23"), os.path.join(d, "log", "checkpoints", "23"))
+            for idx in range(3):
+                parts = lines[idx].split(" ")
+                pad = len(parts[2]) - len(parts[2].rstrip("="))
+                pos = len(parts[2]) - pad - 1
+                nc = parts[2][:pos] + alpha[alpha.index(parts[2][pos]) ^ 1] + parts[2][pos + 1:]
+                for tag, bad_sig in (("nc", nc), ("stray", "#!" + parts[2][:8] + "*" + parts[2][8:])):
+                    mut = list(lines)
+                    mut[idx] = " ".join(parts[:2] + [bad_sig])
+                    fp = os.path.join(d, "log", "cosigned", f"23_{idx}_{tag}")
+                    with open(fp, "w", encoding="utf-8") as fh:
+                        fh.write(body + "\n\n" + "\n".join(mut) + "\n")
+                    rr = _run("verify_cosignatures.py", fp)
+                    self.assertEqual(rr.returncode, 1, (idx, tag, rr.stdout, rr.stderr))
 
 if __name__ == "__main__":
     unittest.main()

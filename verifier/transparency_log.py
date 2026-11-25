@@ -25,8 +25,18 @@ CLI:
     python3 transparency_log.py check receipt.json          # verify a receipt IS in the current log
     python3 transparency_log.py session-root r1.json r2.json ...          # the head of an ordered session trail
     python3 transparency_log.py verify-session <root> r1.json r2.json ... # verify a whole agent-run trail
-    python3 transparency_log.py verify-checkpoint log/checkpoint [log/leaves.jsonl]  # C2SP checkpoint under the pinned log key
-    python3 transparency_log.py verify-anchor log/checkpoint log/rekor-entry-0.json  # that checkpoint is logged in Sigstore Rekor v2
+    python3 transparency_log.py verify-checkpoint log/checkpoints/23 [log/leaves.jsonl]  # C2SP checkpoint under the pinned log key
+    python3 transparency_log.py verify-anchor log/checkpoints/22 log/rekor-entry-0.json  # that checkpoint is logged in Sigstore Rekor v2
+    python3 transparency_log.py verify-anchor log/checkpoints/23 log/rekor-entry-1.json
+    python3 transparency_log.py consistency log/checkpoints/22 log/checkpoints/23 log/proofs/consistency-22-23.json
+                                                            # RFC 6962/9162: the size-23 tree only appended to the size-22 tree
+    python3 transparency_log.py consistency make log/checkpoints/22 log/checkpoints/23 log/leaves.jsonl [out.json]
+                                                            # (log operator) generate + self-verify that proof from the leaves
+
+LOG LAYOUT: log/checkpoints/<size> holds every signed checkpoint, byte-identical, forever; log/checkpoint is a
+byte-identical copy of the newest one (the head); log/rekor-entry-<k>.json is the k-th Rekor anchor (entry 0
+anchors checkpoints/22, entry 1 anchors checkpoints/23); log/proofs/consistency-<m>-<n>.json links consecutive
+checkpoints; log/leaves.jsonl holds the leaves of the head (older checkpoints verify against its prefix).
     python3 transparency_log.py keys                        # the pinned receipt-log key and who holds it
     python3 transparency_log.py selftest                    # RFC6962 inclusion + consistency + session + tamper
 
@@ -88,7 +98,7 @@ def inclusion_proof(m: int, leaves: list[bytes]) -> list[bytes]:
 
 def verify_inclusion(leaf_data: bytes, m: int, n: int, proof: list[bytes], root: bytes) -> bool:
     """Recompute the root from a leaf + its audit path and compare (RFC 6962 verification)."""
-    if m >= n:
+    if m < 0 or n <= 0 or m >= n or len(root) != 32 or len(proof) > 63 or any(len(p) != 32 for p in proof):
         return False
     node = _leaf_hash(leaf_data)
     fn, sn = m, n - 1
@@ -125,12 +135,18 @@ def _subproof(m: int, leaves: list[bytes], b: bool) -> list[bytes]:
 
 def verify_consistency(m: int, n: int, proof: list[bytes], first_root: bytes, second_root: bytes) -> bool:
     """Verify a consistency proof between the size-m and size-n trees (RFC 6962)."""
+    if len(first_root) != 32 or len(second_root) != 32 or len(proof) > 63 or any(len(p) != 32 for p in proof):
+        return False
+    if m < 0 or n < 0:
+        return False
     if m == n:
-        return not proof and first_root == second_root
+        return not proof and first_root == second_root and (m > 0 or first_root == hashlib.sha256(b"").digest())
     if m == 0 or m > n:
         return False
     if m & (m - 1) == 0:                       # m is a power of two: first node is the old root, implied
         proof = [first_root] + proof
+    if not proof:
+        return False
     fn, sn = m - 1, n - 1
     while fn % 2 == 1:
         fn >>= 1
@@ -149,7 +165,7 @@ def verify_consistency(m: int, n: int, proof: list[bytes], first_root: bytes, se
             sr = _h(_NODE, sr, c)
         fn >>= 1
         sn >>= 1
-    return fn == 0 and fr == first_root and sr == second_root
+    return fn == 0 and sn == 0 and fr == first_root and sr == second_root
 
 
 # ── the persistent append-only log ──────────────────────────────────────────────────────────────────
@@ -216,16 +232,46 @@ PINNED_REKOR_LOGS = {"log2025-1.rekor.sigstore.dev": "t8rlp1knGwjfbcXAYPYAkn0XiL
 _SPKI_ED25519 = bytes.fromhex("302a300506032b6570032100")
 
 
+def decode_b64_strict(s: str, *, expected_len: int | None = None, label: str = "base64") -> bytes:
+    """Decode strict canonical ASCII standard base64 (no stray chars, whitespace, or non-zero padding bits)."""
+    import base64, binascii
+    if not isinstance(s, str) or not s or not s.isascii() or any(c.isspace() for c in s):
+        raise ValueError("NON-CANONICAL ENCODING (%s): invalid characters or whitespace" % label)
+    try:
+        raw = base64.b64decode(s.encode("ascii"), validate=True)
+    except (binascii.Error, ValueError) as exc:
+        raise ValueError("NON-CANONICAL ENCODING (%s): %s" % (label, exc))
+    if base64.b64encode(raw).decode("ascii") != s:
+        raise ValueError("NON-CANONICAL ENCODING (%s): non-canonical base64 padding or trailing bits" % label)
+    if expected_len is not None and len(raw) != expected_len:
+        raise ValueError("NON-CANONICAL ENCODING (%s): expected %d bytes, got %d" % (label, expected_len, len(raw)))
+    return raw
+
+
+def _parse_canonical_uint(s: str, label: str = "size") -> int:
+    if not isinstance(s, str) or not s or not s.isascii() or not s.isdigit() or (len(s) > 1 and s.startswith("0")):
+        raise ValueError("malformed %s %r" % (label, s))
+    return int(s)
+
+
 def parse_vkey(vkey: str):
     """C2SP signed-note verifier key '<name>+<hex key id>+<b64(0x01||pub)>' -> (name, key_id, raw pub)."""
-    import base64
-    name, kid_hex, b = vkey.strip().split("+", 2)
-    blob = base64.b64decode(b)
-    if len(blob) != 33 or blob[0] != 1:
+    parts = vkey.strip().split("+", 2)
+    if len(parts) != 3:
+        raise ValueError("malformed vkey")
+    name, kid_hex, b = parts
+    if not name or len(kid_hex) != 8 or kid_hex != kid_hex.lower():
+        raise ValueError("malformed vkey header")
+    try:
+        bytes.fromhex(kid_hex)
+    except ValueError:
+        raise ValueError("malformed vkey key id")
+    blob = decode_b64_strict(b, expected_len=33, label="vkey %s" % name)
+    if blob[0] != 1:
         raise ValueError("not an ed25519 (type 0x01) vkey")
     pub = blob[1:]
     kid = _h(name.encode(), b"\n\x01", pub)[:4]
-    if kid.hex() != kid_hex.lower():
+    if kid.hex() != kid_hex:
         raise ValueError("vkey key id does not match its name+key")
     return name, kid, pub
 
@@ -239,13 +285,30 @@ def _split_note(note: str):
     if "\n\n" not in note:
         raise ValueError("not a signed note (no blank line before signatures)")
     text, sigs = note.split("\n\n", 1)
-    return text + "\n", [l for l in sigs.splitlines() if l.strip()]
+    if not sigs:
+        raise ValueError("not a signed note (empty signature block)")
+    raw_lines = sigs.splitlines()
+    if not raw_lines:
+        raise ValueError("not a signed note (no signature lines)")
+    parsed = []
+    for l in raw_lines:
+        if not l:
+            raise ValueError("NON-CANONICAL ENCODING (signature block): blank line in signature section")
+        parts = l.split(" ")
+        if len(parts) != 3 or parts[0] != "\u2014" or not parts[1]:
+            raise ValueError("NON-CANONICAL ENCODING (signature line): malformed signature line %r" % l)
+        blob = decode_b64_strict(parts[2], label="signature %s" % parts[1])
+        if len(blob) not in (68, 76):
+            raise ValueError("NON-CANONICAL ENCODING (signature %s): wrong signature length %d (expected 68 or 76)"
+                             % (parts[1], len(blob)))
+        parsed.append((l, parts[1], blob))
+    return text + "\n", [l for l, _, _ in parsed]
 
 
 def verify_checkpoint(note: str, vkeys: dict | None = None) -> dict:
-    """Verify a C2SP checkpoint under a PINNED log vkey. Signatures by unknown keys are ignored (C2SP);
-    at least one pinned signature must verify. Returns {origin, tree_size, root, key}."""
-    import base64
+    """Verify a C2SP checkpoint under a PINNED log vkey. Signatures by unknown keys are ignored (C2SP)
+    once every signature line is strictly parsed; at least one pinned signature must verify. Returns
+    {origin, tree_size, root, key}."""
     from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
     from cryptography.exceptions import InvalidSignature
     vkeys = PINNED_LOG_VKEYS if vkeys is None else vkeys
@@ -253,18 +316,25 @@ def verify_checkpoint(note: str, vkeys: dict | None = None) -> dict:
     lines = text.split("\n")[:-1]
     if len(lines) < 3:
         raise ValueError("checkpoint body needs origin, size, root")
-    origin, size, root = lines[0], int(lines[1]), base64.b64decode(lines[2])
-    if len(root) != 32 or lines[1] != str(size):
-        raise ValueError("malformed checkpoint size/root")
+    origin = lines[0]
+    if not origin or any(c.isspace() for c in origin):
+        raise ValueError("malformed checkpoint origin")
+    size = _parse_canonical_uint(lines[1], "checkpoint size")
+    root = decode_b64_strict(lines[2], expected_len=32, label="checkpoint root")
+    if size == 0 and root != hashlib.sha256(b"").digest():
+        raise ValueError("size-0 checkpoint root must equal SHA-256 of empty input")
     for vk in vkeys:
         name, kid, pub = parse_vkey(vk)
         if name != origin:
             continue
         for l in sigs:
-            parts = l.split(" ")
-            if len(parts) != 3 or parts[0] != "\u2014" or parts[1] != name:
+            _, who, b64 = l.split(" ")
+            if who != name:
                 continue
-            blob = base64.b64decode(parts[2])
+            blob = decode_b64_strict(b64, label="signature %s" % who)
+            if len(blob) != 68:
+                raise ValueError("NON-CANONICAL ENCODING (signature %s): expected 68 bytes for log key, got %d"
+                                 % (who, len(blob)))
             if blob[:4] != kid:
                 continue
             try:
@@ -276,21 +346,27 @@ def verify_checkpoint(note: str, vkeys: dict | None = None) -> dict:
 
 
 def _verify_rekor_checkpoint(env: str, logs: dict) -> dict:
-    import base64
     from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
     text, sigs = _split_note(env)
     lines = text.split("\n")[:-1]
+    if len(lines) < 3:
+        raise ValueError("Rekor checkpoint body needs origin, size, root")
     origin = lines[0]
     if origin not in logs:
         raise ValueError("Rekor checkpoint origin %r is not a pinned Rekor shard" % origin)
-    pub = base64.b64decode(logs[origin])
+    size = _parse_canonical_uint(lines[1], "Rekor tree size")
+    root = decode_b64_strict(lines[2], expected_len=32, label="Rekor root")
+    pub = decode_b64_strict(logs[origin], expected_len=32, label="Rekor vkey")
     kid = _h(origin.encode(), b"\n\x01", pub)[:4]
     for l in sigs:
-        parts = l.split(" ")
-        if len(parts) == 3 and parts[1] == origin and base64.b64decode(parts[2])[:4] == kid:
-            Ed25519PublicKey.from_public_bytes(pub).verify(base64.b64decode(parts[2])[4:], text.encode())
-            others = sorted({l.split(" ")[1] for l in sigs if l.split(" ")[1] != origin})
-            return {"origin": origin, "tree_size": int(lines[1]), "root": base64.b64decode(lines[2]),
+        _, who, b64 = l.split(" ")
+        if who != origin:
+            continue
+        blob = decode_b64_strict(b64, expected_len=68, label="Rekor signature")
+        if blob[:4] == kid:
+            Ed25519PublicKey.from_public_bytes(pub).verify(blob[4:], text.encode())
+            others = sorted({x.split(" ")[1] for x in sigs if x.split(" ")[1] != origin})
+            return {"origin": origin, "tree_size": size, "root": root,
                     "other_signers_unverified": others}
     raise ValueError("no signature by the pinned Rekor key on its checkpoint")
 
@@ -298,20 +374,20 @@ def _verify_rekor_checkpoint(env: str, logs: dict) -> dict:
 def verify_rekor_anchor(note: str, entry: dict, vkeys: dict | None = None, rekor_logs: dict | None = None) -> dict:
     """ANCHORED check: the Rekor v2 TransparencyLogEntry `entry` logs THIS checkpoint, under THIS log key, and
     is included in a Rekor checkpoint signed by a pinned Rekor shard key. Offline; raises ValueError on failure."""
-    import base64
     cp = verify_checkpoint(note, vkeys)
     rekor_logs = PINNED_REKOR_LOGS if rekor_logs is None else rekor_logs
-    body = base64.b64decode(entry["canonicalizedBody"])
+    body = decode_b64_strict(entry["canonicalizedBody"], label="canonicalizedBody")
     rec = json.loads(body)
     if rec.get("kind") != "hashedrekord" or rec.get("apiVersion") != "0.0.2":
         raise ValueError("Rekor entry is not hashedrekord 0.0.2")
     spec = rec["spec"]["hashedRekordV002"]
     if spec["data"]["algorithm"] != "SHA2_512" or \
-            base64.b64decode(spec["data"]["digest"]) != hashlib.sha512(cp["body"].encode()).digest():
+            decode_b64_strict(spec["data"]["digest"], expected_len=64, label="Rekor digest") != hashlib.sha512(cp["body"].encode()).digest():
         raise ValueError("Rekor entry digest is not SHA-512 of this checkpoint body")
     ver = spec["signature"]["verifier"]
     _, _, pub = parse_vkey(cp["key"])
-    if ver.get("keyDetails") != "PKIX_ED25519_PH" or base64.b64decode(ver["publicKey"]["rawBytes"]) != _SPKI_ED25519 + pub:
+    if ver.get("keyDetails") != "PKIX_ED25519_PH" or \
+            decode_b64_strict(ver["publicKey"]["rawBytes"], expected_len=len(_SPKI_ED25519) + 32, label="Rekor pubkey") != _SPKI_ED25519 + pub:
         raise ValueError("Rekor entry was not made with the pinned receipt-log key")
     ph = "not re-checked offline (needs pycryptodome; Rekor verified it on admission)"
     try:
@@ -319,7 +395,8 @@ def verify_rekor_anchor(note: str, entry: dict, vkeys: dict | None = None, rekor
         from Crypto.Signature import eddsa
         from Crypto.Hash import SHA512
         eddsa.new(ECC.import_key(_SPKI_ED25519 + pub), "rfc8032").verify(
-            SHA512.new(cp["body"].encode()), base64.b64decode(spec["signature"]["content"]))
+            SHA512.new(cp["body"].encode()),
+            decode_b64_strict(spec["signature"]["content"], expected_len=64, label="Rekor Ed25519ph sig"))
         ph = "verified"
     except ImportError:
         pass
@@ -328,11 +405,69 @@ def verify_rekor_anchor(note: str, entry: dict, vkeys: dict | None = None, rekor
     ip = entry["inclusionProof"]
     rk = _verify_rekor_checkpoint(ip["checkpoint"]["envelope"], rekor_logs)
     idx = int(entry["logIndex"])
-    if not verify_inclusion(body, idx, rk["tree_size"], [base64.b64decode(x) for x in ip["hashes"]], rk["root"]):
+    if not verify_inclusion(body, idx, rk["tree_size"],
+                              [decode_b64_strict(x, expected_len=32, label="Rekor inclusion hash") for x in ip["hashes"]],
+                              rk["root"]):
         raise ValueError("Rekor inclusion proof does not verify against Rekor's signed checkpoint")
     return {"ok": True, "checkpoint": {k: cp[k] for k in ("origin", "tree_size", "root")},
             "rekor": {"log": rk["origin"], "log_index": idx, "tree_size": rk["tree_size"],
                       "ed25519ph_sig": ph, "cosigners_listed_not_verified": rk["other_signers_unverified"]}}
+
+# ── consistency between two published checkpoints (RFC 6962 §2.1.2 / RFC 9162 §2.1.4) ─────────────────
+# A proof file links two checkpoints of the same log: the older tree is a prefix of the newer one, so nothing
+# logged before the older head was rewritten or dropped. Both checkpoints must carry a pinned-key signature,
+# and the sizes and roots inside the proof file must equal the ones in the checkpoints.
+PROOF_TYPE = "rfc9162-consistency-proof/sha256"
+
+
+def make_consistency_proof(old_note: str, new_note: str, leaves: list[bytes], vkeys: dict | None = None) -> dict:
+    """Build the proof file for old->new from the leaf list (len >= new size); refuses if either checkpoint's
+    root is not reproduced by the leaves. Self-verifies before returning."""
+    a, b = verify_checkpoint(old_note, vkeys), verify_checkpoint(new_note, vkeys)
+    if a["origin"] != b["origin"]:
+        raise ValueError("checkpoints are from different logs (%r vs %r)" % (a["origin"], b["origin"]))
+    m, n = a["tree_size"], b["tree_size"]
+    if not 0 < m <= n:
+        raise ValueError("need 0 < old size <= new size (got %d, %d)" % (m, n))
+    if len(leaves) < n:
+        raise ValueError("leaves file has %d leaves, new checkpoint needs %d" % (len(leaves), n))
+    if merkle_root(leaves[:m]).hex() != a["root"]:
+        raise ValueError("first %d leaves do not reproduce the old checkpoint root" % m)
+    if merkle_root(leaves[:n]).hex() != b["root"]:
+        raise ValueError("first %d leaves do not reproduce the new checkpoint root" % n)
+    proof = consistency_proof(m, leaves[:n])
+    obj = {"type": PROOF_TYPE, "origin": a["origin"], "old_size": m, "old_root": a["root"],
+           "new_size": n, "new_root": b["root"], "proof": [p.hex() for p in proof]}
+    verify_consistency_file(old_note, new_note, obj, vkeys)
+    return obj
+
+
+def verify_consistency_file(old_note: str, new_note: str, obj: dict, vkeys: dict | None = None) -> dict:
+    """CONSISTENT check, offline: both checkpoints verify under a pinned log key, same origin, the proof file
+    names exactly their sizes and roots, and the RFC 9162 proof recomputes both roots. Raises ValueError."""
+    a, b = verify_checkpoint(old_note, vkeys), verify_checkpoint(new_note, vkeys)
+    if a["origin"] != b["origin"]:
+        raise ValueError("checkpoints are from different logs (%r vs %r)" % (a["origin"], b["origin"]))
+    if obj.get("type") != PROOF_TYPE:
+        raise ValueError("proof file type is %r, expected %r" % (obj.get("type"), PROOF_TYPE))
+    if obj.get("origin") != a["origin"]:
+        raise ValueError("proof file origin %r does not match the checkpoints" % obj.get("origin"))
+    if (obj.get("old_size"), obj.get("old_root")) != (a["tree_size"], a["root"]):
+        raise ValueError("proof file old size/root do not match the old checkpoint")
+    if (obj.get("new_size"), obj.get("new_root")) != (b["tree_size"], b["root"]):
+        raise ValueError("proof file new size/root do not match the new checkpoint")
+    try:
+        proof = [bytes.fromhex(x) for x in obj.get("proof", [])]
+    except (TypeError, ValueError):
+        raise ValueError("proof hashes are not hex")
+    if any(len(x) != 32 for x in proof):
+        raise ValueError("proof hashes must be 32 bytes")
+    m, n = a["tree_size"], b["tree_size"]
+    if not verify_consistency(m, n, proof, bytes.fromhex(a["root"]), bytes.fromhex(b["root"])):
+        raise ValueError("consistency proof does NOT verify: size %d is not shown to be a prefix of size %d" % (m, n))
+    return {"ok": True, "origin": a["origin"], "old_size": m, "old_root": a["root"],
+            "new_size": n, "new_root": b["root"], "proof_len": len(proof)}
+
 
 # ── session trails: the C9 "flight recorder" — verify a whole agent run, not one receipt ──────────────
 # A session is an ORDERED list of Aperture receipts from one agent run. Its tamper-evident head is the
@@ -447,10 +582,16 @@ def main(argv: list[str]) -> int:
               % (cp["origin"], cp["tree_size"], cp["root"][:16]))
         if len(argv) > 3:
             lg = TransparencyLog(argv[3])
-            if lg.size() != cp["tree_size"] or lg.root_hex() != cp["root"]:
-                print("  \u2717 leaves file does NOT reproduce this checkpoint (size %d root %s\u2026)" % (lg.size(), lg.root_hex()[:16]))
+            n = cp["tree_size"]
+            got = merkle_root(lg.leaves[:n]).hex() if lg.size() >= n else lg.root_hex()
+            if lg.size() < n or got != cp["root"]:
+                print("  \u2717 leaves file does NOT reproduce this checkpoint (%d leaves, root of first %d: %s\u2026)"
+                      % (lg.size(), min(n, lg.size()), got[:16]))
                 return 1
-            print("  \u2713 leaves file reproduces the checkpoint root")
+            if lg.size() == n:
+                print("  \u2713 leaves file reproduces the checkpoint root")
+            else:
+                print("  \u2713 the first %d of the %d leaves in the leaves file reproduce the checkpoint root" % (n, lg.size()))
         return 0
     if cmd == "verify-anchor":                            # verify-anchor <checkpoint> <rekor_entry.json>
         try:
@@ -463,6 +604,38 @@ def main(argv: list[str]) -> int:
                  rep["rekor"]["tree_size"], rep["rekor"]["ed25519ph_sig"]))
         print("    proves: this log head existed and was published by the log key no later than Rekor logged it."
               " Does NOT prove any receipt's content is true.")
+        return 0
+    if cmd == "consistency":
+        # consistency <old_checkpoint> <new_checkpoint> <proof.json>                    verify
+        # consistency make <old_checkpoint> <new_checkpoint> <leaves.jsonl> [out.json]   generate (+ self-verify)
+        if len(argv) >= 6 and argv[2] == "make":
+            try:
+                obj = make_consistency_proof(open(argv[3], encoding="utf-8").read(), open(argv[4], encoding="utf-8").read(),
+                                             TransparencyLog(argv[5]).leaves)
+            except Exception as e:
+                print("  \u2717 NO PROOF \u2014 %s" % e)
+                return 1
+            txt = json.dumps(obj, indent=2) + "\n"
+            if len(argv) > 6:
+                with open(argv[6], "w", encoding="utf-8") as f:
+                    f.write(txt)
+                print("  \u2713 wrote %s: %d -> %d, %d hashes, self-verified" % (argv[6], obj["old_size"], obj["new_size"], len(obj["proof"])))
+            else:
+                sys.stdout.write(txt)
+            return 0
+        if len(argv) != 5:
+            sys.stderr.write("usage: consistency <old_checkpoint> <new_checkpoint> <proof.json>\n"
+                             "       consistency make <old_checkpoint> <new_checkpoint> <leaves.jsonl> [out.json]\n")
+            return 2
+        try:
+            rep = verify_consistency_file(open(argv[2], encoding="utf-8").read(), open(argv[3], encoding="utf-8").read(),
+                                          json.load(open(argv[4], encoding="utf-8")))
+        except Exception as e:
+            print("  \u2717 NOT CONSISTENT \u2014 %s" % e)
+            return 1
+        print("  \u2713 CONSISTENT \u2014 %s size %d root %s\u2026 is a prefix of size %d root %s\u2026 (%d-hash RFC 9162 proof; both checkpoints signed by the pinned receipt-log key)"
+              % (rep["origin"], rep["old_size"], rep["old_root"][:16], rep["new_size"], rep["new_root"][:16], rep["proof_len"]))
+        print("    proves: the log only appended between these two heads; no entry under the older head was changed or dropped.")
         return 0
     if cmd == "keys":
         for k, role in PINNED_LOG_VKEYS.items():
@@ -538,15 +711,60 @@ def _selftest() -> int:
     print("  %s a checkpoint with an altered tree size fails" % ("\u2713" if hit else "\u2717"))
     total += 1; hit = _fails(note, PINNED_LOG_VKEYS); ok += hit
     print("  %s a checkpoint signed by an unpinned key is rejected" % ("\u2713" if hit else "\u2717"))
-    here = os.path.dirname(os.path.abspath(__file__))
-    cpf, rkf = os.path.join(here, "log", "checkpoint"), os.path.join(here, "log", "rekor-entry-0.json")
-    if os.path.exists(cpf) and os.path.exists(rkf):
+    # consistency proof files: a valid one verifies, a tampered hash / swapped size fails
+    vleaves = leaves + [hashlib.sha256(b"receipt-11").digest()]
+    def _note(sz, rt):
+        bd = checkpoint_body(nm, sz, rt)
+        return (bd + b"\n" + ("\u2014 %s %s\n" % (nm, _b.b64encode(kid + lsk.sign(bd)).decode())).encode()).decode()
+    n_old, n_new = _note(len(leaves), root), _note(len(vleaves), merkle_root(vleaves))
+    pf = make_consistency_proof(n_old, n_new, vleaves, vk)
+    def _cfails(o):
         try:
-            hit = verify_rekor_anchor(open(cpf, encoding="utf-8").read(), json.load(open(rkf, encoding="utf-8")))["ok"]
+            verify_consistency_file(n_old, n_new, o, vk); return False
         except ValueError:
+            return True
+    bad = json.loads(json.dumps(pf)); bad["proof"][0] = ("%064x" % (int(bad["proof"][0], 16) ^ 1))
+    total += 1; hit = (not _cfails(pf)) and _cfails(bad); ok += hit
+    print("  %s a consistency proof file verifies; a one-bit-tampered proof fails" % ("\u2713" if hit else "\u2717"))
+    # the published tree: every Rekor anchor, every consistency proof, and the head copy
+    here = os.path.dirname(os.path.abspath(__file__))
+    lg_dir = os.path.join(here, "log")
+    cdir = os.path.join(lg_dir, "checkpoints")
+    cps = {}
+    if os.path.isdir(cdir):
+        for f in os.listdir(cdir):
+            if f.isdigit():
+                cps[int(f)] = open(os.path.join(cdir, f), encoding="utf-8").read()
+    elif os.path.exists(os.path.join(lg_dir, "checkpoint")):        # pre-per-size layout
+        cps[-1] = open(os.path.join(lg_dir, "checkpoint"), encoding="utf-8").read()
+    for f in sorted(os.listdir(lg_dir)) if os.path.isdir(lg_dir) else []:
+        if not (f.startswith("rekor-entry-") and f.endswith(".json")):
+            continue
+        ent = json.load(open(os.path.join(lg_dir, f), encoding="utf-8"))
+        hit, which = False, None
+        for sz, note in sorted(cps.items()):
+            try:
+                hit = verify_rekor_anchor(note, ent)["ok"]; which = sz; break
+            except (ValueError, KeyError):
+                continue
+        total += 1; ok += hit
+        print("  %s %s anchors published checkpoint %s in Rekor v2" % ("\u2713" if hit else "\u2717", f, which if hit else "(none)"))
+    pdir = os.path.join(lg_dir, "proofs")
+    for f in sorted(os.listdir(pdir)) if os.path.isdir(pdir) else []:
+        if not (f.startswith("consistency-") and f.endswith(".json")):
+            continue
+        try:
+            m_, n_ = (int(x) for x in f[len("consistency-"):-len(".json")].split("-"))
+            hit = verify_consistency_file(cps[m_], cps[n_], json.load(open(os.path.join(pdir, f), encoding="utf-8")))["ok"]
+        except (ValueError, KeyError):
             hit = False
         total += 1; ok += hit
-        print("  %s the published genesis checkpoint verifies as ANCHORED in Rekor v2" % ("\u2713" if hit else "\u2717"))
+        print("  %s proofs/%s verifies against checkpoints/%s" % ("\u2713" if hit else "\u2717", f, f[len("consistency-"):-len(".json")].replace("-", " and ")))
+    head = os.path.join(lg_dir, "checkpoint")
+    if os.path.isdir(cdir) and cps and os.path.exists(head):
+        hit = open(head, "rb").read() == open(os.path.join(cdir, str(max(cps))), "rb").read()
+        total += 1; ok += hit
+        print("  %s log/checkpoint is byte-identical to the newest checkpoints/%d" % ("\u2713" if hit else "\u2717", max(cps)))
     print("  transparency-log self-test: %d/%d passed" % (ok, total))
     return 0 if ok == total else 1
 

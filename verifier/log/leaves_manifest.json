@@ -1,6 +1,6 @@
 {
  "built_utc": "2026-10-27T05:54:35Z",
- "scope": "genesis: every registry certificate listed at /api/cert/list plus the 2 published example read receipts; each signature verified against the pinned registry key before inclusion",
+ "scope": "entries 0-21 (genesis checkpoint 22): 20 registry certificates at /api/cert/list plus 2 example read receipts; entry 22 (checkpoint 23): goodfire-sdxl-7446 bundle manifest",
  "leaf_def": "aperture_verify.leaf_hash(receipt); tree = RFC 6962 over leaf data",
  "entries": [
   {
@@ -178,6 +178,16 @@
    "registered_at": "",
    "source": "https://www.honesty.tools/verifier/receipts/999a1305d7f0.json",
    "leaf": "b20cf0cec7260dddcaf9f1464158a8163c031924cc10b1b99d46cc8d5d574c48"
+  },
+  {
+   "index": 22,
+   "kind": "bundle",
+   "id": "goodfire-sdxl-7446",
+   "registered_at": "2026-10-27T13:16:42Z",
+   "source": "https://www.honesty.tools/receipts/goodfire-sdxl-7446/anchor/BUNDLE_MANIFEST.json",
+   "manifest_sha256": "11042e952f05143b69f9da5db093c2f8867dc38d3b7da226a14110169b62d71a",
+   "page": "https://www.honesty.tools/goodfire",
+   "leaf": "e1d169de56ba81685b4c07e253138219914c4c42b59b963ad08093930fa82579"
   }
  ]
 }

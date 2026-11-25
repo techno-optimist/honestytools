@@ -1,0 +1,14 @@
+{
+  "type": "rfc9162-consistency-proof/sha256",
+  "origin": "www.honesty.tools/receipts",
+  "old_size": 22,
+  "old_root": "890d25bd770f265415256a5fda48013a25ff78fc543711e2785376ad05c8ae71",
+  "new_size": 23,
+  "new_root": "97d2ecae83e6e9b2c06fb0f87110b277f5e8a216c07658d988222c57b8c5d72b",
+  "proof": [
+    "83ffe14f7040a1c6cca22f4b7c4c160e452924e95f400de0b14577c9125afad6",
+    "28505906088df3be73517f4b3a7cc6ada9d6006626ac96da9d83ceb12b0da3c8",
+    "fc71bc5bddf818fe549f47569d9ad1a22dea43f04e99a3989d3ddefb6425ef64",
+    "37520e0c13e9bf2d9f170c4bd874a4895795847b201d424a4d567345b7f76b65"
+  ]
+}

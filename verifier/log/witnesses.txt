@@ -1,0 +1,10 @@
+# Witness keys for the honesty.tools receipt log (www.honesty.tools/receipts)
+#
+# Both witnesses are on the Witness Network testing list (https://witness-network.org/log-lists/),
+# which is meant for testing and may be reset. This is not production witnessing.
+# Each key is copied from the witness's own about page; compare it there before trusting it.
+#
+# rgdd.se/poc-witness  about: https://www.rgdd.se/poc-witness/about
+rgdd.se/poc-witness+db03732e+BCjJKlo6BU0xfIb8LutqerIFTWIXEA0L5n3tW3QyPFgG
+# markovianprotocol.com/witness  about: https://witness.markovianprotocol.com/about
+markovianprotocol.com/witness+41b8827f+BJKLl8rBYM0oUxSaWh9rjTldTprEpYj/SWVIGgacA9XC
