@@ -197,7 +197,8 @@ class WitnessGauntletAndStrictEncoding(unittest.TestCase):
         sk = Ed25519PrivateKey.generate()
         pub = sk.public_key().public_bytes_raw()
         kid = hashlib.sha256(origin.encode() + b"\n\x01" + pub).digest()[:4]
-        vk = f"{origin}+{kid.hex()}+{base64.b64encode(b'\x01' + pub).decode()}"
+        vk_b64 = base64.b64encode(b"\x01" + pub).decode()
+        vk = f"{origin}+{kid.hex()}+{vk_b64}"
         body = tl.checkpoint_body(origin, size, root_bytes)
         sig = kid + sk.sign(body)
         note = (body + b"\n" + (f"\u2014 {origin} {base64.b64encode(sig).decode()}\n").encode()).decode()
