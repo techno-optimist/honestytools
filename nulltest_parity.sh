@@ -28,7 +28,7 @@ for b in $BATTERIES; do
 done
 
 python3 - "$BATTERIES" <<'PY'
-import hashlib, json, sys, os, random
+import hashlib, json, sys, os, random, platform, subprocess
 sys.path.insert(0, os.getcwd())
 import nulltest as N
 js = json.load(open('/tmp/nt_js.json'))
@@ -105,6 +105,11 @@ for name, py_items, must in (("planted-separable", py_sep, "DISQUALIFIED"),
 
 out["cells_compared"] = total
 out["parity"] = "PASS" if ok else "FAIL"
+out["python_version"] = platform.python_version()
+try:
+    out["node_version"] = subprocess.check_output(["node", "--version"], text=True).strip()
+except Exception:
+    out["node_version"] = os.environ.get("NODE_VERSION") or "?"
 
 # THIS SCRIPT USED TO WRITE nulltest_parity.json ON EVERY RUN — so the evidence that the browser
 # and the CLI agree was produced by the same act that checked it, and whatever it last happened to
@@ -121,7 +126,10 @@ if _emit:
     if os.path.dirname(_dest) == _here:
         print("  REFUSED to emit into the served directory — the verifier does not certify itself.")
     else:
-        out["tool_sha256"] = hashlib.sha256(open(os.path.join(_here, "nulltest.py"), "rb").read()).hexdigest()
+        _sha = lambda fn: hashlib.sha256(open(os.path.join(_here, fn), "rb").read()).hexdigest()
+        out["tool_sha256"] = _sha("nulltest.py")
+        out["engine_sha256"] = {fn: _sha(fn) for fn in ("nulltest.py", "nulltest.js", "nulltest_parity.js")}
+        out["batteries"] = sys.argv[1].split()
         json.dump(out, open(_dest, "w"), indent=1)
         print("  emitted %s" % _dest)
 print()

@@ -72,7 +72,8 @@ class RenderAuditBreakTests(unittest.TestCase):
         for slug in ("calibration-battery-v1", "photon-entities"):
             shutil.copy(os.path.join(REPO, "batteries", slug + ".json"),
                         os.path.join(self.here, "batteries", slug + ".json"))
-        shutil.copy(os.path.join(REPO, "nulltest.py"), os.path.join(self.here, "nulltest.py"))
+        for fn in ("nulltest.py", "nulltest.js", "nulltest_parity.js", "nulltest_parity.json"):
+            shutil.copy(os.path.join(REPO, fn), os.path.join(self.here, fn))
         shutil.copy(_script(), os.path.join(self.here, "render_audit.py"))
         with open(os.path.join(self.tree, "audit.html"), "w", encoding="utf-8") as f:
             f.write(SKELETON)
@@ -95,6 +96,7 @@ class RenderAuditBreakTests(unittest.TestCase):
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertIn("current", r.stdout)
         self.assertNotIn("ROW DESCRIBES DIFFERENT BYTES", r.stdout)
+        self.assertNotIn("PARITY CERTIFICATE DESCRIBES DIFFERENT ENGINE", r.stdout)
         self.assertNotIn("orphan note", r.stdout)
 
     def test_flipped_labels_fail(self):
@@ -122,6 +124,46 @@ class RenderAuditBreakTests(unittest.TestCase):
         self.assertNotEqual(r.returncode, 0, r.stdout + r.stderr)
         self.assertIn("ROW DESCRIBES DIFFERENT BYTES", r.stdout)
         self.assertIn("nulltest.py", r.stdout)
+
+    def test_edited_nulltest_js_alpha_fails(self):
+        """Changing nulltest.js alpha default (0.05 -> 0.10) must fail --check."""
+        path = os.path.join(self.here, "nulltest.js")
+        src = open(path, encoding="utf-8").read()
+        self.assertIn("alpha = opts.alpha || 0.05;", src)
+        open(path, "w", encoding="utf-8").write(
+            src.replace("alpha = opts.alpha || 0.05;", "alpha = opts.alpha || 0.10;", 1)
+        )
+        r = self._run([])
+        self.assertNotEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("PARITY CERTIFICATE DESCRIBES DIFFERENT ENGINE", r.stdout)
+        self.assertIn("nulltest.js", r.stdout)
+
+    def test_edited_nulltest_parity_js_fails(self):
+        """Editing nulltest_parity.js must fail --check against the parity certificate."""
+        path = os.path.join(self.here, "nulltest_parity.js")
+        with open(path, "a", encoding="utf-8") as f:
+            f.write("\n// planted edit — must make --check fail\n")
+        r = self._run([])
+        self.assertNotEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("PARITY CERTIFICATE DESCRIBES DIFFERENT ENGINE", r.stdout)
+        self.assertIn("nulltest_parity.js", r.stdout)
+
+    def test_missing_parity_certificate_fails(self):
+        """Deleting nulltest_parity.json must fail --check."""
+        os.unlink(os.path.join(self.here, "nulltest_parity.json"))
+        r = self._run([])
+        self.assertNotEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("PARITY CERTIFICATE DESCRIBES DIFFERENT ENGINE", r.stdout)
+
+    def test_tampered_parity_verdict_fails(self):
+        """A parity certificate whose verdict is not PASS must fail --check."""
+        p = os.path.join(self.here, "nulltest_parity.json")
+        doc = json.load(open(p, encoding="utf-8"))
+        doc["parity"] = "FAIL"
+        json.dump(doc, open(p, "w", encoding="utf-8"), indent=1)
+        r = self._run([])
+        self.assertNotEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertIn("PARITY CERTIFICATE DESCRIBES DIFFERENT ENGINE", r.stdout)
 
     def test_orphaned_note_fails(self):
         """A correction note with no row in the table must fail the check, not only print."""

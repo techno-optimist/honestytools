@@ -40,6 +40,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RESULTS = os.path.join(HERE, "nulltest_audit_results.json")
+PARITY = os.path.join(HERE, "nulltest_parity.json")
 NOTES = os.path.join(HERE, "audit_notes.json")
 SUMMARY = os.path.join(HERE, "nulltest_dossier_summary.json")   # written by nulltest_dossier.py
 BASELINE = os.path.join(HERE, "surface_baseline_results.json")   # written by surface_baseline.py --audit
@@ -215,6 +216,43 @@ def byte_mismatches(doc, rows):
     return bad
 
 
+
+def parity_mismatches():
+    """Bind nulltest_parity.json to the shipped Python and browser engine files."""
+    bad = []
+    if not os.path.exists(PARITY):
+        bad.append("PARITY CERTIFICATE DESCRIBES DIFFERENT ENGINE: nulltest_parity.json is missing")
+        return bad
+    try:
+        pdoc = json.load(open(PARITY, encoding="utf-8"))
+    except Exception as exc:
+        bad.append("PARITY CERTIFICATE DESCRIBES DIFFERENT ENGINE: nulltest_parity.json is unparseable (%s)" % exc)
+        return bad
+    if pdoc.get("parity") != "PASS":
+        bad.append("PARITY CERTIFICATE DESCRIBES DIFFERENT ENGINE: nulltest_parity.json parity is %r, expected 'PASS'"
+                   % pdoc.get("parity"))
+    engine = pdoc.get("engine_sha256")
+    if not isinstance(engine, dict):
+        bad.append("PARITY CERTIFICATE DESCRIBES DIFFERENT ENGINE: nulltest_parity.json has no engine_sha256 map")
+        return bad
+    stamped_tool = pdoc.get("tool_sha256")
+    if stamped_tool and engine.get("nulltest.py") and stamped_tool != engine.get("nulltest.py"):
+        bad.append("PARITY CERTIFICATE DESCRIBES DIFFERENT ENGINE: nulltest_parity.json tool_sha256 (%s) != engine_sha256['nulltest.py'] (%s)"
+                   % (stamped_tool, engine.get("nulltest.py")))
+    for fname in ("nulltest.py", "nulltest.js", "nulltest_parity.js"):
+        fpath = os.path.join(HERE, fname)
+        stamped = engine.get(fname)
+        if not stamped:
+            bad.append("PARITY CERTIFICATE DESCRIBES DIFFERENT ENGINE: nulltest_parity.json missing engine_sha256[%r]" % fname)
+        elif not os.path.exists(fpath):
+            bad.append("PARITY CERTIFICATE DESCRIBES DIFFERENT ENGINE: %s is missing; parity certificate has %s" % (fname, stamped))
+        else:
+            actual = sha256_file(fpath)
+            if actual != stamped:
+                bad.append("PARITY CERTIFICATE DESCRIBES DIFFERENT ENGINE: %s is %s but nulltest_parity.json has %s"
+                           % (fname, actual, stamped))
+    return bad
+
 def displayed_mismatches(report, row):
     """Compare a fresh evaluate() report to a published audit row on the fields the /audit
     page shows: n, worst cell, A*, adjusted p, family size (the headline), and the verdict."""
@@ -288,7 +326,7 @@ def main(argv):
     in_table = {r["name"].split("/", 1)[1] for r in rows if r["name"].startswith("aperture/")}
     unaudited = sorted(on_disk - in_table)
 
-    hash_fail = byte_mismatches(doc, rows)
+    hash_fail = byte_mismatches(doc, rows) + parity_mismatches()
 
     if a.check:
         stale = (new != page)

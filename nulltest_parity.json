@@ -1,11 +1,32 @@
 {
  "pairs": [
   {
+   "battery": "calibration-battery-v1.json",
+   "identical": true,
+   "cells": 40,
+   "verdict": "DISQUALIFIED",
+   "headline": "worst cell A* = 1.0 in lexicality/book (n=28), family-adjusted p = 0.0107 over 34 cells"
+  },
+  {
    "battery": "grounding-coordinate.json",
    "identical": true,
    "cells": 41,
    "verdict": "DISQUALIFIED",
    "headline": "worst cell A* = 0.855 in length/eponymous_signs (n=28), family-adjusted p = 0.0366 over 35 cells"
+  },
+  {
+   "battery": "knowledge-prominence-v1.json",
+   "identical": true,
+   "cells": 36,
+   "verdict": "PASS",
+   "headline": "worst cell A* = 0.655 in length/place (n=80), family-adjusted p = 0.4012 over 30 cells"
+  },
+  {
+   "battery": "knowledge-prominence-v2.json",
+   "identical": true,
+   "cells": 36,
+   "verdict": "PASS",
+   "headline": "worst cell A* = 0.689 in lexicality/place (n=80), family-adjusted p = 0.3582 over 30 cells"
   },
   {
    "battery": "photon-entities.json",
@@ -15,11 +36,25 @@
    "headline": "worst cell A* = 1.0 in words/genes (n=19), family-adjusted p = 0.0133 over 21 cells"
   },
   {
+   "battery": "postcutoff-trials-v1.json",
+   "identical": true,
+   "cells": 12,
+   "verdict": "PASS",
+   "headline": "worst cell A* = 0.529 in alpha_last/trial_title (n=702), family-adjusted p = 0.7171 over 6 cells"
+  },
+  {
    "battery": "prominence-people-v1.json",
    "identical": true,
    "cells": 12,
    "verdict": "DISQUALIFIED",
    "headline": "worst cell A* = 0.661 in alpha_last/person (n=168), family-adjusted p = 0.01 over 6 cells"
+  },
+  {
+   "battery": "prominence-people-v2.json",
+   "identical": true,
+   "cells": 12,
+   "verdict": "PASS",
+   "headline": "worst cell A* = 0.538 in words/person (n=156), family-adjusted p = 0.4992 over 6 cells"
   },
   {
    "battery": "verifydomain-claims-147.json",
@@ -105,7 +140,33 @@
    "met": true
   }
  ],
- "cells_compared": 270,
+ "cells_compared": 406,
  "parity": "PASS",
- "tool_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c"
+ "python_version": "3.13.5",
+ "node_version": "v24.22.1",
+ "tool_sha256": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+ "engine_sha256": {
+  "nulltest.py": "0e103dc41a3c208d2652646f2b8acc8b701ed7799402ca1ea0cb856de5ddf46c",
+  "nulltest.js": "9a69c5918707e9467a1ddfab126d2639b3ebc702594b6a59aa18ed2b48bb7891",
+  "nulltest_parity.js": "95f0dabe31fb1760b1ca527ea0325d7e32ffe19df225a067dc162d30953f55e2"
+ },
+ "batteries": [
+  "batteries/calibration-battery-v1.json",
+  "batteries/grounding-coordinate.json",
+  "batteries/knowledge-prominence-v1.json",
+  "batteries/knowledge-prominence-v2.json",
+  "batteries/photon-entities.json",
+  "batteries/postcutoff-trials-v1.json",
+  "batteries/prominence-people-v1.json",
+  "batteries/prominence-people-v2.json",
+  "batteries/verifydomain-claims-147.json",
+  "parity/astral.json",
+  "parity/whitespace.json",
+  "parity/cjk.json",
+  "parity/oddcase.json",
+  "parity/smallcells.json",
+  "parity/nonstring.json",
+  "parity/quoted-crlf.csv",
+  "parity/midquote.csv"
+ ]
 }
