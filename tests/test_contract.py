@@ -24,11 +24,11 @@ STABLE_ALLOWLIST = {"null"}
 class _Fake(C.Tool):
     summary = "test double"
 
-    def __init__(self, name, verdict, claimed_tier, fpr):
-        self.name, self._v, self._t, self._f = name, verdict, claimed_tier, fpr
+    def __init__(self, name, verdict, claimed_tier, fpr, power=None):
+        self.name, self._v, self._t, self._f, self._p = name, verdict, claimed_tier, fpr, power
 
     def run(self, *a, **k):
-        return C.Verdict(self.name, self._t, self._v, "fake", evidence={"x": 1}, fpr=self._f)
+        return C.Verdict(self.name, self._t, self._v, "fake", evidence={"x": 1}, fpr=self._f, power=self._p)
 
     def selftest(self):
         return True
@@ -63,12 +63,33 @@ class Wall(unittest.TestCase):
         self.assertEqual(C.run("fx2").tier, C.EXPERIMENTAL)
 
     def test_stable_pass_needs_measured_fpr(self):
-        """a stable PASS with no measured FPR is not green; with one it is"""
-        C.register(_Fake("s0", C.PASS, C.EXPERIMENTAL, None), C.STABLE)
-        C.register(_Fake("s1", C.PASS, C.EXPERIMENTAL, {"rate": 0.05}), C.STABLE)
+        """a stable PASS with no measured FPR is not green; with one (and power) it is"""
+        pw = {"n": 156, "measured_mde": 0.6}
+        C.register(_Fake("s0", C.PASS, C.EXPERIMENTAL, None, power=pw), C.STABLE)
+        C.register(_Fake("s1", C.PASS, C.EXPERIMENTAL, {"rate": 0.05}, power=pw), C.STABLE)
         self.assertFalse(C.run("s0").is_stable_green())
         self.assertTrue(C.run("s1").is_stable_green())
         self.assertEqual(C.run("s1").tier, C.STABLE)
+
+    def test_stable_pass_needs_measured_power(self):
+        """a stable PASS with no measured power (n < 156 or None) is underpowered and never green"""
+        C.register(_Fake("p_none", C.PASS, C.STABLE, {"rate": 0.05}, power=None), C.STABLE)
+        C.register(_Fake("p_small", C.PASS, C.STABLE, {"rate": 0.05},
+                         power={"n": 6, "measured_mde": None, "reading": "below 156"}), C.STABLE)
+        C.register(_Fake("p_ok", C.PASS, C.STABLE, {"rate": 0.05},
+                         power={"n": 156, "measured_mde": 0.6}), C.STABLE)
+        for name in ("p_none", "p_small"):
+            v = C.run(name)
+            self.assertFalse(v.is_stable_green(), name)
+            self.assertEqual(v.state(), "underpowered", name)
+            self.assertTrue(v.headline.startswith("[underpowered"), v.headline)
+            payload = json.loads(v.to_json())
+            self.assertFalse(payload["stable_green"])
+            self.assertEqual(payload["state"], "underpowered")
+        v_ok = C.run("p_ok")
+        self.assertTrue(v_ok.is_stable_green())
+        self.assertEqual(v_ok.state(), "stable_green")
+        self.assertTrue(json.loads(v_ok.to_json())["stable_green"])
 
     def test_stable_disqualified_is_not_green(self):
         C.register(_Fake("s2", C.DISQUALIFIED, C.STABLE, {"rate": 0.05}), C.STABLE)
@@ -188,6 +209,68 @@ class FprInterval(unittest.TestCase):
             self.assertEqual(H.main(["honest", "fpr", "paired"]), 1)
         self.assertIn("not yet measured", out.getvalue())
 
+
+
+class NullPowerGate(unittest.TestCase):
+    def test_honest_null_6_item_length_separable_is_underpowered_not_green(self):
+        """6-item length-guessable battery returns PASS from nulltest at n=6, but honest null marks it underpowered and exits 1."""
+        rows = [
+            {"text": "a", "label": 0, "category": "s"},
+            {"text": "b", "label": 0, "category": "s"},
+            {"text": "c", "label": 0, "category": "s"},
+            {"text": "alpha bravo charlie delta echo foxtrot", "label": 1, "category": "s"},
+            {"text": "golf hotel india juliet kilo lima", "label": 1, "category": "s"},
+            {"text": "mike november oscar papa quebec romeo", "label": 1, "category": "s"},
+        ]
+        with tempfile.TemporaryDirectory() as d:
+            p = os.path.join(d, "tiny6.json")
+            with open(p, "w", encoding="utf-8") as fh:
+                json.dump(rows, fh)
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                rc = H.main(["honest", "null", p, "--n-perm", "60"])
+            self.assertEqual(rc, 1)
+            v = json.loads(out.getvalue())
+            self.assertEqual(v["verdict"], C.PASS)
+            self.assertFalse(v["stable_green"])
+            self.assertEqual(v["state"], "underpowered")
+            self.assertEqual(v["power"]["n"], 6)
+            self.assertIsNone(v["power"]["measured_mde"])
+            self.assertIn("156", v["power"]["reading"])
+            self.assertIn("underpowered", v["headline"])
+            self.assertEqual(v["evidence"]["power"]["n"], 6)
+            rp = os.path.join(d, "receipt.json")
+            with open(rp, "w", encoding="utf-8") as fh:
+                fh.write(out.getvalue())
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(H.main(["honest", "check", rp, p]), 0)
+
+    def test_honest_null_156_plus_clean_is_stable_green(self):
+        """A PASS at n >= 156 (smallest measured size) remains stable-green and exits 0."""
+        p = os.path.join(os.path.dirname(HERE), "batteries", "prominence-people-v2.json")
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = H.main(["honest", "null", p, "--n-perm", "60"])
+        self.assertEqual(rc, 0)
+        v = json.loads(out.getvalue())
+        self.assertEqual(v["verdict"], C.PASS)
+        self.assertTrue(v["stable_green"])
+        self.assertEqual(v["state"], "stable_green")
+        self.assertEqual(v["power"]["n"], 156)
+        self.assertEqual(v["power"]["measured_mde"], 0.6)
+
+    def test_honest_null_small_disqualified_still_exits_zero(self):
+        """Low power limits detections, not disqualifications; small-n DISQUALIFIED still exits 0."""
+        p = os.path.join(os.path.dirname(HERE), "batteries", "photon-entities.json")
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = H.main(["honest", "null", p, "--n-perm", "60"])
+        self.assertEqual(rc, 0)
+        v = json.loads(out.getvalue())
+        self.assertEqual(v["verdict"], C.DISQUALIFIED)
+        self.assertFalse(v["stable_green"])
+        self.assertEqual(v["state"], "disqualified")
+        self.assertIsNone(v["power"]["measured_mde"])
 
 if __name__ == "__main__":
     unittest.main()

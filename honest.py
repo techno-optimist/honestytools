@@ -78,12 +78,14 @@ class NullTool(Tool):
                     "tool_sha256": nt._tool_sha256(), "nulltest_version": nt.VERSION,
                     "keys": {"text": tk, "label": lk, "stratum": sk}, "n_perm": rep.get("n_perm", n_perm),
                     "alpha": rep.get("alpha", 0.05), "positive_label": positive_label,
-                    "explode": ({"fields": dict(mapping), "split": split} if mapping else None)}
+                    "explode": ({"fields": dict(mapping), "split": split} if mapping else None),
+                    "power": rep.get("power")}
         if explain or rep["verdict"] == "DISQUALIFIED":
             evidence["explain"] = nt.explain(items, tkeys, lk, sk, rep)
         return Verdict(
             tool=self.name, tier=STABLE, verdict=rep["verdict"], headline=rep["headline"],
-            evidence=evidence, fpr=self.false_positive_rate(), replayable=True)
+            evidence=evidence, fpr=self.false_positive_rate(), replayable=True,
+            power=rep.get("power"))
 
     def selftest(self) -> bool:
         """null's break-test: a battery separable by string shape ALONE must come back DISQUALIFIED,

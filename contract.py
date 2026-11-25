@@ -47,20 +47,37 @@ class Verdict:
     evidence: dict = field(default_factory=dict)
     fpr: dict | None = None        # the tool's calibrated false-positive rate, or None if unmeasured
     replayable: bool = True        # can a stranger re-derive this offline with stdlib and no callback?
+    power: dict | None = None      # measured power / MDE for the tested sample size, or None
+
+    def has_measured_power(self) -> bool:
+        pw = self.power if self.power is not None else (self.evidence or {}).get("power")
+        return isinstance(pw, dict) and pw.get("measured_mde") is not None
 
     def is_stable_green(self) -> bool:
         """The one question a downstream pipeline actually asks: may I rely on this PASS?
 
-        Only a STABLE tool returning PASS counts. An experimental tool's PASS is not green, a
-        DISQUALIFIED is not green, and a PASS with no measured false-positive rate is not green —
-        a floor that never measured how often it false-fires has not earned the word.
+        Only a STABLE tool returning PASS with both a measured false-positive rate and measured
+        power (n >= 156, where MDE is established) counts. An experimental tool's PASS is not
+        green, a DISQUALIFIED is not green, a PASS with no measured FPR is not green, and an
+        underpowered PASS below the smallest measured size is not green.
         """
         return (self.tier == STABLE
                 and self.verdict == PASS
-                and self.fpr is not None)
+                and self.fpr is not None
+                and self.has_measured_power())
+
+    def state(self) -> str:
+        if self.tier == STABLE and self.verdict == PASS and not self.has_measured_power():
+            return "underpowered"
+        if self.is_stable_green():
+            return "stable_green"
+        return self.verdict.lower()
 
     def to_json(self) -> str:
-        return json.dumps(asdict(self), indent=1)
+        d = asdict(self)
+        d["stable_green"] = self.is_stable_green()
+        d["state"] = self.state()
+        return json.dumps(d, indent=1)
 
 
 class Tool(abc.ABC):
@@ -134,4 +151,9 @@ def run(name: str, *args, **kwargs) -> Verdict:
         v.headline = "[experimental — not a stable verdict] " + v.headline
         v.evidence = {"raw_verdict": v.verdict, **(v.evidence or {})}
         v.verdict = EXPERIMENTAL_NO_STABLE_VERDICT
+    elif v.verdict == PASS and not v.has_measured_power():
+        pw = v.power if v.power is not None else (v.evidence or {}).get("power")
+        n = pw.get("n") if isinstance(pw, dict) else None
+        size_tag = f"n={n} < 156" if n is not None else "no measured power"
+        v.headline = f"[underpowered — {size_tag}, below smallest measured size (156); PASS is not green] " + v.headline
     return v
