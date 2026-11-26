@@ -1,0 +1,163 @@
+{
+  "schema": "honestytools.empirical_lens_card.v1",
+  "title": "Empirical-lens controls card",
+  "proposal": "P91",
+  "benchmark": "FOF-Bench test split (MaxDevv/FOF-Bench, Adeola and Maximus, arXiv:2611.33250, CC-BY-NC-SA-4.0)",
+  "n_atlas": 1200,
+  "n_hold": 400,
+  "n_ok": 8076,
+  "bad_rows": 251,
+  "maxtok": 512,
+  "median_words": {
+    "atlas": 88.0,
+    "neg": 87.0,
+    "pos": 485.5,
+    "pos_trunc": 88.0,
+    "hold": 97.0
+  },
+  "baseline": {
+    "method": "reference-to-reference leave-one-out",
+    "alpha": 0.05
+  },
+  "atlas_has_source_ids": true,
+  "wording_rule": "close in this embedding to <items>; never 'seen' or 'known'",
+  "frames": [
+    {
+      "name": "MiniLM-L6 mean raw",
+      "threshold_cos": 0.2903749644756317,
+      "median_atlas_words": 88.0,
+      "median_query_words": 485.5,
+      "lengths_differ": true,
+      "in_set_false_alarm": 0.05,
+      "baseline": {
+        "method": "reference-to-reference leave-one-out",
+        "alpha": 0.05
+      },
+      "fact_altered_near_copies": {
+        "n": 1200,
+        "uncharted": 0.0,
+        "familiar": 1.0,
+        "own_item_retrieval": 1.0,
+        "median_top1": 0.9983595609664917
+      },
+      "faithful_rewrites": {
+        "n": 1200,
+        "uncharted": 0.0,
+        "familiar": 1.0,
+        "own_item_retrieval": 0.9925,
+        "median_top1": 0.7867079973220825
+      },
+      "faithful_rewrites_length_matched": {
+        "n": 1200,
+        "uncharted": 0.0,
+        "familiar": 1.0,
+        "own_item_retrieval": 0.9766666666666667,
+        "median_top1": 0.7588857412338257
+      },
+      "length_matched_flips": false,
+      "held_out_anchors": {
+        "n": 400,
+        "uncharted": 0.065,
+        "median_top1": 0.4830173850059509
+      }
+    },
+    {
+      "name": "SmolLM2-135M L20 mean raw",
+      "threshold_cos": 0.9855477213859558,
+      "median_atlas_words": 88.0,
+      "median_query_words": 485.5,
+      "lengths_differ": true,
+      "in_set_false_alarm": 0.05,
+      "baseline": {
+        "method": "reference-to-reference leave-one-out",
+        "alpha": 0.05
+      },
+      "fact_altered_near_copies": {
+        "n": 1200,
+        "uncharted": 0.0008333333333333334,
+        "familiar": 0.9991666666666666,
+        "own_item_retrieval": 0.9666666666666667,
+        "median_top1": 0.9997916221618652
+      },
+      "faithful_rewrites": {
+        "n": 1200,
+        "uncharted": 0.8541666666666666,
+        "familiar": 0.14583333333333337,
+        "own_item_retrieval": 0.06333333333333334,
+        "median_top1": 0.9791930913925171
+      },
+      "faithful_rewrites_length_matched": {
+        "n": 1200,
+        "uncharted": 0.07666666666666666,
+        "familiar": 0.9233333333333333,
+        "own_item_retrieval": 0.275,
+        "median_top1": 0.9920965433120728
+      },
+      "length_matched_flips": true,
+      "held_out_anchors": {
+        "n": 400,
+        "uncharted": 0.0525,
+        "median_top1": 0.9936459064483643
+      }
+    },
+    {
+      "name": "SmolLM2-135M L20 mean centred",
+      "threshold_cos": 0.683137059211731,
+      "median_atlas_words": 88.0,
+      "median_query_words": 485.5,
+      "lengths_differ": true,
+      "in_set_false_alarm": 0.05,
+      "baseline": {
+        "method": "reference-to-reference leave-one-out",
+        "alpha": 0.05
+      },
+      "fact_altered_near_copies": {
+        "n": 1200,
+        "uncharted": 0.0033333333333333335,
+        "familiar": 0.9966666666666667,
+        "own_item_retrieval": 0.9566666666666667,
+        "median_top1": 0.9974262714385986
+      },
+      "faithful_rewrites": {
+        "n": 1200,
+        "uncharted": 0.0033333333333333335,
+        "familiar": 0.9966666666666667,
+        "own_item_retrieval": 0.05416666666666667,
+        "median_top1": 0.9553194046020508
+      },
+      "faithful_rewrites_length_matched": {
+        "n": 1200,
+        "uncharted": 0.10916666666666666,
+        "familiar": 0.8908333333333334,
+        "own_item_retrieval": 0.25166666666666665,
+        "median_top1": 0.9240227937698364
+      },
+      "length_matched_flips": true,
+      "held_out_anchors": {
+        "n": 400,
+        "uncharted": 0.075,
+        "median_top1": 0.9538869857788086
+      }
+    }
+  ],
+  "familiar_verdicts": [
+    {
+      "id": "example-neg-000",
+      "verdict": "familiar",
+      "frame": "MiniLM-L6 mean raw",
+      "wording": "close in this embedding to atlas-000 (cosine 0.998)",
+      "atlas_has_source_ids": true,
+      "nearest": [
+        {
+          "id": "atlas-000",
+          "cosine": 0.9983595609664917,
+          "same_source": true
+        }
+      ]
+    }
+  ],
+  "pilot": {
+    "script": "tool07_p91_fact_vs_surface_pilot_20261126.py",
+    "notes": "Small box pilot on the FOF-Bench test set: 1,200-anchor atlas, 400 held-out anchors, MiniLM mean and SmolLM2-135M layer-20 mean (raw and centred). Our numbers. This is not a reproduction of Adeola and Maximus (arXiv:2611.33250)."
+  }
+}
