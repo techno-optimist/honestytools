@@ -1,0 +1,310 @@
+{
+  "schema": "honestytools.rkc0_interval_card.v1",
+  "title": "RKC0 interval and rerun controls card",
+  "proposal": "P94",
+  "score_type": "pass_fail",
+  "interval": {
+    "certifying_method": "gaffke",
+    "score_type": "pass_fail",
+    "nominal_coverage": 0.95,
+    "contrast_methods": [
+      "wald",
+      "student_t",
+      "bootstrap"
+    ],
+    "coverage_worlds": {
+      "rubric_skew_high_n10": {
+        "wald": {
+          "coverage": 0.808,
+          "mean_width": 0.63
+        },
+        "student_t": {
+          "coverage": 0.808,
+          "mean_width": 0.727
+        },
+        "bootstrap": {
+          "coverage": 0.805,
+          "mean_width": 0.54
+        },
+        "gaffke": {
+          "coverage": 0.993,
+          "mean_width": 1.411
+        }
+      },
+      "rubric_skew_high_n20": {
+        "wald": {
+          "coverage": 0.882,
+          "mean_width": 0.512
+        },
+        "student_t": {
+          "coverage": 0.883,
+          "mean_width": 0.547
+        },
+        "bootstrap": {
+          "coverage": 0.873,
+          "mean_width": 0.477
+        },
+        "gaffke": {
+          "coverage": 0.985,
+          "mean_width": 0.878
+        }
+      },
+      "rubric_skew_high_n30": {
+        "wald": {
+          "coverage": 0.858,
+          "mean_width": 0.433
+        },
+        "student_t": {
+          "coverage": 0.86,
+          "mean_width": 0.452
+        },
+        "bootstrap": {
+          "coverage": 0.868,
+          "mean_width": 0.413
+        },
+        "gaffke": {
+          "coverage": 0.983,
+          "mean_width": 0.665
+        }
+      },
+      "rubric_mid_n10": {
+        "wald": {
+          "coverage": 0.915,
+          "mean_width": 1.33
+        },
+        "student_t": {
+          "coverage": 0.955,
+          "mean_width": 1.535
+        },
+        "bootstrap": {
+          "coverage": 0.925,
+          "mean_width": 1.243
+        },
+        "gaffke": {
+          "coverage": 0.998,
+          "mean_width": 1.663
+        }
+      },
+      "rubric_mid_n20": {
+        "wald": {
+          "coverage": 0.918,
+          "mean_width": 0.942
+        },
+        "student_t": {
+          "coverage": 0.938,
+          "mean_width": 1.006
+        },
+        "bootstrap": {
+          "coverage": 0.925,
+          "mean_width": 0.911
+        },
+        "gaffke": {
+          "coverage": 0.987,
+          "mean_width": 1.123
+        }
+      },
+      "rubric_mid_n30": {
+        "wald": {
+          "coverage": 0.935,
+          "mean_width": 0.774
+        },
+        "student_t": {
+          "coverage": 0.945,
+          "mean_width": 0.808
+        },
+        "bootstrap": {
+          "coverage": 0.942,
+          "mean_width": 0.756
+        },
+        "gaffke": {
+          "coverage": 0.983,
+          "mean_width": 0.897
+        }
+      },
+      "binary_p0.95_n10": {
+        "wald": {
+          "coverage": 0.373,
+          "mean_width": 0.156
+        },
+        "student_t": {
+          "coverage": 0.373,
+          "mean_width": 0.18
+        },
+        "bootstrap": {
+          "coverage": 0.368,
+          "mean_width": 0.126
+        },
+        "gaffke": {
+          "coverage": 0.992,
+          "mean_width": 0.364
+        }
+      },
+      "binary_p0.95_n20": {
+        "wald": {
+          "coverage": 0.625,
+          "mean_width": 0.145
+        },
+        "student_t": {
+          "coverage": 0.625,
+          "mean_width": 0.155
+        },
+        "bootstrap": {
+          "coverage": 0.625,
+          "mean_width": 0.123
+        },
+        "gaffke": {
+          "coverage": 0.993,
+          "mean_width": 0.235
+        }
+      },
+      "binary_p0.95_n30": {
+        "wald": {
+          "coverage": 0.787,
+          "mean_width": 0.135
+        },
+        "student_t": {
+          "coverage": 0.79,
+          "mean_width": 0.14
+        },
+        "bootstrap": {
+          "coverage": 0.785,
+          "mean_width": 0.12
+        },
+        "gaffke": {
+          "coverage": 0.988,
+          "mean_width": 0.185
+        }
+      },
+      "binary_p0.98_n10": {
+        "wald": {
+          "coverage": 0.18,
+          "mean_width": 0.073
+        },
+        "student_t": {
+          "coverage": 0.18,
+          "mean_width": 0.084
+        },
+        "bootstrap": {
+          "coverage": 0.18,
+          "mean_width": 0.057
+        },
+        "gaffke": {
+          "coverage": 0.983,
+          "mean_width": 0.333
+        }
+      },
+      "binary_p0.98_n20": {
+        "wald": {
+          "coverage": 0.332,
+          "mean_width": 0.07
+        },
+        "student_t": {
+          "coverage": 0.333,
+          "mean_width": 0.075
+        },
+        "bootstrap": {
+          "coverage": 0.332,
+          "mean_width": 0.057
+        },
+        "gaffke": {
+          "coverage": 0.993,
+          "mean_width": 0.198
+        }
+      },
+      "binary_p0.98_n30": {
+        "wald": {
+          "coverage": 0.457,
+          "mean_width": 0.066
+        },
+        "student_t": {
+          "coverage": 0.457,
+          "mean_width": 0.069
+        },
+        "bootstrap": {
+          "coverage": 0.453,
+          "mean_width": 0.055
+        },
+        "gaffke": {
+          "coverage": 0.977,
+          "mean_width": 0.146
+        }
+      }
+    },
+    "headline_binary_p0.98": {
+      "10": {
+        "wald": 0.18,
+        "student_t": 0.18,
+        "bootstrap": 0.18,
+        "gaffke": 0.983
+      },
+      "20": {
+        "wald": 0.332,
+        "student_t": 0.333,
+        "bootstrap": 0.332,
+        "gaffke": 0.993
+      },
+      "30": {
+        "wald": 0.457,
+        "student_t": 0.457,
+        "bootstrap": 0.453,
+        "gaffke": 0.977
+      }
+    },
+    "gaffke_coverage_range": [
+      0.977,
+      0.998
+    ]
+  },
+  "change_floor": {
+    "n_replicas": 3,
+    "also_reported": [
+      5
+    ],
+    "floor_used": "floor3_p95_binomial",
+    "construction": "restart and reorder",
+    "worlds": {
+      "unchanged": {
+        "single_pair": 0.486,
+        "floor3_max": 0.246,
+        "floor5_max": 0.088,
+        "floor3_p95_binomial": 0.004
+      },
+      "changed": {
+        "single_pair": 1.0,
+        "floor3_max": 0.999,
+        "floor5_max": 0.998,
+        "floor3_p95_binomial": 0.986
+      }
+    },
+    "changed_world": "+1.5% item flips"
+  },
+  "selection": {
+    "rule": "per-task gate",
+    "tasks": 80,
+    "runs_per_condition": 3,
+    "true_effect_pp": 0.0,
+    "shuffle_null": {
+      "in_sample_gain_pp_mean": 9.46,
+      "in_sample_gain_pp_p5_p95": [
+        6.25,
+        13.33
+      ],
+      "held_out_gain_pp_mean": 0.02,
+      "held_out_gain_pp_p5_p95": [
+        -2.92,
+        2.92
+      ],
+      "share_tasks_baseline_0_of_3_cannot_show_decrease": 0.295
+    },
+    "held_out": {
+      "gain_pp_mean": 0.02
+    },
+    "arithmetic_floor_share": 0.295
+  },
+  "method_level": false,
+  "pilot": {
+    "script": "tool17_p94_interval_floor_pilot_20261126.py",
+    "runtime_s": 7.2,
+    "notes": "Small known-answer simulation, seeded, about 7 seconds. Our numbers. This is not a reproduction of Abraham (arXiv:2611.29512) or Rane (arXiv:2611.29663)."
+  }
+}
