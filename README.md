@@ -144,6 +144,14 @@ the probe sets differ but the verdict happens to agree (checked 2026-11-25 with 
 1.4 without the two alphabet probes). If the tool line says DIFFERS, compare the receipt's `version`
 and `probes` with the current tool before reading DIVERGES as a wrong receipt.
 
+A REPLAYS also reuses the tool's fixed permutation seed (20260724). The receipt does not record
+it and the command line has no flag to change it, so a replay shows the arithmetic repeats, not
+that the verdict is stable to the random draw. On the nine committed batteries, re-running under 20
+other seeds (same bytes, keys, permutation count and alpha; `evaluate(seed=...)`) left eight verdicts
+unchanged; grounding-coordinate, adjusted p 0.0366 and flagged MARGINAL on /audit, came out PASS
+under 4 of the 20 (adjusted p 0.017 to 0.058) (checked 2026-11-27). Read a REPLAYS near alpha as a
+close call.
+
 ### What the report says before the verdict
 
 The text report opens with what the loader did, because a silent change of corpus is a silent
