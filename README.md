@@ -349,6 +349,19 @@ still be contaminated, circular or mislabelled.
   depend on this: with one row per entity it is still DISQUALIFIED (5 of 34 cells separate at n = 84,
   against 15 at n = 168). The cell count does: at equal n (72 rows, 6 draws) the version with each text
   on two rows separated 7.0 cells on average, against 3.8 with each text once (checked 2026-11-23).
+- **Only the text field is read; other fields and row order are not.** A field shipped beside the
+  text (a source, a date, a subdomain) or the order of the rows can carry the label, and `nulltest.py`
+  will not see it. We checked our nine committed batteries for this (each non-text field as a label-rate
+  lookup judged against its own within-category permutation null, plus row position; checked
+  2026-11-27). In `verifydomain-claims-147.json`, already DISQUALIFIED, `subdomain` alone gives the
+  label: each of its 35 values holds one label only. `calibration-battery-v1.json` (within each
+  category) and `postcutoff-trials-v1.json` (all 351 label-0 rows first) store their rows sorted by
+  label, so a contiguous train/test split or the first N rows sees one class; `nulltest.py`'s own folds
+  are a seeded shuffle, so its verdicts do not change. No other field recovers the label beyond the
+  ones the batteries document as defining it or as their answer key (`views`, `date`, the famous
+  half's `source`, `gold`, `must_not_affirm`). If you build this check yourself, do not score a
+  matched-pair key with an out-of-fold lookup: each item's partner has the other label, so it reads
+  `A*` 0.98 with no information in it.
 - **Non-Latin text.** The probes run on any Unicode text, but the alphabet probes drop out as
   degenerate when initials are not letters, and `words` splits on whitespace, so unspaced scripts
   give it one token per sentence. The report lists which cells were dropped as degenerate; it
