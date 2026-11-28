@@ -19,6 +19,8 @@ To update, copy the files from the site again and regenerate `SOURCE.sha256` in 
 
 **What a pass means:** the bytes were signed by a pinned key and have not changed since. That is provenance, not truth.
 
+**What a pass does not bind (tool-26 rotation, 2026-11-27):** the signature covers the receipt minus `id` and the `signature` block. On all 23 receipts we tested (the 22 logged ones and the `/api/read/f0c39b1d0a5b` demo), a copy with a different `id`, an extra field inside `signature`, no `alg`, or a `sig` string with a stray character, a newline or a non-canonical last character still prints `✓ VERIFIED … unaltered` (a wrong `id` on a read receipt is labelled `not a read-id salt`); `aperture_verify.py` does not yet use the strict decoder P85 added to the log verifiers. The log leaf hashes the `signature` block, so each of those copies except the `id` change has a leaf that is not in `log/leaves.jsonl`: check a receipt against the log with the bytes from its `source` in `log/leaves_manifest.json`. The demo receipt is not a log leaf. `verify_widget.js` (served, but no page loads it) pins one of the two keys and, unlike this file, rejects a stray character and a re-spelled number literal (`0.9061` written `0.90610`).
+
 ## Signed checkpoints, Rekor anchors, and witness co-signatures (P85, 2026-11-25)
 `log/` holds both signed checkpoints:
 - `log/checkpoints/22`: the 22-leaf genesis checkpoint (20 registry certificates and 2 example read receipts), anchored in Sigstore Rekor v2 (`log2025-1`, index 171316570, `log/rekor-entry-0.json`).
