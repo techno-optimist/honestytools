@@ -59,7 +59,7 @@ def main(path):
         root = decode_b64_strict(body_lines[2], expected_len=32, label="checkpoint root")
         if size_num == 0 and root != hashlib.sha256(b"").digest():
             raise ValueError("size-0 checkpoint root must equal SHA-256 of empty input")
-    except ValueError as exc:
+    except (OSError, ValueError) as exc:
         print(f"  \u2717 {exc}")
         return 1
 
